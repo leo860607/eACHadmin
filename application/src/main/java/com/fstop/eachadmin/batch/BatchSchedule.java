@@ -13,15 +13,15 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class BatchSchedule {
-	@Scheduled(cron="#{@CronValue}")
-    public void scheduledCreateBookTime() {
-		
-        log.debug("scheduledCreateBookTime End");
-    }
-	
-	@Scheduled(cron="* * * * * *")
-    public void scheduledCreateBookTime2() {
-		
-        log.info("scheduledCreateBookTime End2");
-    }
+//	@Scheduled(cron="#{@CronValue}")
+//    public void scheduledCreateBookTime() {
+//		
+//        log.debug("scheduledCreateBookTime End");
+//    }
+//	
+//	@Scheduled(cron="* * * * * *")
+//    public void scheduledCreateBookTime2() {
+//		
+//        log.info("scheduledCreateBookTime End2");
+//    }
 }

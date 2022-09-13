@@ -9,12 +9,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.qos.logback.classic.Logger;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import net.sf.jasperreports.engine.JRException;
 
+@Tag(name = "測試用")
 @RestController
 @RequestMapping("api/demo/common")
 public class TestController {
@@ -49,5 +54,12 @@ public class TestController {
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         
         return new ResponseEntity<>(commonService.exportxls(), headers, HttpStatus.OK);
+    }
+    
+    
+    @Operation(summary = "API概述", description = "API功能說明")
+    @PostMapping(value = "/countdata")
+    public int countData(@RequestBody ExampleDto param){
+        return 123;
     }
 }
