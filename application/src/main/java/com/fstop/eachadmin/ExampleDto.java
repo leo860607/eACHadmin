@@ -30,3 +30,5 @@ public class ExampleDto {
 	@JsonProperty("CONRESULTCODE")
 	private String CONRESULTCODE;
 }
+
+

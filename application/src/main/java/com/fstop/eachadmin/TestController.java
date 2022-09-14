@@ -62,4 +62,28 @@ public class TestController {
     public int countData(@RequestBody ExampleDto param){
         return 123;
     }
+    
+    @Operation(summary = "操作行 API", description = "API功能說明")
+    @GetMapping(value = "/OPBKdata")
+    public String  OPBKData(){
+        return "bank_group_bo.getBgbkIdList()";
+    }
+
+    @Operation(summary = "業務類別 API", description = "API功能說明")
+    @GetMapping(value = "/businesstypedata")
+    public String  businesstypeData(){
+        return "business_type_bo.getBsTypeIdList()";
+    }
+
+    @Operation(summary = "查詢按鈕 API", description = "API功能說明")
+    @PostMapping(value = "/searchdata")
+    public String  searchData(@RequestBody SearchDataDto param){
+        return "onblocktab_bo.getNotTradResList()";
+    }
+    
+    @Operation(summary = "帳單明細 API", description = "API功能說明")
+    @PostMapping(value = "/billdata")
+    public String  billData(@RequestBody SearchDataDto param){
+        return "ok";
+    }
 }
