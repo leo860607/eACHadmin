@@ -58,27 +58,39 @@ public class TestController {
     }
     
     
-    @Operation(summary = "API概述", description = "API功能說明")
-    @PostMapping(value = "/countdata")
-    public int countData(@RequestBody ExampleDto param){
+//    @Operation(summary = "API概述", description = "API功能說明")
+//    @PostMapping(value = "/countdata")
+//    public int countData(@RequestBody ExampleDto param){
+//        return 123;
+//    }
+    
+//操作行
+    @Operation(summary = "操作行", description = "操作行功能說明")
+    @PostMapping(value = "/getOpbkIdList")
+    public List getOpbkIdListtData(@RequestBody ExampleDto param){
+        return commonService.getOpbkIdList();
+    }
+    
+    
+//業務行
+    @Operation(summary = "業務行概述", description = "業務行功能說明")
+    @PostMapping(value = "/getBsTypeIdList")
+    public int getBsTypeIdListData(@RequestBody ExampleDto param){
         return 123;
     }
     
-    @Operation(summary = "操作行", description = "操作行功能說明")
-    @PostMapping(value = "/opbkIdList")
-    public List opbkIdList(@RequestBody OpbkIdList param){
-        return commonService.getBgbkIdList(null);
+//尋找
+    @Operation(summary = "尋找", description = "尋找功能說明")
+    @PostMapping(value = "/getOpbkIdList")
+    public int getOpbkIdListData(@RequestBody ExampleDto param){
+        return 123;
     }
     
-    @Operation(summary = "查詢", description = "查詢功能說明")
-    @PostMapping(value = "/pageSearch")
-    public String pageSearch(@RequestBody ExampleDto param){
-        return commonService.pageSearch(null);
+//1400
+    @Operation(summary = "請求傳送訊息", description = "請求傳送訊息功能說明")
+    @PostMapping(value = "/servic1400")
+    public int servic1400(@RequestBody ExampleDto param){
+        return 123;
     }
     
-    @Operation(summary = "查詢明細", description = "查詢明細功能")
-    @PostMapping(value = "/detailData")
-    public String detailData(@RequestBody ExampleDto param){
-        return commonService.pageSearch(null);
-    }
 }
