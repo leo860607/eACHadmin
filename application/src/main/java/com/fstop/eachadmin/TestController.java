@@ -1,6 +1,7 @@
 package com.fstop.eachadmin;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +62,23 @@ public class TestController {
     @PostMapping(value = "/countdata")
     public int countData(@RequestBody ExampleDto param){
         return 123;
+    }
+    
+    @Operation(summary = "操作行", description = "操作行功能說明")
+    @PostMapping(value = "/opbkIdList")
+    public List opbkIdList(@RequestBody OpbkIdList param){
+        return commonService.getBgbkIdList(null);
+    }
+    
+    @Operation(summary = "查詢", description = "查詢功能說明")
+    @PostMapping(value = "/pageSearch")
+    public String pageSearch(@RequestBody ExampleDto param){
+        return commonService.pageSearch(null);
+    }
+    
+    @Operation(summary = "查詢明細", description = "查詢明細功能")
+    @PostMapping(value = "/detailData")
+    public String detailData(@RequestBody ExampleDto param){
+        return commonService.pageSearch(null);
     }
 }
