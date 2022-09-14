@@ -64,21 +64,29 @@ public class TestController {
         return 123;
     }
     
-    @Operation(summary = "操作行", description = "操作行功能說明")
-    @PostMapping(value = "/opbkIdList")
-    public List opbkIdList(@RequestBody OpbkIdList param){
-        return commonService.getBgbkIdList(null);
+    //業務行
+    @Operation(summary = "業務行", description = "業務類別的API,用來呈現下拉式選單的選項")
+    @PostMapping(value = "/bsTypeIdList")
+    public List bsTypeIdList(@RequestBody BsFormDto param){
+        return commonService.getBsTypeIdList();
     }
     
-    @Operation(summary = "查詢", description = "查詢功能說明")
-    @PostMapping(value = "/pageSearch")
-    public String pageSearch(@RequestBody ExampleDto param){
-        return commonService.pageSearch(null);
+//    //查詢(暫未完成Dto)
+//    @Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
+//    @PostMapping(value = "/pageSearch")
+//    public List pageSearch(@RequestBody FormDto param){
+//        return commonService.getBsTypeIdList();
+//    }
+    
+    //return json
+    //請求傳送未完成交易結果(暫未完成Dto)
+    @Operation(summary = "send_1406", description = "查詢資料內,「請求傳送未完成交易結果」按鈕")
+    @PostMapping(value = "/send_1406")
+    public String send_1406(@RequestBody FormDto param){
+//        return commonService.send_1406();
+    	return "123";
     }
     
-    @Operation(summary = "查詢明細", description = "查詢明細功能")
-    @PostMapping(value = "/detailData")
-    public String detailData(@RequestBody ExampleDto param){
-        return commonService.pageSearch(null);
-    }
+    
+    
 }
