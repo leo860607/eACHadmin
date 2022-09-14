@@ -58,9 +58,24 @@ public class TestController {
     }
     
     
-    @Operation(summary = "API概述", description = "API功能說明")
-    @PostMapping(value = "/countdata")
-    public int countData(@RequestBody ExampleDto param){
+//    @Operation(summary = "API概述", description = "API功能說明")
+//    @PostMapping(value = "/countdata")
+//    public int countData(@RequestBody ExampleDto param){
+//        return 123;
+//    }
+    
+//操作行
+    @Operation(summary = "操作行", description = "操作行功能說明")
+    @PostMapping(value = "/getOpbkIdList")
+    public List getOpbkIdListtData(@RequestBody ExampleDto param){
+        return commonService.getOpbkIdList();
+    }
+    
+    
+//業務行
+    @Operation(summary = "業務行概述", description = "業務行功能說明")
+    @PostMapping(value = "/getBsTypeIdList")
+    public int getBsTypeIdListData(@RequestBody ExampleDto param){
         return 123;
     }
     
