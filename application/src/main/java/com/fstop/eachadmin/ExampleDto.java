@@ -1,6 +1,6 @@
 package com.fstop.eachadmin;
 
-import javax.persistence.Id;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -31,5 +31,11 @@ public class ExampleDto {
 	private String TIMEOUTCODE;
 	@JsonProperty("CONRESULTCODE")
 	private String CONRESULTCODE;
+	
 
+
+	
+	
 }
+
+
