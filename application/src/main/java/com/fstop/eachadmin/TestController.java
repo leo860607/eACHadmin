@@ -1,6 +1,7 @@
 package com.fstop.eachadmin;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,29 +64,21 @@ public class TestController {
         return 123;
     }
     
-    @Operation(summary = "操作行 API", description = "API功能說明")
-    @GetMapping(value = "/OPBKdata")
-    public String  OPBKData(){
-        return "bank_group_bo.getBgbkIdList()";
-    }
-
-    @Operation(summary = "業務類別 API", description = "API功能說明")
-    @GetMapping(value = "/businesstypedata")
-    public String  businesstypeData(){
-        return "business_type_bo.getBsTypeIdList()";
-    }
-
-    @Operation(summary = "查詢按鈕 API", description = "API功能說明")
-    @PostMapping(value = "/searchdata")
-    public String  searchData(@RequestBody SearchDataDto param){
-        return "onblocktab_bo.getNotTradResList()";
+    @Operation(summary = "操作行", description = "操作行功能說明")
+    @PostMapping(value = "/opbkIdList")
+    public List opbkIdList(@RequestBody OpbkIdList param){
+        return commonService.getBgbkIdList(null);
     }
     
-    @Operation(summary = "帳單明細 API", description = "API功能說明")
-    @PostMapping(value = "/billdata")
-    public String  billData(@RequestBody SearchDataDto param){
-        return "ok";
+    @Operation(summary = "查詢", description = "查詢功能說明")
+    @PostMapping(value = "/pageSearch")
+    public String pageSearch(@RequestBody ExampleDto param){
+        return commonService.pageSearch(null);
     }
     
-    
+    @Operation(summary = "查詢明細", description = "查詢明細功能")
+    @PostMapping(value = "/detailData")
+    public String detailData(@RequestBody ExampleDto param){
+        return commonService.pageSearch(null);
+    }
 }
