@@ -16,7 +16,7 @@ import lombok.Data;
 
 @Data
 @Table(name = "ONBLOCKTAB")
-@Entity(name = "tw.org.twntch.po.ONBLOCKTAB")
+@Entity(name = "MASTER_ONBLOCKTAB")
 public class ONBLOCKTAB implements Serializable {
 	/**
 	 * 
