@@ -290,9 +290,9 @@ public class TestRptService {
 	public String send_1406(Map<String, String> param){
 
 		String json = "{}";
-		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
-		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;
-		txdate = DateTimeUtils.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
+		String stan = StrUtils1406.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
+		String txdate = StrUtils1406.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;
+		txdate = DateTimeUtils1406.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
 		String resultCode = "";
 		Map rtnMap = new HashMap();
 		try {
