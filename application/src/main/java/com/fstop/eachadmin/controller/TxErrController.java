@@ -30,4 +30,10 @@ public class TxErrController {
 		return "123";
 	}
 	
+	@Operation(summary = "未知 API", description = "未知")
+	@GetMapping(value = "/detail")
+	public String txerrunknown() {
+		return "123";
+	}
+	
 }
