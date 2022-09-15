@@ -29,11 +29,5 @@
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.6.9</version>
 		</dependency>
-		<dependency>
-	<groupId>javax.servlet</groupId>
-	<artifactId>servlet-api</artifactId>
-	<version>${servlet-api.version}</version>
-	<scope>provided</scope>
-</dependency>
 	</dependencies>
 </project>
