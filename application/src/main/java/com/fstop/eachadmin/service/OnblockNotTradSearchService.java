@@ -8,8 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fstop.eachadmin.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fstop.eachadmin.repository.CommonSpringRepository;
 import com.fstop.eachadmin.repository.Page;
 import com.fstop.infra.entity.BANK_GROUP;
 import com.fstop.infra.entity.UNDONETXDATA;
@@ -20,7 +23,8 @@ import util.DateTimeUtils;
 import util.StrUtils;
 
 public class OnblockNotTradSearchService {
-
+	@Autowired
+	private CommonSpringRepository commonSpringRepository;
 	// ----------------表單查詢產出------------------------------------------------------
 	public PageSearchOutput pageSearch(Map<String, String> param) {
 		List<String> conditions_1 = new ArrayList<String>();
@@ -101,8 +105,7 @@ public class OnblockNotTradSearchService {
 		}
 
 		int pageNo = StrUtils.isEmpty(param.get("page")) ? 0 : Integer.valueOf(param.get("page"));
-		int pageSize = StrUtils.isEmpty(param.get("rows")) ? Integer.valueOf(pageSize// TODO
-																						// Arguments.getStringArg("PAGE.SIZE")
+		int pageSize = StrUtils.isEmpty(param.get("rows")) ? Integer.valueOf(pageSize// TODOArguments.getStringArg("PAGE.SIZE")
 		) : Integer.valueOf(param.get("rows"));
 
 		Map rtnMap = new HashMap();
@@ -198,7 +201,7 @@ public class OnblockNotTradSearchService {
 
 			// 先算出總計的欄位值，放到rtnMap裡面，到頁面再放到下面的總計Grid裡面
 			System.out.println("sumSQL=" + sumSQL);
-			List dataSumList = commonSpringDao.list(sumSQL.toString(), null);
+			List dataSumList = commonSpringRepository.list(sumSQL.toString(), null);
 //			跟資料庫相關的先註解掉 20220914
 			rtnMap.put("dataSumList", dataSumList);
 
