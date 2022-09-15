@@ -75,23 +75,23 @@ public class TestRptService {
 		return ReportUtil.exportXlsFromXml(file.getPath(), oMapper.convertValue(contract, Map.class));
 	}
 	
-	//業務行
-	public List getBsTypeIdList(){
-		//List<BUSINESS_TYPE> list = business_type_Dao.getAll();
-		List list = business_type_Dao.find("FROM tw.org.twntch.po.BUSINESS_TYPE ORDER BY BUSINESS_TYPE_ID");
-		List beanList = new LinkedList<LabelValueBean>();
-		LabelValueBean bean = null;
-		new LabelValueBean("===請選擇===", "");
-//		beanList.add(bean);
-		for(BUSINESS_TYPE po :list){
-			po.getBUSINESS_TYPE_ID();
-			bean = new LabelValueBean(po.getBUSINESS_TYPE_ID()+" - "+po.getBUSINESS_TYPE_NAME(), po.getBUSINESS_TYPE_ID());
-			beanList.add(bean);
-		}
-		System.out.println("beanList>>"+beanList);
-		return beanList;
-		
-	}
+//	//業務行
+//	public List getBsTypeIdList(){
+//		//List<BUSINESS_TYPE> list = business_type_Dao.getAll();
+//		List list = business_type_Dao.find("FROM tw.org.twntch.po.BUSINESS_TYPE ORDER BY BUSINESS_TYPE_ID");
+//		List beanList = new LinkedList<LabelValueBean>();
+//		LabelValueBean bean = null;
+//		new LabelValueBean("===請選擇===", "");
+////		beanList.add(bean);
+//		for(BUSINESS_TYPE po :list){
+//			po.getBUSINESS_TYPE_ID();
+//			bean = new LabelValueBean(po.getBUSINESS_TYPE_ID()+" - "+po.getBUSINESS_TYPE_NAME(), po.getBUSINESS_TYPE_ID());
+//			beanList.add(bean);
+//		}
+//		System.out.println("beanList>>"+beanList);
+//		return beanList;
+//		
+//	}
 	
 	
 	//表單查詢產出
@@ -287,64 +287,64 @@ public class TestRptService {
 	
 //	1406
 //	Controller
-	public String send_1406(Map<String, String> param){
-
-		String json = "{}";
-		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
-		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;
-		txdate = DateTimeUtils.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
-		String resultCode = "";
-		Map rtnMap = new HashMap();
-		try {
-			//先檢查onpendingtab中是否有該筆資料存在
-			ONPENDINGTAB_PK id = new ONPENDINGTAB_PK(txdate, stan);
-			ONPENDINGTAB po = onpendingtab_Dao.get(id);
-			if(po == null){
-				rtnMap.put("result", "FALSE");
-				rtnMap.put("msg", "失敗，資料尚未轉移，PK={STAN:"+stan+",TXDATE:"+txdate+"}");
-			}else{
-//				20150529 add by hugo req by UAT-20150526-06
-				if(po.getBIZDATE() !=null){//表示已有處理結果
-					rtnMap.put("result", "FALSE");
-					rtnMap.put("msg", "已有未完成交易處理結果，營業日="+po.getBIZDATE());
-					json = JSONUtils.map2json(rtnMap);
-					return json;
-				}
-				Header msgHeader = new Header();
-				msgHeader.setSystemHeader("eACH01");
-				msgHeader.setMsgType("0100");
-				msgHeader.setPrsCode("1406");
-				msgHeader.setStan("");//此案例未使用
-				msgHeader.setInBank("0000000");
-				msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
-				msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
-				msgHeader.setRspCode("0000");
-				Message msg = new Message();
-				msg.setHeader(msgHeader);
-				Body body = new Body();
-				body.setOSTAN(stan);
-				body.setOTxDate(txdate);
-//				body.setResultCode(resultCode);
-				msg.setBody(body);
-				String telegram = MessageConverter.marshalling(msg);
-				rtnMap = socketClient.send(telegram);
-			}
-		} catch ( JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			rtnMap.put("result", "FALSE");
-			rtnMap.put("msg", "失敗，電文發送異常");
-		}catch(Exception ee){
-			ee.printStackTrace();
-			rtnMap.put("result", "FALSE");
-			rtnMap.put("msg", "失敗，系統異常");
-		}
-		
-		json = JSONUtils.map2json(rtnMap);
-		return json;
-	}
-	
-	
+//	public String send_1406(Map<String, String> param){
+//
+//		String json = "{}";
+//		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
+//		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;
+//		txdate = DateTimeUtils.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
+//		String resultCode = "";
+//		Map rtnMap = new HashMap();
+//		try {
+//			//先檢查onpendingtab中是否有該筆資料存在
+//			ONPENDINGTAB_PK id = new ONPENDINGTAB_PK(txdate, stan);
+//			ONPENDINGTAB po = onpendingtab_Dao.get(id);
+//			if(po == null){
+//				rtnMap.put("result", "FALSE");
+//				rtnMap.put("msg", "失敗，資料尚未轉移，PK={STAN:"+stan+",TXDATE:"+txdate+"}");
+//			}else{
+////				20150529 add by hugo req by UAT-20150526-06
+//				if(po.getBIZDATE() !=null){//表示已有處理結果
+//					rtnMap.put("result", "FALSE");
+//					rtnMap.put("msg", "已有未完成交易處理結果，營業日="+po.getBIZDATE());
+//					json = JSONUtils.map2json(rtnMap);
+//					return json;
+//				}
+//				Header msgHeader = new Header();
+//				msgHeader.setSystemHeader("eACH01");
+//				msgHeader.setMsgType("0100");
+//				msgHeader.setPrsCode("1406");
+//				msgHeader.setStan("");//此案例未使用
+//				msgHeader.setInBank("0000000");
+//				msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
+//				msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
+//				msgHeader.setRspCode("0000");
+//				Message msg = new Message();
+//				msg.setHeader(msgHeader);
+//				Body body = new Body();
+//				body.setOSTAN(stan);
+//				body.setOTxDate(txdate);
+////				body.setResultCode(resultCode);
+//				msg.setBody(body);
+//				String telegram = MessageConverter.marshalling(msg);
+//				rtnMap = socketClient.send(telegram);
+//			}
+//		} catch ( JAXBException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			rtnMap.put("result", "FALSE");
+//			rtnMap.put("msg", "失敗，電文發送異常");
+//		}catch(Exception ee){
+//			ee.printStackTrace();
+//			rtnMap.put("result", "FALSE");
+//			rtnMap.put("msg", "失敗，系統異常");
+//		}
+//		
+//		json = JSONUtils.map2json(rtnMap);
+//		return json;
+//	}
+//	
+//	
 }
 
 

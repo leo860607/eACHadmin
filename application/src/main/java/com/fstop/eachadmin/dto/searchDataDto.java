@@ -1,5 +1,4 @@
-package com.fstop.eachadmin;
-
+package com.fstop.eachadmin.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SearchDataDto {
+public class searchDataDto {
 	@Schema(description = "交易日期")
 	@JsonProperty("START_DATE")
 	private String START_DATE;
@@ -40,9 +39,5 @@ public class SearchDataDto {
 	
 	@Schema(description = "交易追踨序號")
 	@JsonProperty("OSTAN")
-    private String OSTAN;
-	
-	
-	
-	
+    private String OSTAN;	
 }
