@@ -6,8 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity(name = "tw.org.twntch.po.BUSINESS_TYPE")
-@Table(name = "BUSINESS_TYPE")
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity(name = "BUSINESSTYPE")
+@Table(name = "MASTER_BUSINESS_TYPE")
+@Getter
+@Setter
 public class BUSINESS_TYPE implements Serializable {
 
 	/**
@@ -38,30 +43,7 @@ public class BUSINESS_TYPE implements Serializable {
 	private	String	CDATE	;
 	private	String	UDATE	;
 	
-	public String getBUSINESS_TYPE_ID() {
-		return BUSINESS_TYPE_ID;
-	}
-	public void setBUSINESS_TYPE_ID(String bUSINESS_TYPE_ID) {
-		BUSINESS_TYPE_ID = bUSINESS_TYPE_ID;
-	}
-	public String getBUSINESS_TYPE_NAME() {
-		return BUSINESS_TYPE_NAME;
-	}
-	public void setBUSINESS_TYPE_NAME(String bUSINESS_TYPE_NAME) {
-		BUSINESS_TYPE_NAME = bUSINESS_TYPE_NAME;
-	}
-	public String getCDATE() {
-		return CDATE;
-	}
-	public void setCDATE(String cDATE) {
-		CDATE = cDATE;
-	}
-	public String getUDATE() {
-		return UDATE;
-	}
-	public void setUDATE(String uDATE) {
-		UDATE = uDATE;
-	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
