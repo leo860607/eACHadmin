@@ -111,8 +111,8 @@ public class NTRController {
     //controller
     @Operation(summary = "send_1406", description = "API功能說明")
     @GetMapping(value = "/send_1406data")
-    public String send_1406(@RequestBody Onblocktab_NotTradRes_Form param){
-        return send_1406();
+    public String send_1406(@RequestBody Dto param){
+        return "service send_1406()";
     }
     
     

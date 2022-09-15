@@ -2,8 +2,32 @@ package com.fstop.eachadmin;
 
 import java.util.LinkedList;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.xml.bind.JAXBException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fstop.infra.dao.onpendingtabDao;
+import com.fstop.infra.entity.onpendingtab;
+import com.fstop.infra.entity.onpendingtabPK;
+
+import java.util.HashMap;
+
+import util.send1406StrUtil;
+import util.socketPackage;
+import util.socketPackage.Body;
+import util.socketPackage.Header;
+import util.zDateHandler;
+import util.messageConverter;
+import util.send1406DateTimeUtil;
+
 public class NTRService {
 	
+	@Autowired
+	onpendingtabDao onpendingtabR;
 	
 	//operation
 	public List<LabelValueBean> getOpbkList(){
@@ -68,10 +92,10 @@ public class NTRService {
 			List<String> conditions_2 = new ArrayList<String>();
 			/* 20150210 HUANGPU 改以清算階段後的營業日(BIZDATE)查詢資料，非原交易日期(OTXDATE) */
 			if(StrUtils.isNotEmpty(startDate)){//交易日期
-				conditions_1.add(" BIZDATE >= '"+DateTimeUtils.convertDate(startDate, "yyyyMMdd", "yyyyMMdd")+"' ");
+				conditions_1.add(" BIZDATE >= '"+send1406DateTimeUtil.convertDate(startDate, "yyyyMMdd", "yyyyMMdd")+"' ");
 			}
 			if(StrUtils.isNotEmpty(endDate)){//交易日期
-				conditions_1.add(" BIZDATE <= '"+DateTimeUtils.convertDate(endDate, "yyyyMMdd", "yyyyMMdd")+"' ");
+				conditions_1.add(" BIZDATE <= '"+send1406DateTimeUtil.convertDate(endDate, "yyyyMMdd", "yyyyMMdd")+"' ");
 			}
 					
 			if(!bgbkId.equals("all")){//發動行所屬總行、入賬行所屬總行、扣款行所屬總行
@@ -274,24 +298,25 @@ public class NTRService {
 
 		 */
 		String json = "{}";
-		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
-		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;
-		txdate = DateTimeUtils.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
+		//String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
+		String stan = send1406StrUtil.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
+		String txdate = send1406StrUtil.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;
+		txdate = send1406DateTimeUtil.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
 		String resultCode = "";
 		Map rtnMap = new HashMap();
 		try {
 			//先檢查onpendingtab中是否有該筆資料存在
-			ONPENDINGTAB_PK id = new ONPENDINGTAB_PK(txdate, stan);
-			ONPENDINGTAB po = onpendingtab_Dao.get(id);
+			onpendingtabPK id = new onpendingtabPK(txdate, stan);
+			Optional<onpendingtab> po = onpendingtabR.findById(id);
 			if(po == null){
 				rtnMap.put("result", "FALSE");
 				rtnMap.put("msg", "失敗，資料尚未轉移，PK={STAN:"+stan+",TXDATE:"+txdate+"}");
 			}else{
 //				20150529 add by hugo req by UAT-20150526-06
-				if(po.getBIZDATE() !=null){//表示已有處理結果
+				if(po.get().getBIZDATE() !=null){//表示已有處理結果
 					rtnMap.put("result", "FALSE");
-					rtnMap.put("msg", "已有未完成交易處理結果，營業日="+po.getBIZDATE());
-					json = JSONUtils.map2json(rtnMap);
+					rtnMap.put("msg", "已有未完成交易處理結果，營業日="+po.get().getBIZDATE());
+				//	json = JSONUtils.map2json(rtnMap);
 					return json;
 				}
 				Header msgHeader = new Header();
@@ -303,15 +328,16 @@ public class NTRService {
 				msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
 				msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
 				msgHeader.setRspCode("0000");
-				Message msg = new Message();
+				socketPackage msg = new socketPackage();
 				msg.setHeader(msgHeader);
 				Body body = new Body();
 				body.setOSTAN(stan);
 				body.setOTxDate(txdate);
 //				body.setResultCode(resultCode);
 				msg.setBody(body);
-				String telegram = MessageConverter.marshalling(msg);
-				rtnMap = socketClient.send(telegram);
+				String telegram = messageConverter.marshalling(msg);
+				//TODO
+//				rtnMap = socketClient.send(telegram);//socket先註解
 			}
 		} catch ( JAXBException e) {
 			// TODO Auto-generated catch block
@@ -323,8 +349,8 @@ public class NTRService {
 			rtnMap.put("result", "FALSE");
 			rtnMap.put("msg", "失敗，系統異常");
 		}
-		
-		json = JSONUtils.map2json(rtnMap);
+		//TODO
+//		json = JSONUtils.map2json(rtnMap);//json先不搬
 		return json;
 	}
     
@@ -359,13 +385,13 @@ public class NTRService {
 		String json = "{}";
 		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
 		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;
-		txdate = DateTimeUtils.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
+		txdate = send1406DateTimeUtil.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
 		String resultCode = "";
 		Map rtnMap = new HashMap();
 		try {
 			//先檢查onpendingtab中是否有該筆資料存在
-			ONPENDINGTAB_PK id = new ONPENDINGTAB_PK(txdate, stan);
-			ONPENDINGTAB po = onpendingtab_Dao.get(id);
+			onpendingtabPK id = new onpendingtabPK(txdate, stan);
+			Optional<onpendingtab> po = onpendingtabR.findById(id);
 			if(po != null){
 				rtnMap.put("result", "FALSE");
 				rtnMap.put("msg", "失敗，資料已轉移，PK={STAN:"+stan+",TXDATE:"+txdate+"}");
