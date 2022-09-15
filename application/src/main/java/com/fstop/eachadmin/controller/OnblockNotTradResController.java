@@ -22,6 +22,6 @@ public class OnblockNotTradResController {
 	@Operation(summary = "操作行 API", description = "操作行下拉選單資料")
 	@GetMapping(value = "/opbkList")
 	public String opbkList() {
-		return "bank_group_bo.getBgbkIdList()";
+		return "OnblockNotTradResS.getBgbkIdList()";
 	}
 }
