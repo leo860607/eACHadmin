@@ -5,8 +5,12 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 
-public class EachUserFromDto {
+@Getter
+@Setter
+public class EachUserFormDto {
 	@Schema(description = "使用者表單")
 	@JsonProperty("scaseary")
 	private	List	scaseary	;

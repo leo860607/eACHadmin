@@ -2,3 +2,4 @@
 infra/target/*
 fcore/target/*
 target/*
+.DS_Store
