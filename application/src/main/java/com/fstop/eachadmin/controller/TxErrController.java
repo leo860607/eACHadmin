@@ -12,15 +12,21 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "交易異常處理狀況查詢")
 @RestController
-@RequestMapping("api/TxErrSearch")
+@RequestMapping("api/TxErr")
 public class TxErrController {
 
 	@Autowired
 	private OnblockNotTradResService OnblockNotTradResS;
 
 	@Operation(summary = "查詢 API", description = "查詢")
-	@GetMapping(value = "/txErrSearchList")
+	@GetMapping(value = "/search")
 	public String txerrList() {
+		return "123";
+	}
+	
+	@Operation(summary = "檢視明細 API", description = "檢視明細")
+	@GetMapping(value = "/detail")
+	public String txerrdetailList() {
 		return "123";
 	}
 	
