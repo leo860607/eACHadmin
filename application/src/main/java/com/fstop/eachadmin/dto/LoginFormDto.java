@@ -1,11 +1,16 @@
-package com.fstop.eachadmin;
+package com.fstop.eachadmin.dto;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class LoginFormDto {
 	@Schema(description = "登入驗證")
 	@JsonProperty("serialVersionUID = -2660281177423438063L")
@@ -15,7 +20,7 @@ public class LoginFormDto {
 	private String userId;
 	private List scaseary;
 	private List breadcrumb;
-	private Each_User_Form userData;
+	private EachUserFormDto userData;
 //	20150402 edit by hugo 給空字串 否則null時登入頁面會出錯
 //	private String THIS_LOGIN_DATE;
 	private String THIS_LOGIN_DATE = "";
