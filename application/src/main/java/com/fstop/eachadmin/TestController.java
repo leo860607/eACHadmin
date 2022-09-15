@@ -104,4 +104,23 @@ package com.fstop.eachadmin;
 //    
 //    
     
+//<<<<<<< HEAD
+////}
+//=======
+//    //return json
+//    //請求傳送未完成交易結果(暫未完成Dto)
+//    @Operation(summary = "send_1406", description = "查詢資料內,「請求傳送未完成交易結果」按鈕")
+//    @PostMapping(value = "/send_1406")
+//    public String send_1406(@RequestBody FormDto param){
+////        return commonService.send_1406();
+//    	return "123";
+//    }
+//
+//	public static void main(String[] args) {
+//		Onblocktab_Form
+//	}
+//    
+//    
+//    
 //}
+//>>>>>>> 36f44dc15a8f8eadcb9acef02f0190b3299f84e8

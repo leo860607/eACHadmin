@@ -1,4 +1,4 @@
-package com.fstop.eachadmin;
+package com.fstop.eachadmin.dto;
 
 import java.util.List;
 
