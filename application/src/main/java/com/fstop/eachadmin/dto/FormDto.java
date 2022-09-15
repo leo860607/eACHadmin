@@ -10,7 +10,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-
 public class FormDto {
 	@Schema(description = "查詢表單產出")
 	//銀行類別(?)
@@ -86,6 +85,4 @@ public class FormDto {
 	@JsonProperty("WO_FEE_BRBK_ID")
 	private	String	WO_FEE_BRBK_ID	;
 	
-}
-
 }
