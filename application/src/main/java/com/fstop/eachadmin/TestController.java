@@ -101,6 +101,10 @@ public class TestController {
 //        return commonService.send_1406();
     	return "123";
     }
+
+	public static void main(String[] args) {
+		Onblocktab_Form
+	}
     
     
     
