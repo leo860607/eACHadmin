@@ -1,1 +1,4 @@
 /.metadata/
+infra/target/*
+fcore/target/*
+target/*
