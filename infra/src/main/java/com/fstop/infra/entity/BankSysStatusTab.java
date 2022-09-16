@@ -13,7 +13,7 @@ import lombok.Setter;
 @Table(name = "MASTER_BANKSYSSTATUSTAB")
 @Getter
 @Setter
-public class BANKSYSSTATUSTAB implements Serializable{
+public class BankSysStatusTab implements Serializable{
 	/**
 	 * 
 	 */
