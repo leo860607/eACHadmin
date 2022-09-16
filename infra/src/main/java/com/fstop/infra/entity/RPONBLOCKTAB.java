@@ -6,16 +6,16 @@ import com.fstop.infra.entity.RPONBLOCKTAB;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import com.fstop.infra.entity.RponBlockTabPk;
+import com.fstop.infra.entity.RPONBLOCKTABPK;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
 @Entity(name = "RPONBLOCKTAB")
-@Table(name = "RPONBLOCKTAB")
+@Table(name = "MASTER_RPONBLOCKTAB")
 public class RPONBLOCKTAB implements java.io.Serializable {
-    private RponBlockTabPk id;
+    private RPONBLOCKTABPK id;
     private String ACCTBAL;
     private String ACCTCODE;
     private String AVAILBAL;
@@ -90,10 +90,6 @@ public class RPONBLOCKTAB implements java.io.Serializable {
     private String WO_BANK_FEE_DISC_NW;
     private String TCH_FEE_DISC_NW;
 
-    @EmbeddedId
-    public RponBlockTabPk getId() {
-        return id;
-    }
 
     @Override
     public int hashCode() {

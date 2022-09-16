@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fstop.eachadmin.dto.TxErrDto;
+import com.fstop.eachadmin.dto.TxErrRq;
 import com.fstop.eachadmin.repository.Page;
 import com.fstop.infra.entity.TX_ERR;
 
@@ -26,7 +26,7 @@ public class TxErrService {
 	@Autowired
 	private VW_ONBLOCKTAB_Dao vw_onblocktab_Dao;
 	
-	public TxErrDto pageSearch(Map<String, String> param){
+	public TxErrRq pageSearch(Map<String, String> param){
 		String pageNo = StrUtils.isEmpty(param.get("page")) ?"0":param.get("page");
 //		String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
 //		TODO
@@ -121,7 +121,7 @@ public class TxErrService {
 		}
 		
 		ObjectMapper mapper = new ObjectMapper();
-		TxErrDto result = mapper.convertValue(rtnMap, TxErrDto.class);
+		TxErrRq result = mapper.convertValue(rtnMap, TxErrRq.class);
 		return result;
 	}
 	
