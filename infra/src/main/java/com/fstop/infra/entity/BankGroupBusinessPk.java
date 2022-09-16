@@ -7,16 +7,16 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class BANK_GROUP_BUSINESS_PK implements Serializable {
+public class BankGroupBusinessPk implements Serializable {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7440172946664063369L;
 	
-	public BANK_GROUP_BUSINESS_PK() {
+	public BankGroupBusinessPk() {
 	}
-	public BANK_GROUP_BUSINESS_PK(String bGBK_ID, String bUSINESS_TYPE_ID) {
+	public BankGroupBusinessPk(String bGBK_ID, String bUSINESS_TYPE_ID) {
 		BGBK_ID = bGBK_ID;
 		BUSINESS_TYPE_ID = bUSINESS_TYPE_ID;
 	}
@@ -41,7 +41,7 @@ public class BANK_GROUP_BUSINESS_PK implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BANK_GROUP_BUSINESS_PK other = (BANK_GROUP_BUSINESS_PK) obj;
+		BankGroupBusinessPk other = (BankGroupBusinessPk) obj;
 		if (BGBK_ID == null) {
 			if (other.BGBK_ID != null)
 				return false;

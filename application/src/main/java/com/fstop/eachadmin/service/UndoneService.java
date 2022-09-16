@@ -16,8 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fstop.eachadmin.dto.PageSearchDto;
 import com.fstop.eachadmin.repository.CommonSpringRepository;
 import com.fstop.eachadmin.repository.Page;
-import com.fstop.infra.entity.BANK_GROUP;
-import com.fstop.infra.entity.UNDONETXDATA;
+import com.fstop.infra.entity.BankGroup;
+import com.fstop.infra.entity.UndoneTxData;
 
 import io.swagger.v3.core.util.Json;
 import util.DateTimeUtils;
@@ -112,10 +112,10 @@ public class UndoneService {
 
 		Map rtnMap = new HashMap();
 
-		List<UNDONETXDATA> list = null;
+		List<UndoneTxData> list = null;
 		Page page = null;
 		try {
-			list = new ArrayList<UNDONETXDATA>();
+			list = new ArrayList<UndoneTxData>();
 			String condition_1 = "", condition_2 = "";
 			condition_1 = combine(conditions_1);
 			condition_2 = combine(conditions_2);
@@ -214,7 +214,7 @@ public class UndoneService {
 			System.out.println("sql==>" + sql.toString().toUpperCase());
 //			page = vw_onblocktab_Dao.getDataIII(pageNo, pageSize, cntSQL.toString(), sql.toString(), cols, UNDONE_TXDATA.class);
 // 因為還沒有寫資料庫的串法,所以把跟資料庫相關的Dao都先註解,只留方法 20220914
-			list = (List<UNDONETXDATA>) page.getResult();
+			list = (List<UndoneTxData>) page.getResult();
 			System.out.println("UNDONE_TXDATA.list>>" + list);
 			list = list != null && list.size() == 0 ? null : list;
 		} catch (Exception e) {

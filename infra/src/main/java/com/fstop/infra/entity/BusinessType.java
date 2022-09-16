@@ -13,7 +13,7 @@ import lombok.Setter;
 @Table(name = "MASTER_BUSINESS_TYPE")
 @Getter
 @Setter
-public class BUSINESS_TYPE implements Serializable {
+public class BusinessType implements Serializable {
 
 	/**
 	 * 
@@ -61,7 +61,7 @@ public class BUSINESS_TYPE implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BUSINESS_TYPE other = (BUSINESS_TYPE) obj;
+		BusinessType other = (BusinessType) obj;
 		if (BUSINESS_TYPE_ID == null) {
 			if (other.BUSINESS_TYPE_ID != null)
 				return false;

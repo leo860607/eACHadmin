@@ -17,7 +17,7 @@ import lombok.Data;
 @Data
 @Table(name = "ONBLOCKTAB")
 @Entity(name = "MASTER_ONBLOCKTAB")
-public class ONBLOCKTAB implements Serializable {
+public class OnBlockTab implements Serializable {
 	/**
 	 * 
 	 */

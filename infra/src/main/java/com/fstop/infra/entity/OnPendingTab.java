@@ -18,7 +18,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class onpendingtab implements Serializable {
+public class OnPendingTab implements Serializable {
 	/**
 	 * 
 	 */
@@ -302,7 +302,7 @@ public class onpendingtab implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		onpendingtab other = (onpendingtab) obj;
+		OnPendingTab other = (OnPendingTab) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

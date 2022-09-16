@@ -14,13 +14,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BANKAPSTATUSTAB implements Serializable{
+public class BankApStatusTab implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7521516122770873553L;
 	@EmbeddedId
-	private BANKAPSTATUSTAB_PK id;
+	private BankApStatusTabPk id;
 	private String MBAPSTATUS;
 	
 
