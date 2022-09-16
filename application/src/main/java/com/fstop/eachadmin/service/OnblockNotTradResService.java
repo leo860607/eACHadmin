@@ -8,12 +8,13 @@ import java.util.LinkedList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fstop.eachadmin.repository.BUSINESS_TYPE_Dao;
+import com.fstop.eachadmin.repository.BankOpbkRepository;
+import com.fstop.eachadmin.repository.BusinessTypeRepository;
 import com.fstop.infra.dao.onpendingtabDao;
 import com.fstop.infra.entity.BANK_OPBK;
 import com.fstop.infra.entity.BUSINESS_TYPE;
-import com.fstop.infra.entity.onpendingtab;
-import com.fstop.infra.entity.onpendingtabPK;
+import com.fstop.infra.entity.ONPENDINGTAB;
+import com.fstop.infra.entity.ONPENDINGTAB_PK;
 
 import util.messageConverter;
 import util.DateTimeUtils;
@@ -28,8 +29,9 @@ import util.socketPackage.Header;
 public class OnblockNotTradResService {
 
 	@Autowired
-	private BUSINESS_TYPE_Dao business_type_Dao ;
-
+	private BusinessTypeRepository businessTypeRepository ;
+	
+	
 	// 暫時測試用
 	public void testFunction () {
 		System.out.println("哭哭");
@@ -42,7 +44,7 @@ public class OnblockNotTradResService {
 		// List<BANK_OPBK> list = business_type_Dao.getAllOpbkList(sql);
 		// TODO:
 		// jdbc 還沒有好, 暫時先用
-		List<BANK_OPBK> list = (List<BANK_OPBK>) business_type_Dao.testFunction();
+		List<BANK_OPBK> list = (List<BANK_OPBK>) businessTypeRepository.testFunction();
 		List<Map<String,String>> beanList = new LinkedList<Map<String,String>>();
 		
 		Map<String,String> bean = null;
@@ -66,7 +68,7 @@ public class OnblockNotTradResService {
 		// List<BUSINESS_TYPE> list = business_type_Dao.find(sql);
 		// TODO:
 		// jdbc 還沒有好, 暫時先用
-		List<BUSINESS_TYPE> list = (List<BUSINESS_TYPE>) business_type_Dao.testFunction();
+		List<BUSINESS_TYPE> list = (List<BUSINESS_TYPE>) businessTypeRepository.testFunction();
 		List<Map<String,String>> beanList = new LinkedList<Map<String,String>>();
 		
 		Map<String,String> bean = null;

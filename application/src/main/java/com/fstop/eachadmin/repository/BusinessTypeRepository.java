@@ -25,7 +25,7 @@ import com.fstop.infra.entity.BUSINESS_TYPE;
 import util.GenericsUtils;
 
 @Repository
-public class BUSINESS_TYPE_Dao {
+public class BusinessTypeRepository {
 	
 //    @Autowired
 //    private JdbcTemplate jdbcTemplate;
