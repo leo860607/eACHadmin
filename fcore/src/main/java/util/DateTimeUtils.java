@@ -10,19 +10,21 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
+
+//import org.apache.log4j.Logger;
 /**
  * 
  * @author Hugo
  *
  */
 @Slf4j
-public class DateTimeUtils {
+public class send1406DateTimeUtil {
 	static SimpleDateFormat dtF = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	static SimpleDateFormat dtD = new SimpleDateFormat("yyyyMMdd");
 	static SimpleDateFormat dtT = new SimpleDateFormat("HHmmss");
 	static SimpleDateFormat dtS = new SimpleDateFormat("yyyy-MM-dd");
 	static Calendar calendar = GregorianCalendar.getInstance(java.util.Locale.TAIWAN);
-//	private static log log = log.getlog(DateTimeUtils.class.getName());
+	//private static Logger logger = Logger.getLogger(send1406DateTimeUtil.class.getName());
 	
 	static Map<String, SimpleDateFormat> pool = new HashMap();
 	
@@ -57,12 +59,12 @@ public class DateTimeUtils {
 		return sdf.format(d);		
 	}
 
-	public static Date parse(String pattern, String value) {
+	public static String parse(String pattern, String value) {
 		try {
 			SimpleDateFormat sdf = getDateFormatFromPool(pattern);
-			return sdf.parse(value);
+			return "sdf.parse(value)";
 		}
-		catch(ParseException e) {
+		catch(Exception e) {
 //			throw new ToRuntimeException("無法 Parse [" + value+ "] 成 Date Object.", e);
 			log.debug("無法 Parse [" + value+ "] 成 Date Object."+ e);
 			return null;
@@ -77,13 +79,13 @@ public class DateTimeUtils {
 	 * @param day
 	 * @return 日期物件
 	 */
-	public static Date parse(int year, int month, int day)
+	public static String parse(int year, int month, int day)
 	{
 		try 
 		{
 			//因為 GregorianCalendar 的月份是由 0 開始，所以需要減一
 			GregorianCalendar calendar = new GregorianCalendar(year, month - 1, day);			
-			return calendar.getTime();
+			return "calendar.getTime()";
 		}
 		catch(Exception e) 
 		{
@@ -99,7 +101,7 @@ public class DateTimeUtils {
 	 * @param date
 	 * @return
 	 */
-	public static Date parse(int date)
+	public static String parse(int date)
 	{
 		try
 		{
@@ -200,9 +202,9 @@ public class DateTimeUtils {
 	 * @param cDateSort
 	 * @return
 	 */
-	public static Date getCDate2Date(String cDateSort) {
+	public static String getCDate2Date(String cDateSort) {
 		String s = (new Integer(cDateSort.substring(0,4)) + 1911) + "";
-		return DateTimeUtils.parse("yyyyMMdd", s + cDateSort.substring(4));
+		return send1406DateTimeUtil.parse("yyyyMMdd", s + cDateSort.substring(4));
 	}
 	
 	/**
@@ -242,7 +244,7 @@ public class DateTimeUtils {
 	 */
 	public static String convertDate (String AD,String beforeFormat,String afterFormat){//轉年月格式
 //        if (AD == null) return "";
-        if (StrUtils.isEmpty(AD)) return "";
+        if (send1406StrUtil.isEmpty(AD)) return "";
         SimpleDateFormat df4 = new SimpleDateFormat(beforeFormat);
         SimpleDateFormat df2 = new SimpleDateFormat(afterFormat);
         Calendar cal = Calendar.getInstance();
@@ -272,7 +274,7 @@ public class DateTimeUtils {
 	 * @return
 	 */
 	public static String convertDate (int type, String AD,String beforeFormat,String afterFormat){//轉年月格式
-        if (StrUtils.isEmpty(AD)) return "";
+        if (send1406StrUtil.isEmpty(AD)) return "";
         SimpleDateFormat df4 = new SimpleDateFormat(beforeFormat);
         SimpleDateFormat df2 = new SimpleDateFormat(afterFormat);
         Calendar cal = Calendar.getInstance();
@@ -293,11 +295,11 @@ public class DateTimeUtils {
     }
 	
 	public static void main(String[] s) {
-		log.debug(DateTimeUtils.parse(20120402));
-		log.debug(DateTimeUtils.getCDateShort(new Date()));
-		log.debug(DateTimeUtils.getCDateTime("0970501", "103020"));
-		log.debug(DateTimeUtils.getCDate2Date("0970501"));
-		log.debug(DateTimeUtils.addSlash("20080501"));
+		log.debug(send1406DateTimeUtil.parse(20120402));
+		log.debug(send1406DateTimeUtil.getCDateShort(new Date()));
+		log.debug(send1406DateTimeUtil.getCDateTime("0970501", "103020"));
+		log.debug(send1406DateTimeUtil.getCDate2Date("0970501"));
+		log.debug(send1406DateTimeUtil.addSlash("20080501"));
 		
 		log.debug(convertDate("2013-05-08 ","yyyy-MM-dd","yyyyMMdd"));
 		log.debug(convertDate("0102-05-08","yyyy-MM-dd","yyyyMMdd"));
@@ -339,4 +341,3 @@ public class DateTimeUtils {
 		return (afterDate.getTime()-beforeDate.getTime())/(1000*60*60*24);
 	}
 }
-

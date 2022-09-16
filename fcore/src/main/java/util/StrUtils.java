@@ -1,6 +1,8 @@
 package util;
 
+
 import java.io.IOException;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -16,7 +18,7 @@ import java.util.Set;
 import java.util.UUID;
 
 
-public class StrUtils {
+public class send1406StrUtil {
 	public static boolean isEmpty(String s) {
 		return s == null || s.length() == 0;
 	}
@@ -1064,4 +1066,3 @@ public class StrUtils {
 
 	
 }
-
