@@ -21,7 +21,7 @@ public class BankGroupRepository {
     
     
 	@SuppressWarnings("unchecked")
-	public List<BANK_GROUP> getBgbkIdList_Not_5_And_6(){		
+	public  List<BANK_GROUP> getBgbkIdList_Not_5_And_6(){		
 		List<BANK_GROUP> list = new ArrayList<BANK_GROUP>();
 //		Query query = getCurrentSession().createQuery("FROM tw.org.twntch.po.BANK_GROUP BANK_GROUP WHERE BGBK_ATTR <> '6' AND BGBK_ATTR <> '5' ORDER BY BGBK_ID");
 //		list = query.list();
