@@ -26,7 +26,7 @@ public class BankOpbkRepositry {
 			query.setResultTransformer(Transformers.aliasToBean(BANK_OPBK.class));
 			query.addScalar("OPBK_ID").addScalar("OPBK_NAME");
 			list = query.list();
-		}catch(HibernateException e){
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return list;
@@ -51,7 +51,7 @@ public class BankOpbkRepositry {
 			query.setResultTransformer(Transformers.aliasToBean(BANK_OPBK.class));
 			query.addScalar("OPBK_ID").addScalar("OPBK_NAME");
 			list = query.list();
-		}catch(HibernateException e){
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return list;
@@ -102,7 +102,7 @@ public class BankOpbkRepositry {
 			query.setResultTransformer(Transformers.aliasToBean(BANK_OPBK.class));
 			query.addScalar("BGBK_ID").addScalar("BGBK_NAME").addScalar("START_DATE");
 			list = query.list();
-		}catch(HibernateException e){
+		}catch(Exception e){
 			e.printStackTrace();
 			logger.debug("getBgbkList.HibernateException>>"+e);
 		}
@@ -135,7 +135,7 @@ public class BankOpbkRepositry {
 			query.setResultTransformer(Transformers.aliasToBean(BANK_OPBK.class));
 			query.addScalar("BGBK_ID").addScalar("BGBK_NAME").addScalar("START_DATE").addScalar("OPBK_ID").addScalar("OPBK_NAME");
 			list = query.list();
-		}catch(HibernateException e){
+		}catch(Exception e){
 			e.printStackTrace();
 			logger.debug("getBgbkList.HibernateException>>"+e);
 		}
@@ -181,7 +181,7 @@ ON A.BGBK_ID = B.BGBK_ID AND A.START_DATE = B.START_DATE
 			query.setResultTransformer(Transformers.aliasToBean(BANK_OPBK.class));
 			query.addScalar("OPBK_ID").addScalar("OPBK_NAME").addScalar("START_DATE").addScalar("BGBK_ID").addScalar("BGBK_NAME").addScalar("OP_NOTE");
 			list = query.list();
-		}catch(HibernateException e){
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		
@@ -204,7 +204,7 @@ ON A.BGBK_ID = B.BGBK_ID AND A.START_DATE = B.START_DATE
 			query.setResultTransformer(Transformers.aliasToBean(BANK_OPBK.class));
 			query.addScalar("OPBK_ID").addScalar("OPBK_NAME").addScalar("START_DATE").addScalar("BGBK_ID").addScalar("BGBK_NAME");
 			list = query.list();
-		}catch(HibernateException e){
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		

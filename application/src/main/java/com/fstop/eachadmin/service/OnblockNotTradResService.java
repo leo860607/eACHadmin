@@ -9,15 +9,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fstop.eachadmin.repository.BUSINESS_TYPE_Dao;
+import com.fstop.eachadmin.repository.BankOpbkRepositry;
+import com.fstop.infra.entity.BANK_OPBK;
 import com.fstop.infra.entity.BUSINESS_TYPE;
 
 
 @Service
 public class OnblockNotTradResService {
 	
+	
+	
+	@Autowired
+	private BankOpbkRepositry bankOpbkRepositry ;
+
+	//操作行
+	public List<Map<String,String>> getOpbkList() {
+		List<BANK_OPBK> list = bankOpbkRepositry.getAllOpbkList();
+		List<Map<String,String>> beanList = new LinkedList<Map<String,String>>();
+		Map<String,String> bean = null;
+		for (BANK_OPBK po : list) {
+			bean = new HashMap<String,String>(po.getOPBK_ID() + " - " + po.getOPBK_NAME(), po.getOPBK_ID());
+			beanList.add(bean);
+		}
+		return beanList;
+	}
+	
 	@Autowired
 	private BUSINESS_TYPE_Dao business_type_Dao ;
-
 	
 	// businessLabel
 	public List<Map<String,String>> getBsTypeIdList () {
