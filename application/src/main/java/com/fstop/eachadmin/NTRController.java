@@ -108,44 +108,44 @@ package com.fstop.eachadmin;
 //    }
     
 //-----------------------------------------------------------------------
-    @Operation(summary = "操作行API", description = "操作行API功能說明")
-    @GetMapping(value = "/operatedata")
-    public String operate(@RequestBody Onblocktab_NotTradRes_Form param){
-        return "OK_Operation";
-    }
+//    @Operation(summary = "操作行API", description = "操作行API功能說明")
+//    @GetMapping(value = "/operatedata")
+//    public String operate(@RequestBody Onblocktab_NotTradRes_Form param){
+//        return "OK_Operation";
+//    }
 //    @Operation(summary = "總行代號API", description = "總行代號API功能說明")
 //    @PostMapping(value = "/headofficedata")
 //    public String headoffice(@RequestBody Onblocktab_NotTradRes_Form param){
 //        return "OK_HeadOffice";
-    }
-    @Operation(summary = "業務類別API", description = "業務類別API功能說明")
-    @GetMapping(value = "/businessdata")
-    public String business(@RequestBody Onblocktab_NotTradRes_Form param){
-        return beanList;
-    }
-    @Operation(summary = "查詢API", description = "查詢API功能說明")
-    @GetMapping(value = "/searchdata")
-    public String search(@RequestBody Onblocktab_NotTradRes_Form param){
-        return search();
-    }
-    
-    //return json
-    //controller
-    //wait for dto
-    @Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
-    @GetMapping(value = "/send_1406data")
-    public (Dto+方法data+Rs) send_1406(@RequestBody (Dto+方法data+Rq) param){
-        return "service send_1406()";
-    }
-    
-    //return json
-    //controller
-    //wait for dto
-    @Operation(summary = "請求傳送確認訊息(1400)", description = "API功能說明")
-    @GetMapping(value = "/send_1400data")
-    public (Dto+方法data+Rs) send_1406(@RequestBody (Dto+方法data+Rq) param){
-        return "service send_1406()";
-    }
-    
-    
-}
+//    }
+//    @Operation(summary = "業務類別API", description = "業務類別API功能說明")
+//    @GetMapping(value = "/businessdata")
+//    public String business(@RequestBody Onblocktab_NotTradRes_Form param){
+//        return beanList;
+//    }
+//    @Operation(summary = "查詢API", description = "查詢API功能說明")
+//    @GetMapping(value = "/searchdata")
+//    public String search(@RequestBody Onblocktab_NotTradRes_Form param){
+//        return search();
+//    }
+//    
+////    //return json
+////    //controller
+////    //wait for dto
+////    @Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
+////    @GetMapping(value = "/send_1406data")
+////    public (路徑+方法+Rs) send_1406(@RequestBody (路徑+方法+Rq) param){
+////        return "service send_1406()";
+////    }
+////    
+////    //return json
+////    //controller
+////    //wait for dto
+////    @Operation(summary = "請求傳送確認訊息(1400)", description = "API功能說明")
+////    @GetMapping(value = "/send_1400data")
+////    public (Dto+方法data+Rs) send_1406(@RequestBody (Dto+方法data+Rq) param){
+////        return "service send_1406()";
+////    }
+////    
+//    
+//}

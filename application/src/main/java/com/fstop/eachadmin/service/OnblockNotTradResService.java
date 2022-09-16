@@ -1,6 +1,7 @@
 package com.fstop.eachadmin.service;
 
 import java.util.List;
+
 import java.util.Map;
 import java.util.Optional;
 
@@ -25,6 +26,8 @@ import util.socketPackage;
 import util.zDateHandler;
 import util.socketPackage.Body;
 import util.socketPackage.Header;
+
+import com.fstop.eachadmin.dto.DetailSendFuncDto;
 
 
 @Service

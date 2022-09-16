@@ -325,8 +325,8 @@ public class NTRService {
 				msgHeader.setMsgType("0100");//11
 				msgHeader.setPrsCode("1406");//11
 				msgHeader.setStan("");//此案例未使用//EachSyssStatusTabDto
-				msgHeader.setInBank("0000000");
-				msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
+				msgHeader.setInBank("0000000");//11
+				msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」 //11
 				msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
 				msgHeader.setRspCode("0000");
 				socketPackage msg = new socketPackage();
