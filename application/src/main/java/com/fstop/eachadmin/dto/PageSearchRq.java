@@ -13,9 +13,8 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class PageSearchDto<UNDONETXDATA> {
+public class PageSearchRq {
 	
-	private List<UNDONETXDATA> pageSearchList;
 	
 	@Schema(description = "交易日期")
 	@JsonProperty("filter_bat")
