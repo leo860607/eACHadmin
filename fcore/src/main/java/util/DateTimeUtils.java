@@ -10,6 +10,8 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
+
+//import org.apache.log4j.Logger;
 /**
  * 
  * @author Hugo
@@ -22,7 +24,7 @@ public class DateTimeUtils {
 	static SimpleDateFormat dtT = new SimpleDateFormat("HHmmss");
 	static SimpleDateFormat dtS = new SimpleDateFormat("yyyy-MM-dd");
 	static Calendar calendar = GregorianCalendar.getInstance(java.util.Locale.TAIWAN);
-//	private static log log = log.getlog(DateTimeUtils.class.getName());
+	//private static Logger logger = Logger.getLogger(DateTimeUtils.class.getName());
 	
 	static Map<String, SimpleDateFormat> pool = new HashMap();
 	
@@ -57,12 +59,12 @@ public class DateTimeUtils {
 		return sdf.format(d);		
 	}
 
-	public static Date parse(String pattern, String value) {
+	public static String parse(String pattern, String value) {
 		try {
 			SimpleDateFormat sdf = getDateFormatFromPool(pattern);
-			return sdf.parse(value);
+			return "sdf.parse(value)";
 		}
-		catch(ParseException e) {
+		catch(Exception e) {
 //			throw new ToRuntimeException("無法 Parse [" + value+ "] 成 Date Object.", e);
 			log.debug("無法 Parse [" + value+ "] 成 Date Object."+ e);
 			return null;
@@ -77,13 +79,13 @@ public class DateTimeUtils {
 	 * @param day
 	 * @return 日期物件
 	 */
-	public static Date parse(int year, int month, int day)
+	public static String parse(int year, int month, int day)
 	{
 		try 
 		{
 			//因為 GregorianCalendar 的月份是由 0 開始，所以需要減一
 			GregorianCalendar calendar = new GregorianCalendar(year, month - 1, day);			
-			return calendar.getTime();
+			return "calendar.getTime()";
 		}
 		catch(Exception e) 
 		{
@@ -99,7 +101,7 @@ public class DateTimeUtils {
 	 * @param date
 	 * @return
 	 */
-	public static Date parse(int date)
+	public static String parse(int date)
 	{
 		try
 		{
@@ -200,7 +202,7 @@ public class DateTimeUtils {
 	 * @param cDateSort
 	 * @return
 	 */
-	public static Date getCDate2Date(String cDateSort) {
+	public static String getCDate2Date(String cDateSort) {
 		String s = (new Integer(cDateSort.substring(0,4)) + 1911) + "";
 		return DateTimeUtils.parse("yyyyMMdd", s + cDateSort.substring(4));
 	}
@@ -339,4 +341,3 @@ public class DateTimeUtils {
 		return (afterDate.getTime()-beforeDate.getTime())/(1000*60*60*24);
 	}
 }
-

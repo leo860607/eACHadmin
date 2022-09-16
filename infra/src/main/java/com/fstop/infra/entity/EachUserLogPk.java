@@ -1,8 +1,21 @@
 package com.fstop.infra.entity;
 
 import java.io.Serializable;
+<<<<<<< HEAD
 
 public class EachUserLogPk implements Serializable {
+=======
+import lombok.Getter;
+import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class EachUserLogPk implements java.io.Serializable {
+>>>>>>> 59e6833b044651a789aec58f358bd1a87f454232
 
 	/**
 	 * 
@@ -12,6 +25,7 @@ public class EachUserLogPk implements Serializable {
 	private String USER_COMPANY;
 	private String USERID;
 	
+<<<<<<< HEAD
 	
 	public EachUserLogPk() {
 	}
@@ -38,6 +52,35 @@ public class EachUserLogPk implements Serializable {
 	public void setUSERID(String uSERID) {
 		USERID = uSERID;
 	}
+=======
+//
+//	public EACH_USERLOG_PK() {
+//	}
+//	public EACH_USERLOG_PK(String sERNO, String uSER_COMPANY, String uSERID) {
+//		SERNO = sERNO;
+//		USER_COMPANY = uSER_COMPANY;
+//		USERID = uSERID;
+//	}
+//	public String getSERNO() {
+//		return SERNO;
+//	}
+//	public void setSERNO(String sERNO) {
+//		SERNO = sERNO;
+//	}
+//	public String getUSER_COMPANY() {
+//		return USER_COMPANY;
+//	}
+//	public void setUSER_COMPANY(String uSER_COMPANY) {
+//		USER_COMPANY = uSER_COMPANY;
+//	}
+//	public String getUSERID() {
+//		return USERID;
+//	}
+//	public void setUSERID(String uSERID) {
+//		USERID = uSERID;
+//	}
+
+>>>>>>> 59e6833b044651a789aec58f358bd1a87f454232
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -56,7 +99,11 @@ public class EachUserLogPk implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+<<<<<<< HEAD
 		EachUserLogPk other = (EachUserLogPk) obj;
+=======
+		com.fstop.infra.entity.EACH_USERLOG_PK other = (com.fstop.infra.entity.EACH_USERLOG_PK) obj;
+>>>>>>> 59e6833b044651a789aec58f358bd1a87f454232
 		if (SERNO == null) {
 			if (other.SERNO != null)
 				return false;
