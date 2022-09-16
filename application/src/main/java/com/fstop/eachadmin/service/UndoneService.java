@@ -23,10 +23,12 @@ import io.swagger.v3.core.util.Json;
 import util.DateTimeUtils;
 
 import util.StrUtils;
+
 @Service
 public class UndoneService {
 	@Autowired
 	private CommonSpringRepository commonSpringRepository;
+
 	// ----------------表單查詢產出------------------------------------------------------
 	public PageSearchDto pageSearch(Map<String, String> param) {
 		List<String> conditions_1 = new ArrayList<String>();
@@ -237,6 +239,7 @@ public class UndoneService {
 		PageSearchDto result = mapper.convertValue(rtnMap, PageSearchDto.class);
 		return result;
 	}
+
 //--------------------------------------------------------------------------------------
 	public String combine(List<String> conditions) {
 		String conStr = "";
@@ -250,4 +253,3 @@ public class UndoneService {
 	}
 
 }
-
