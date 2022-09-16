@@ -9,9 +9,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.fstop.eachadmin.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fstop.eachadmin.dto.PageSearchDto;
 import com.fstop.eachadmin.repository.CommonSpringRepository;
 import com.fstop.eachadmin.repository.Page;
 import com.fstop.infra.entity.BANK_GROUP;
@@ -21,12 +23,12 @@ import io.swagger.v3.core.util.Json;
 import util.DateTimeUtils;
 
 import util.StrUtils;
-
-public class OnblockNotTradSearchService {
+@Service
+public class UndoneService {
 	@Autowired
 	private CommonSpringRepository commonSpringRepository;
 	// ----------------表單查詢產出------------------------------------------------------
-	public PageSearchOutput pageSearch(Map<String, String> param) {
+	public PageSearchDto pageSearch(Map<String, String> param) {
 		List<String> conditions_1 = new ArrayList<String>();
 		List<String> conditions_2 = new ArrayList<String>();
 		// 是否包含整批資料("N"表示不過濾)
@@ -105,7 +107,7 @@ public class OnblockNotTradSearchService {
 		}
 
 		int pageNo = StrUtils.isEmpty(param.get("page")) ? 0 : Integer.valueOf(param.get("page"));
-		int pageSize = StrUtils.isEmpty(param.get("rows")) ? Integer.valueOf(pageSize// TODOArguments.getStringArg("PAGE.SIZE")
+		int pageSize = StrUtils.isEmpty(param.get("rows")) ? Integer.valueOf(param.get("rows")// TODOArguments.getStringArg("PAGE.SIZE")
 		) : Integer.valueOf(param.get("rows"));
 
 		Map rtnMap = new HashMap();
@@ -232,10 +234,10 @@ public class OnblockNotTradSearchService {
 		}
 //-------------------資料轉換swagger輸出----------------------------------------------------
 		ObjectMapper mapper = new ObjectMapper();
-		PageSearchOutput result = mapper.convertValue(rtnMap, PageSearchOutput.class);
+		PageSearchDto result = mapper.convertValue(rtnMap, PageSearchDto.class);
 		return result;
 	}
-
+//--------------------------------------------------------------------------------------
 	public String combine(List<String> conditions) {
 		String conStr = "";
 		for (int i = 0; i < conditions.size(); i++) {
