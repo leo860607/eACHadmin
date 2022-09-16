@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "tw.org.twntch.po.onpendingtab")
+@Entity(name = "com.fstop.infra.entity.onpendingtab")
 @Table(name = "onpendingtab")
 @Getter
 @Setter

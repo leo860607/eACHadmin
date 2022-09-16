@@ -18,13 +18,13 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public class send1406DateTimeUtil {
+public class DateTimeUtils {
 	static SimpleDateFormat dtF = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	static SimpleDateFormat dtD = new SimpleDateFormat("yyyyMMdd");
 	static SimpleDateFormat dtT = new SimpleDateFormat("HHmmss");
 	static SimpleDateFormat dtS = new SimpleDateFormat("yyyy-MM-dd");
 	static Calendar calendar = GregorianCalendar.getInstance(java.util.Locale.TAIWAN);
-	//private static Logger logger = Logger.getLogger(send1406DateTimeUtil.class.getName());
+	//private static Logger logger = Logger.getLogger(DateTimeUtils.class.getName());
 	
 	static Map<String, SimpleDateFormat> pool = new HashMap();
 	
@@ -204,7 +204,7 @@ public class send1406DateTimeUtil {
 	 */
 	public static String getCDate2Date(String cDateSort) {
 		String s = (new Integer(cDateSort.substring(0,4)) + 1911) + "";
-		return send1406DateTimeUtil.parse("yyyyMMdd", s + cDateSort.substring(4));
+		return DateTimeUtils.parse("yyyyMMdd", s + cDateSort.substring(4));
 	}
 	
 	/**
@@ -244,7 +244,7 @@ public class send1406DateTimeUtil {
 	 */
 	public static String convertDate (String AD,String beforeFormat,String afterFormat){//轉年月格式
 //        if (AD == null) return "";
-        if (send1406StrUtil.isEmpty(AD)) return "";
+        if (StrUtils.isEmpty(AD)) return "";
         SimpleDateFormat df4 = new SimpleDateFormat(beforeFormat);
         SimpleDateFormat df2 = new SimpleDateFormat(afterFormat);
         Calendar cal = Calendar.getInstance();
@@ -274,7 +274,7 @@ public class send1406DateTimeUtil {
 	 * @return
 	 */
 	public static String convertDate (int type, String AD,String beforeFormat,String afterFormat){//轉年月格式
-        if (send1406StrUtil.isEmpty(AD)) return "";
+        if (StrUtils.isEmpty(AD)) return "";
         SimpleDateFormat df4 = new SimpleDateFormat(beforeFormat);
         SimpleDateFormat df2 = new SimpleDateFormat(afterFormat);
         Calendar cal = Calendar.getInstance();
@@ -295,11 +295,11 @@ public class send1406DateTimeUtil {
     }
 	
 	public static void main(String[] s) {
-		log.debug(send1406DateTimeUtil.parse(20120402));
-		log.debug(send1406DateTimeUtil.getCDateShort(new Date()));
-		log.debug(send1406DateTimeUtil.getCDateTime("0970501", "103020"));
-		log.debug(send1406DateTimeUtil.getCDate2Date("0970501"));
-		log.debug(send1406DateTimeUtil.addSlash("20080501"));
+		log.debug(DateTimeUtils.parse(20120402));
+		log.debug(DateTimeUtils.getCDateShort(new Date()));
+		log.debug(DateTimeUtils.getCDateTime("0970501", "103020"));
+		log.debug(DateTimeUtils.getCDate2Date("0970501"));
+		log.debug(DateTimeUtils.addSlash("20080501"));
 		
 		log.debug(convertDate("2013-05-08 ","yyyy-MM-dd","yyyyMMdd"));
 		log.debug(convertDate("0102-05-08","yyyy-MM-dd","yyyyMMdd"));

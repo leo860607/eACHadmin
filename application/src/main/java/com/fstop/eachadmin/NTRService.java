@@ -16,13 +16,13 @@ import com.fstop.infra.entity.onpendingtabPK;
 
 import java.util.HashMap;
 
-import util.send1406StrUtil;
+import util.StrUtils;
 import util.socketPackage;
 import util.socketPackage.Body;
 import util.socketPackage.Header;
 import util.zDateHandler;
 import util.messageConverter;
-import util.send1406DateTimeUtil;
+import util.DateTimeUtils;
 
 public class NTRService {
 	
@@ -299,9 +299,9 @@ public class NTRService {
 		 */
 		String json = "{}";
 		//String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
-		String stan = send1406StrUtil.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
-		String txdate = send1406StrUtil.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;
-		txdate = send1406DateTimeUtil.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
+		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
+		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;
+		txdate = DateTimeUtils.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
 		String resultCode = "";
 		Map rtnMap = new HashMap();
 		try {
@@ -316,14 +316,15 @@ public class NTRService {
 				if(po.get().getBIZDATE() !=null){//表示已有處理結果
 					rtnMap.put("result", "FALSE");
 					rtnMap.put("msg", "已有未完成交易處理結果，營業日="+po.get().getBIZDATE());
+				//TODO
 				//	json = JSONUtils.map2json(rtnMap);
 					return json;
 				}
 				Header msgHeader = new Header();
-				msgHeader.setSystemHeader("eACH01");
-				msgHeader.setMsgType("0100");
-				msgHeader.setPrsCode("1406");
-				msgHeader.setStan("");//此案例未使用
+				msgHeader.setSystemHeader("eACH01");//11
+				msgHeader.setMsgType("0100");//11
+				msgHeader.setPrsCode("1406");//11
+				msgHeader.setStan("");//此案例未使用//EachSyssStatusTabDto
 				msgHeader.setInBank("0000000");
 				msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
 				msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
@@ -385,7 +386,7 @@ public class NTRService {
 		String json = "{}";
 		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
 		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;
-		txdate = send1406DateTimeUtil.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
+		txdate = DateTimeUtils.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
 		String resultCode = "";
 		Map rtnMap = new HashMap();
 		try {
@@ -405,15 +406,16 @@ public class NTRService {
 				msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
 				msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
 				msgHeader.setRspCode("0000");
-				Message msg = new Message();
+				socketPackage msg = new socketPackage();
 				msg.setHeader(msgHeader);
 				Body body = new Body();
 				body.setOSTAN(stan);
 				body.setOTxDate(txdate);
 //				body.setResultCode(resultCode);
 				msg.setBody(body);
-				String telegram = MessageConverter.marshalling(msg);
-				rtnMap = socketClient.send(telegram);
+				String telegram = messageConverter.marshalling(msg);
+				//TODO
+//				rtnMap = socketClient.send(telegram);
 			}
 		} catch ( JAXBException e) {
 			// TODO Auto-generated catch block
@@ -426,7 +428,7 @@ public class NTRService {
 			rtnMap.put("msg", "失敗，系統異常");
 		}
 		
-		json = JSONUtils.map2json(rtnMap);
+//		json = JSONUtils.map2json(rtnMap);
 		return json;
 	}
 	

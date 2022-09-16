@@ -36,7 +36,7 @@ public class zDateHandler{
 		String result ="FALSE";
 		String msg = "";
 		Map<String,String> map = new HashMap<String, String>();
-		if(send1406StrUtil.isEmpty(bizDate)){
+		if(StrUtils.isEmpty(bizDate)){
 			msg = "營業日不可為空白";
 			map.put("result", result);
 			map.put("msg", msg);
@@ -75,7 +75,7 @@ public class zDateHandler{
 		String result ="FALSE";
 		String msg = "";
 		Map<String,String> map = new HashMap<String, String>();
-		if(send1406StrUtil.isEmpty(s_bizDate) || send1406StrUtil.isEmpty(e_bizDate)){
+		if(StrUtils.isEmpty(s_bizDate) || StrUtils.isEmpty(e_bizDate)){
 			msg = "營業日不可為空白";
 			map.put("result", result);
 			map.put("msg", msg);
@@ -267,7 +267,7 @@ public class zDateHandler{
 				month_str = (calendar.get(Calendar.YEAR)+1911) +String.valueOf((calendar.get(Calendar.MONTH)+1)/10) +""+ String.valueOf((calendar.get(Calendar.MONTH)+1)%10);	
 			}
 			
-			if(send1406StrUtil.isNotEmpty(retMod) && retMod.equals("E")){
+			if(StrUtils.isNotEmpty(retMod) && retMod.equals("E")){
 				month_str = send1406DateTimeUtil.convertDate(month_str, "yyyyMM", retType);
 			}
 			System.out.println("month_str>>"+month_str);
