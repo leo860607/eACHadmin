@@ -37,12 +37,7 @@ public class OnblockNotTradResController {
         return OnblockNotTradResS.getBsTypeIdList();
     }
     
-    @Operation(summary = "查詢 API", description = "送出查詢")
-    @PostMapping(value = "/searchdata")
-    public String searchData (@RequestBody searchDataDto param) {
-    	OnblockNotTradResS.testFunction();
-        return "onblocktab_bo.getNotTradResList(param)";
-    }
+
     
 //  @Operation(summary = "帳單明細 API", description = "API功能說明")
 //  @PostMapping(value = "/billdata")

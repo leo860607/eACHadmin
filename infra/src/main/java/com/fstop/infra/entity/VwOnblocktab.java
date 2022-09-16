@@ -1,6 +1,8 @@
 package com.fstop.infra.entity;
 
+//ToDo 不知道groovy是甚麼
 import groovy.beans.Vetoable;
+
 
 import java.io.Serializable;
 import java.math.BigInteger;

@@ -9,28 +9,24 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.fstop.eachadmin.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fstop.eachadmin.dto.PageSearchDto;
 import com.fstop.eachadmin.repository.CommonSpringRepository;
 import com.fstop.eachadmin.repository.Page;
-import com.fstop.infra.entity.BankGroup;
-import com.fstop.infra.entity.UndoneTxData;
+import com.fstop.infra.entity.BANK_GROUP;
+import com.fstop.infra.entity.UNDONETXDATA;
 
 import io.swagger.v3.core.util.Json;
 import util.DateTimeUtils;
 
 import util.StrUtils;
 
-@Service
-public class UndoneService {
+public class OnblockNotTradSearchService {
 	@Autowired
 	private CommonSpringRepository commonSpringRepository;
-
 	// ----------------表單查詢產出------------------------------------------------------
-	public PageSearchDto pageSearch(Map<String, String> param) {
+	public PageSearchOutput pageSearch(Map<String, String> param) {
 		List<String> conditions_1 = new ArrayList<String>();
 		List<String> conditions_2 = new ArrayList<String>();
 		// 是否包含整批資料("N"表示不過濾)
@@ -109,15 +105,15 @@ public class UndoneService {
 		}
 
 		int pageNo = StrUtils.isEmpty(param.get("page")) ? 0 : Integer.valueOf(param.get("page"));
-		int pageSize = StrUtils.isEmpty(param.get("rows")) ? Integer.valueOf(param.get("rows")// TODOArguments.getStringArg("PAGE.SIZE")
+		int pageSize = StrUtils.isEmpty(param.get("rows")) ? Integer.valueOf(pageSize// TODOArguments.getStringArg("PAGE.SIZE")
 		) : Integer.valueOf(param.get("rows"));
 
 		Map rtnMap = new HashMap();
 
-		List<UndoneTxData> list = null;
+		List<UNDONETXDATA> list = null;
 		Page page = null;
 		try {
-			list = new ArrayList<UndoneTxData>();
+			list = new ArrayList<UNDONETXDATA>();
 			String condition_1 = "", condition_2 = "";
 			condition_1 = combine(conditions_1);
 			condition_2 = combine(conditions_2);
@@ -216,7 +212,7 @@ public class UndoneService {
 			System.out.println("sql==>" + sql.toString().toUpperCase());
 //			page = vw_onblocktab_Dao.getDataIII(pageNo, pageSize, cntSQL.toString(), sql.toString(), cols, UNDONE_TXDATA.class);
 // 因為還沒有寫資料庫的串法,所以把跟資料庫相關的Dao都先註解,只留方法 20220914
-			list = (List<UndoneTxData>) page.getResult();
+			list = (List<UNDONETXDATA>) page.getResult();
 			System.out.println("UNDONE_TXDATA.list>>" + list);
 			list = list != null && list.size() == 0 ? null : list;
 		} catch (Exception e) {
@@ -236,11 +232,10 @@ public class UndoneService {
 		}
 //-------------------資料轉換swagger輸出----------------------------------------------------
 		ObjectMapper mapper = new ObjectMapper();
-		PageSearchDto result = mapper.convertValue(rtnMap, PageSearchDto.class);
+		PageSearchOutput result = mapper.convertValue(rtnMap, PageSearchOutput.class);
 		return result;
 	}
 
-//--------------------------------------------------------------------------------------
 	public String combine(List<String> conditions) {
 		String conStr = "";
 		for (int i = 0; i < conditions.size(); i++) {
@@ -253,3 +248,4 @@ public class UndoneService {
 	}
 
 }
+

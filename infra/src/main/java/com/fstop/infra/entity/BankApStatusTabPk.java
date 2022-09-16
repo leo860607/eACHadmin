@@ -6,14 +6,14 @@ import lombok.Getter;
 import lombok.Setter;
 @Getter
 @Setter
-public class BANKAPSTATUSTAB_PK implements Serializable{
+public class BankApStatusTabPk implements Serializable{
 	private static final long serialVersionUID = -2844552890056462681L;
 	private String BGBK_ID;
 	private String APID;
 	
-	public BANKAPSTATUSTAB_PK() {
+	public BankApStatusTabPk() {
 	}
-	public BANKAPSTATUSTAB_PK(String bGBK_ID, String aPID) {
+	public BankApStatusTabPk(String bGBK_ID, String aPID) {
 		BGBK_ID = bGBK_ID;
 		APID = aPID;
 	}
@@ -34,7 +34,7 @@ public class BANKAPSTATUSTAB_PK implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BANKAPSTATUSTAB_PK other = (BANKAPSTATUSTAB_PK) obj;
+		BankApStatusTabPk other = (BankApStatusTabPk) obj;
 		if (APID == null) {
 			if (other.APID != null)
 				return false;

@@ -43,10 +43,6 @@ public class EachUser implements Serializable {
     private String CDATE;
     private String UDATE;
 
-    @Transient
-    public String getCOM_NAME() {
-        return COM_NAME;
-    }
 
     @Override
     public int hashCode() {
