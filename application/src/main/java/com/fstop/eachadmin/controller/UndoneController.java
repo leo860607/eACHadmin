@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fstop.eachadmin.service.UndoneService;
 import com.fstop.eachadmin.dto.PageSearchRq;
+import com.fstop.eachadmin.dto.PageSearchRs;
 import com.fstop.eachadmin.service.OnblockNotTradResService;
 
 
@@ -28,7 +29,7 @@ public class UndoneController {
 	// 查詢
 	@Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
 	@PostMapping(value = "/pageSearch")
-	public PageSearchRq pageSearch(@RequestBody PageSearchRq param) {
+	public PageSearchRs pageSearch(@RequestBody PageSearchRq param) {
 		return undoneService.pageSearch((Map<String, String>) param);
 	}
 

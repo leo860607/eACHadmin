@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.fstop.eachadmin.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fstop.eachadmin.dto.PageSearchRq;
+import com.fstop.eachadmin.dto.PageSearchRs;
 import com.fstop.eachadmin.repository.CommonSpringRepository;
 import com.fstop.eachadmin.repository.Page;
 import com.fstop.infra.entity.BankGroup;
@@ -30,7 +31,7 @@ public class UndoneService {
 	private CommonSpringRepository commonSpringRepository;
 
 	// ----------------表單查詢產出------------------------------------------------------
-	public PageSearchRq pageSearch(Map<String, String> param) {
+	public PageSearchRs pageSearch(Map<String, String> param) {
 		List<String> conditions_1 = new ArrayList<String>();
 		List<String> conditions_2 = new ArrayList<String>();
 		// 是否包含整批資料("N"表示不過濾)
