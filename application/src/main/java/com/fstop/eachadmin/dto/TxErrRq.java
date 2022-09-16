@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TxErrDto {
+public class TxErrRq {
 	
 	@Schema(description = "營業日期")
 	@JsonProperty("BIZDATE")
@@ -18,5 +18,8 @@ public class TxErrDto {
 	@JsonProperty("CLEARINGPHASE")
 	private String CLEARINGPHASE;
 	
+	@Schema(description = "")
+	@JsonProperty("PAGE")
+	private String page;
 	
 }
