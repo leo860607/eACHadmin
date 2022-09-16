@@ -12,13 +12,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "tw.org.twntch.po.onpendingtab")
+@Entity(name = "com.fstop.infra.entity.onpendingtab")
 @Table(name = "onpendingtab")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class onpendingtab implements Serializable {
+public class OnPendingTab implements Serializable {
 	/**
 	 * 
 	 */
@@ -302,7 +302,7 @@ public class onpendingtab implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		onpendingtab other = (onpendingtab) obj;
+		OnPendingTab other = (OnPendingTab) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

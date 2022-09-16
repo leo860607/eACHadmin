@@ -2,7 +2,7 @@ package com.fstop.infra.entity;
 
 import java.io.Serializable;
 
-public class onpendingtabPK implements Serializable {
+public class OnPendingTabPk implements Serializable {
 	/**
 	 * 
 	 */
@@ -11,9 +11,9 @@ public class onpendingtabPK implements Serializable {
 	private String OSTAN;
 	
 	
-	public onpendingtabPK() {
+	public OnPendingTabPk() {
 	}
-	public onpendingtabPK(String tXDATE, String sTAN) {
+	public OnPendingTabPk(String tXDATE, String sTAN) {
 		OTXDATE = tXDATE;
 		OSTAN = sTAN;
 	}
@@ -45,7 +45,7 @@ public class onpendingtabPK implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		onpendingtabPK other = (onpendingtabPK) obj;
+		OnPendingTabPk other = (OnPendingTabPk) obj;
 		if (OSTAN == null) {
 			if (other.OSTAN != null)
 				return false;

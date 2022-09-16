@@ -131,12 +131,21 @@ package com.fstop.eachadmin;
     
     //return json
     //controller
-    @Operation(summary = "send_1406", description = "API功能說明")
+    //wait for dto
+    @Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
     @GetMapping(value = "/send_1406data")
-    public String send_1406(@RequestBody Dto param){
+    public (Dto+方法data+Rs) send_1406(@RequestBody (Dto+方法data+Rq) param){
         return "service send_1406()";
     }
     
+    //return json
+    //controller
+    //wait for dto
+    @Operation(summary = "請求傳送確認訊息(1400)", description = "API功能說明")
+    @GetMapping(value = "/send_1400data")
+    public (Dto+方法data+Rs) send_1406(@RequestBody (Dto+方法data+Rq) param){
+        return "service send_1406()";
+    }
     
     
 }

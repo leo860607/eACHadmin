@@ -13,7 +13,7 @@ import lombok.Setter;
 @Table(name = "MASTER_BANK_BRANCH")
 @Getter
 @Setter
-public class BANK_BRANCH implements Serializable {
+public class BankBranch implements Serializable {
 
 	
 	/**
@@ -21,7 +21,7 @@ public class BANK_BRANCH implements Serializable {
 	 */
 	private static final long serialVersionUID = 4585597083104668065L;
 	@EmbeddedId
-	private BANK_BRANCH_PK id ;
+	private BankBranchPk id ;
 	private	String	BRBK_NAME	;
 	private	String	TCH_ID	;
 	private	String	ACTIVE_DATE	;
@@ -46,7 +46,7 @@ public class BANK_BRANCH implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BANK_BRANCH other = (BANK_BRANCH) obj;
+		BankBranch other = (BankBranch) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

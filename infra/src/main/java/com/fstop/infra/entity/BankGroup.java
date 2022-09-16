@@ -14,7 +14,7 @@ import lombok.Setter;
 @Table(name = "MASTER_BANK_GROUP")
 @Getter
 @Setter
-public class BANK_GROUP implements Serializable {
+public class BankGroup implements Serializable {
 	private static final long serialVersionUID = 4098412301586046065L;
 
 	@Transient
