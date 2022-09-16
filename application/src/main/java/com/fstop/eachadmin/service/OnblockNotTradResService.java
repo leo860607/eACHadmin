@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.fstop.eachadmin.repository.BUSINESS_TYPE_Dao;
 import com.fstop.eachadmin.repository.BankOpbkRepositry;
+import com.fstop.infra.dao.onpendingtabDao;
 import com.fstop.infra.entity.BANK_OPBK;
 import com.fstop.infra.entity.BUSINESS_TYPE;
 import com.fstop.infra.entity.onpendingtab;
@@ -26,45 +27,27 @@ import util.socketPackage.Header;
 
 @Service
 public class OnblockNotTradResService {
-	
-	
-	
+		
 	@Autowired
 	private BankOpbkRepositry bankOpbkRepositry ;
-
-	//操作行
-	public List<Map<String,String>> getOpbkList() {
-		List<BANK_OPBK> list = bankOpbkRepositry.getAllOpbkList();
-		List<Map<String,String>> beanList = new LinkedList<Map<String,String>>();
-		Map<String,String> bean = null;
-		for (BANK_OPBK po : list) {
-			bean = new HashMap<String,String>(po.getOPBK_ID() + " - " + po.getOPBK_NAME(), po.getOPBK_ID());
-			beanList.add(bean);
-		}
-		return beanList;
-	}
-	
-	@Autowired
-	private BankOpbkRepositry bankOpbkRepositry ;
-
-	//操作行
-	public List<Map<String,String>> getOpbkList() {
-		List<BANK_OPBK> list = bankOpbkRepositry.getAllOpbkList();
-		List<Map<String,String>> beanList = new LinkedList<Map<String,String>>();
-		Map<String,String> bean = null;
-		for (BANK_OPBK po : list) {
-			bean = new HashMap<String,String>(po.getOPBK_ID() + " - " + po.getOPBK_NAME(), po.getOPBK_ID());
-			beanList.add(bean);
-		}
-		return beanList;
-	}
 	
 	@Autowired
 	private BUSINESS_TYPE_Dao business_type_Dao ;
 	
 	@Autowired
-	onpendingtabDao onpendingtabR;
+	private onpendingtabDao onpendingtabR;
 
+	//操作行
+	public List<Map<String,String>> getOpbkList() {
+		List<BANK_OPBK> list = bankOpbkRepositry.getAllOpbkList();
+		List<Map<String,String>> beanList = new LinkedList<Map<String,String>>();
+		Map<String,String> bean = null;
+		for (BANK_OPBK po : list) {
+			bean = new HashMap<String,String>(po.getOPBK_ID() + " - " + po.getOPBK_NAME(), po.getOPBK_ID());
+			beanList.add(bean);
+		}
+		return beanList;
+	}
 	
 	// businessLabel
 	public List<Map<String,String>> getBsTypeIdList () {
