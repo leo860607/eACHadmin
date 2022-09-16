@@ -237,7 +237,7 @@ public class UndoneService {
 		}
 //-------------------資料轉換swagger輸出----------------------------------------------------
 		ObjectMapper mapper = new ObjectMapper();
-		PageSearchRq result = mapper.convertValue(rtnMap, PageSearchRq.class);
+		PageSearchRs result = mapper.convertValue(rtnMap, PageSearchRs.class);
 		return result;
 	}
 
