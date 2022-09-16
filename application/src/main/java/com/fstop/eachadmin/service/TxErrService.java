@@ -5,25 +5,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fstop.eachadmin.dto.TxErrDto;
+import com.fstop.eachadmin.repository.Page;
+import com.fstop.infra.entity.TX_ERR;
 
-import tw.org.twntch.bean.TX_ERR;
 import tw.org.twntch.db.dao.hibernate.ONBLOCKTAB_Dao;
-import tw.org.twntch.db.dao.hibernate.Page;
 import tw.org.twntch.db.dao.hibernate.VW_ONBLOCKTAB_Dao;
 import tw.org.twntch.po.VW_ONBLOCKTAB;
-import tw.org.twntch.util.DateTimeUtils;
-import tw.org.twntch.util.JSONUtils;
-import tw.org.twntch.util.StrUtils;
+import util.DateTimeUtils;
+import util.StrUtils;
 
+@Service
 public class TxErrService {
+	@Autowired
 	private ONBLOCKTAB_Dao onblocktab_Dao;
+	@Autowired
 	private VW_ONBLOCKTAB_Dao vw_onblocktab_Dao;
 	
-	public String pageSearch(Map<String, String> param){
+	public TxErrDto pageSearch(Map<String, String> param){
 		String pageNo = StrUtils.isEmpty(param.get("page")) ?"0":param.get("page");
-		String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
-		
+//		String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
+//		TODO
 		Map rtnMap = new HashMap();
 		
 		List<TX_ERR> list = null;
@@ -114,8 +120,9 @@ public class TxErrService {
 			rtnMap.put("rows", list);
 		}
 		
-		String json = JSONUtils.map2json(rtnMap) ;
-		return json;
+		ObjectMapper mapper = new ObjectMapper();
+		TxErrDto result = mapper.convertValue(rtnMap, TxErrDto.class);
+		return result;
 	}
 	
 	public List<String> getConditionList(Map<String, String> param){
@@ -242,4 +249,6 @@ public class TxErrService {
 	public void setVw_onblocktab_Dao(VW_ONBLOCKTAB_Dao vw_onblocktab_Dao) {
 		this.vw_onblocktab_Dao = vw_onblocktab_Dao;
 	}
+	
+	
 }
