@@ -6,8 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-// import java.util.Optional;
-// import java.util.Set;
+import java.util.Optional;
 
 import javax.xml.bind.JAXBException;
 
@@ -17,23 +16,22 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fstop.eachadmin.dto.PageSearchRq;
 import com.fstop.eachadmin.dto.PageSearchRs;
-<<<<<<< HEAD
+
 import com.fstop.eachadmin.repository.BusinessTypeRepository;
 import com.fstop.eachadmin.repository.CommonSpringRepository;
+import com.fstop.eachadmin.repository.OnPendingTabRepository;
 import com.fstop.eachadmin.repository.Page;
 import com.fstop.infra.entity.BANK_OPBK;
 import com.fstop.infra.entity.BUSINESS_TYPE;
-=======
+
 import com.fstop.eachadmin.dto.UndoneSendRq;
 import com.fstop.eachadmin.dto.UndoneSendRs;
-import com.fstop.eachadmin.repository.CommonSpringRepository;
-import com.fstop.eachadmin.repository.Page;
+
 // import com.fstop.infra.entity.BankGroup;
 import com.fstop.infra.entity.ONPENDINGTAB;
 import com.fstop.infra.entity.ONPENDINGTAB_PK;
 // import com.fstop.infra.entity.UndoneTxData;
 
->>>>>>> 8d356485c837e9eefa25893104647ea6c1159d92
 import com.fstop.infra.entity.UNDONE_TXDATA;
 
 import util.DateTimeUtils;
@@ -45,16 +43,16 @@ import util.zDateHandler;
 import util.socketPackage.Body;
 import util.socketPackage.Header;
 
-import com.fstop.eachadmin.dto.UndoneSendRq;
-import com.fstop.eachadmin.dto.UndoneSendRs;
-
 @Service
 public class UndoneService {
 	@Autowired
 	private CommonSpringRepository commonSpringRepository;
-	
+
 	@Autowired
 	private BusinessTypeRepository businessTypeRepository;
+
+	@Autowired
+	private OnPendingTabRepository OnPendingTabR;
 
 	// ----------------表單查詢產出------------------------------------------------------
 	public PageSearchRs<UNDONE_TXDATA> pageSearch(PageSearchRq param) {
@@ -278,142 +276,132 @@ public class UndoneService {
 		}
 		return conStr;
 	}
-	
-<<<<<<< HEAD
+
 //	====================
-	
-	public List<Map<String,String>> getOpbkList () {
-		
-		// String sql = "SELECT COALESCE( OP.OPBK_ID,'' ) AS OPBK_ID , COALESCE( BG.BGBK_NAME ,'' ) AS OPBK_NAME FROM ( SELECT DISTINCT OPBK_ID FROM EACHUSER.BANK_OPBK ) AS OP JOIN ( SELECT BGBK_ID, BGBK_NAME FROM BANK_GROUP WHERE BGBK_ATTR <> '6' ) AS BG ON OP.OPBK_ID = BG.BGBK_ID ORDER BY OP.OPBK_ID ";
+
+	public List<Map<String, String>> getOpbkList() {
+
+		// String sql = "SELECT COALESCE( OP.OPBK_ID,'' ) AS OPBK_ID , COALESCE(
+		// BG.BGBK_NAME ,'' ) AS OPBK_NAME FROM ( SELECT DISTINCT OPBK_ID FROM
+		// EACHUSER.BANK_OPBK ) AS OP JOIN ( SELECT BGBK_ID, BGBK_NAME FROM BANK_GROUP
+		// WHERE BGBK_ATTR <> '6' ) AS BG ON OP.OPBK_ID = BG.BGBK_ID ORDER BY OP.OPBK_ID
+		// ";
 		// List<BANK_OPBK> list = business_type_Dao.getAllOpbkList(sql);
 		// TODO:
 		// jdbc 還沒有好, 暫時先用
 		List<BANK_OPBK> list = (List<BANK_OPBK>) businessTypeRepository.testFunction();
-		List<Map<String,String>> beanList = new LinkedList<Map<String,String>>();
-		
-		Map<String,String> bean = null;
-		
-		for(BANK_OPBK po : list){
+		List<Map<String, String>> beanList = new LinkedList<Map<String, String>>();
+
+		Map<String, String> bean = null;
+
+		for (BANK_OPBK po : list) {
 			po.getOPBK_ID();
-			String k =(String) po.getOPBK_ID() + " - " + po.getOPBK_NAME();
+			String k = (String) po.getOPBK_ID() + " - " + po.getOPBK_NAME();
 			String v = (String) po.getOPBK_ID();
-			bean = new HashMap<String,String>();
+			bean = new HashMap<String, String>();
 			bean.put(k, v);
 			beanList.add(bean);
 		}
 		System.out.println("beanList>>" + beanList);
 		return beanList;
 	}
-	
+
 	// businessLabel
-	public List<Map<String,String>> getBsTypeIdList () {
-		
+	public List<Map<String, String>> getBsTypeIdList() {
+
 		// String sql = "FROM tw.org.twntch.po.BUSINESS_TYPE ORDER BY BUSINESS_TYPE_ID";
 		// List<BUSINESS_TYPE> list = business_type_Dao.find(sql);
 		// TODO:
 		// jdbc 還沒有好, 暫時先用
 		List<BUSINESS_TYPE> list = (List<BUSINESS_TYPE>) businessTypeRepository.testFunction();
-		List<Map<String,String>> beanList = new LinkedList<Map<String,String>>();
-		
-		Map<String,String> bean = null;
-		
-		for (BUSINESS_TYPE po :list) {
+		List<Map<String, String>> beanList = new LinkedList<Map<String, String>>();
+
+		Map<String, String> bean = null;
+
+		for (BUSINESS_TYPE po : list) {
 			po.getBUSINESS_TYPE_ID();
 			String k = (String) po.getBUSINESS_TYPE_ID() + " - " + po.getBUSINESS_TYPE_NAME();
 			String v = (String) po.getBUSINESS_TYPE_ID();
-			bean = new HashMap<String,String>();
+			bean = new HashMap<String, String>();
 			bean.put(k, v);
 			beanList.add(bean);
 		}
 		System.out.println("beanList>>" + beanList);
 		return beanList;
-	
-	
-=======
-	
-//===========================================================================
-	
-	
-    //details----請求傳送未完成交易結果(1406)
-    public UndoneSendRs send_1406(UndoneSendRq param){
-		/* 查詢未完成交易處理結果 
-			<?xml version="1.0" encoding="UTF-8" standalone="yes"?> 
-			<msg> 
-			    <header> 
-			        <SystemHeader>eACH01</SystemHeader> 
-			        <MsgType>0100</MsgType> 
-			        <PrsCode>1406</PrsCode> 
-			        <Stan>XXXXXXX</Stan> 
-			        <InBank>0000000</InBank> 
-			        <OutBank>9990000</OutBank> 
-			        <DateTime>YYYYMMDDHHMMSS</DateTime> 
-			        <RspCode>0000</RspCode> 
-			    </header> 
-			    <body> 
-			         <OTxDate></OTXDate> 
-			         <OSTAN></OSTAN> 
-			    </body> 
-			</msg> 
 
+	}
+
+//===========================================================================
+
+	// details----請求傳送未完成交易結果(1406)
+	public UndoneSendRs send_1406(UndoneSendRq param) {
+		/*
+		 * 查詢未完成交易處理結果 <?xml version="1.0" encoding="UTF-8" standalone="yes"?> <msg>
+		 * <header> <SystemHeader>eACH01</SystemHeader> <MsgType>0100</MsgType>
+		 * <PrsCode>1406</PrsCode> <Stan>XXXXXXX</Stan> <InBank>0000000</InBank>
+		 * <OutBank>9990000</OutBank> <DateTime>YYYYMMDDHHMMSS</DateTime>
+		 * <RspCode>0000</RspCode> </header> <body> <OTxDate></OTXDate> <OSTAN></OSTAN>
+		 * </body> </msg>
+		 * 
 		 */
 		String json = "{}";
-		//String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
+		// String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
 //		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;//innput
-		String stan = StrUtils.isNotEmpty(param.getStan())?param.getStan():"" ;//innput
+		String stan = StrUtils.isNotEmpty(param.getStan()) ? param.getStan() : "";// innput
 //		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;//innput
-		String txdate = StrUtils.isNotEmpty(param.getTxdate())?param.getTxdate():"" ;//innput
+		String txdate = StrUtils.isNotEmpty(param.getTxdate()) ? param.getTxdate() : "";// innput
 		txdate = DateTimeUtils.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
 		String resultCode = "";
 		Map rtnMap = new HashMap();
 		try {
-			//先檢查onpendingtab中是否有該筆資料存在
+			// 先檢查onpendingtab中是否有該筆資料存在
 			ONPENDINGTAB_PK id = new ONPENDINGTAB_PK(txdate, stan);
 			Optional<ONPENDINGTAB> po = OnPendingTabR.findById(id);
-			if(po == null){
-				rtnMap.put("result", "FALSE");//outtput
-				rtnMap.put("msg", "失敗，資料尚未轉移，PK={STAN:"+stan+",TXDATE:"+txdate+"}");//outtput
-			}else{
+			if (po == null) {
+				rtnMap.put("result", "FALSE");// outtput
+				rtnMap.put("msg", "失敗，資料尚未轉移，PK={STAN:" + stan + ",TXDATE:" + txdate + "}");// outtput
+			} else {
 //				20150529 add by hugo req by UAT-20150526-06
-				if(po.get().getBIZDATE() !=null){//表示已有處理結果
-					rtnMap.put("result", "FALSE");//outtput
-					rtnMap.put("msg", "已有未完成交易處理結果，營業日="+po.get().getBIZDATE());//outtput
-				//TODO
-				//	json = JSONUtils.map2json(rtnMap);
+				if (po.get().getBIZDATE() != null) {// 表示已有處理結果
+					rtnMap.put("result", "FALSE");// outtput
+					rtnMap.put("msg", "已有未完成交易處理結果，營業日=" + po.get().getBIZDATE());// outtput
+					// TODO
+					// json = JSONUtils.map2json(rtnMap);
 //					return json;
 				}
 				Header msgHeader = new Header();
 				msgHeader.setSystemHeader("eACH01");
 				msgHeader.setMsgType("0100");
 				msgHeader.setPrsCode("1406");
-				msgHeader.setStan("");//此案例未使用
+				msgHeader.setStan("");// 此案例未使用
 				msgHeader.setInBank("0000000");
-				msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
-				msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
+				msgHeader.setOutBank("9990000"); // 20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
+				msgHeader.setDateTime(zDateHandler.getDateNum() + zDateHandler.getTheTime().replaceAll(":", ""));
 				msgHeader.setRspCode("0000");
 				socketPackage msg = new socketPackage();
 				msg.setHeader(msgHeader);
 				Body body = new Body();
-				body.setOSTAN(stan);//bsformdto
-				body.setOTxDate(txdate);//otxdate11//txdate bsformdto
+				body.setOSTAN(stan);// bsformdto
+				body.setOTxDate(txdate);// otxdate11//txdate bsformdto
 //				body.setResultCode(resultCode);
-				msg.setBody(body);//11
+				msg.setBody(body);// 11
 				String telegram = messageConverter.marshalling(msg);
-				//TODO
+				// TODO
 //				rtnMap = socketClient.send(telegram);//socket先註解
 			}
-		} catch ( JAXBException e) {
+		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			rtnMap.put("result", "FALSE");//outtput
-			rtnMap.put("msg", "失敗，電文發送異常");//outtput
-		}catch(Exception ee){
+			rtnMap.put("result", "FALSE");// outtput
+			rtnMap.put("msg", "失敗，電文發送異常");// outtput
+		} catch (Exception ee) {
 			ee.printStackTrace();
-			rtnMap.put("result", "FALSE");//outtput
-			rtnMap.put("msg", "失敗，系統異常");//outtput
+			rtnMap.put("result", "FALSE");// outtput
+			rtnMap.put("msg", "失敗，系統異常");// outtput
 		}
-		//TODO
-		//object mapper把JS轉RS型別
-		
+		// TODO
+		// object mapper把JS轉RS型別
+
 //		json = JSONUtils.map2json(rtnMap);//json先不搬
 //		return json;
 		ObjectMapper mapper = new ObjectMapper();
@@ -422,57 +410,45 @@ public class UndoneService {
 	}
 //
 //=============================================================================
-    
-    
-	//===========================================================
-	//details----請求傳送確認訊息(1400)
-    public UndoneSendRs send_1400(UndoneSendRq param){
-		/* 請求傳送確認訊息			
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?> 
-<msg> 
-    <header> 
-        <SystemHeader>eACH01</SystemHeader> 
-        <MsgType>0100</MsgType> 
-        <PrsCode>1400</PrsCode> 
-        <Stan>XXXXXXX</Stan> 
-        <InBank>0000000</InBank> 
-        <OutBank>9990000</OutBank> 
-        <DateTime>YYYYMMDDHHMMSS</DateTime> 
-        <RspCode>0000</RspCode> 
-    </header> 
-    <body> 
-         <OTxDate></OTxDate> 
-         <OSTAN></OSTAN> 
-    </body> 
-</msg> 
 
-
-
+	// ===========================================================
+	// details----請求傳送確認訊息(1400)
+	public UndoneSendRs send_1400(UndoneSendRq param) {
+		/*
+		 * 請求傳送確認訊息 <?xml version="1.0" encoding="UTF-8" standalone="yes"?> <msg>
+		 * <header> <SystemHeader>eACH01</SystemHeader> <MsgType>0100</MsgType>
+		 * <PrsCode>1400</PrsCode> <Stan>XXXXXXX</Stan> <InBank>0000000</InBank>
+		 * <OutBank>9990000</OutBank> <DateTime>YYYYMMDDHHMMSS</DateTime>
+		 * <RspCode>0000</RspCode> </header> <body> <OTxDate></OTxDate> <OSTAN></OSTAN>
+		 * </body> </msg>
+		 * 
+		 * 
+		 * 
 		 */
 		String json = "{}";
 //		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;//innput
 //		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;//innput
-		String stan = StrUtils.isNotEmpty(param.getStan())?param.getStan():"" ;//innput
-		String txdate = StrUtils.isNotEmpty(param.getTxdate())?param.getTxdate():"" ;//innput
+		String stan = StrUtils.isNotEmpty(param.getStan()) ? param.getStan() : "";// innput
+		String txdate = StrUtils.isNotEmpty(param.getTxdate()) ? param.getTxdate() : "";// innput
 		txdate = DateTimeUtils.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
 		String resultCode = "";
 		Map rtnMap = new HashMap();
 		try {
-			//先檢查onpendingtab中是否有該筆資料存在
+			// 先檢查onpendingtab中是否有該筆資料存在
 			ONPENDINGTAB_PK id = new ONPENDINGTAB_PK(txdate, stan);
 			Optional<ONPENDINGTAB> po = OnPendingTabR.findById(id);
-			if(po != null){
-				rtnMap.put("result", "FALSE");//outtput
-				rtnMap.put("msg", "失敗，資料已轉移，PK={STAN:"+stan+",TXDATE:"+txdate+"}");//outtput
-			}else{
+			if (po != null) {
+				rtnMap.put("result", "FALSE");// outtput
+				rtnMap.put("msg", "失敗，資料已轉移，PK={STAN:" + stan + ",TXDATE:" + txdate + "}");// outtput
+			} else {
 				Header msgHeader = new Header();
 				msgHeader.setSystemHeader("eACH01");
 				msgHeader.setMsgType("0100");
 				msgHeader.setPrsCode("1400");
-				msgHeader.setStan("");//此案例未使用
+				msgHeader.setStan("");// 此案例未使用
 				msgHeader.setInBank("0000000");
-				msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
-				msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
+				msgHeader.setOutBank("9990000"); // 20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
+				msgHeader.setDateTime(zDateHandler.getDateNum() + zDateHandler.getTheTime().replaceAll(":", ""));
 				msgHeader.setRspCode("0000");
 				socketPackage msg = new socketPackage();
 				msg.setHeader(msgHeader);
@@ -482,33 +458,30 @@ public class UndoneService {
 //				body.setResultCode(resultCode);
 				msg.setBody(body);
 				String telegram = messageConverter.marshalling(msg);
-				//TODO
+				// TODO
 //				rtnMap = socketClient.send(telegram);
 			}
-		} catch ( JAXBException e) {
+		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			rtnMap.put("result", "FALSE");//outtput
-			rtnMap.put("msg", "失敗，電文發送異常");//outtput
-		}catch(Exception ee){
+			rtnMap.put("result", "FALSE");// outtput
+			rtnMap.put("msg", "失敗，電文發送異常");// outtput
+		} catch (Exception ee) {
 			ee.printStackTrace();
-			rtnMap.put("result", "FALSE");//outtput
-			rtnMap.put("msg", "失敗，系統異常");//outtput
+			rtnMap.put("result", "FALSE");// outtput
+			rtnMap.put("msg", "失敗，系統異常");// outtput
 		}
-		
-		//TODO
-		//object mapper 轉RS型別
+
+		// TODO
+		// object mapper 轉RS型別
 		ObjectMapper mapper = new ObjectMapper();
 		UndoneSendRs response = mapper.convertValue(rtnMap, UndoneSendRs.class);
-		
+
 //		json = JSONUtils.map2json(rtnMap);
 //		return json;
 		return response;
 	}
-	
+
 //===============================================================================
 
->>>>>>> 8d356485c837e9eefa25893104647ea6c1159d92
-
-}
 }

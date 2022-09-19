@@ -25,17 +25,19 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class UndoneController {
 	@Autowired
 	private OnblockNotTradResService OnblockNotTradResS;
+	@Autowired 
+	private UndoneService undoneService;
 
 	@Operation(summary = "操作行 API", description = "操作行下拉選單資料")
 	@GetMapping(value = "/opbkList")
 	public List<Map<String, String>> opbkList () {
-		return OnblockNotTradResS.getOpbkList();
+		return undoneService.getOpbkList();
 	}
     
     @Operation(summary = "業務 API", description = "總行業務下拉選單")
     @GetMapping(value = "/bsTypeIdList")
     public List<Map<String, String>> bsTypeIdList () {
-        return OnblockNotTradResS.getBsTypeIdList();
+        return undoneService.getBsTypeIdList();
     }
 
 	// 查詢
