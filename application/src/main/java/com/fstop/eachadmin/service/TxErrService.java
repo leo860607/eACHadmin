@@ -22,9 +22,9 @@ import util.StrUtils;
 @Service
 public class TxErrService {
 	@Autowired
-	private ONBLOCKTAB_Dao onblocktab_Dao;
+	private OnBlockTabRepository onblocktab_Dao;
 	@Autowired
-	private VW_ONBLOCKTAB_Dao vw_onblocktab_Dao;
+	private VwOnBlockTabRepository vw_onblocktab_Dao;
 	
 	public TxErrRq pageSearch(Map<String, String> param){
 		String pageNo = StrUtils.isEmpty(param.get("page")) ?"0":param.get("page");

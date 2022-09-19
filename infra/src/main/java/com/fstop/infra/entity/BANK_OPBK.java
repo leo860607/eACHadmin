@@ -4,9 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -17,14 +14,14 @@ import lombok.Setter;
 @Table(name = "MASTER_BANK_OPBK")
 @Getter
 @Setter
-public class BANKOPBK implements Serializable {
+public class BANK_OPBK implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1946783387317874612L;
 	@EmbeddedId
-	private BANKOPBK_PK id ;
+	private BANK_OPBK_PK id ;
 	private String OPBK_ID;
 	private String OP_NOTE;
 	@Transient

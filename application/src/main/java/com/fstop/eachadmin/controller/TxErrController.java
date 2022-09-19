@@ -37,23 +37,6 @@ public class TxErrController {
 		return TxErrService.searchByPk();
 	}
 	
-	@Operation(summary = "未知 API", description = "未知")
-	@GetMapping(value = "/detail")
-	public String txerrunknown() {
-		return "123";
-	}
 	
-	 @Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
-	 @GetMapping(value = "/send_1406data")
-	 public SendRs send_1406(@RequestBody SendRq param){
-	    return OnblockNotTradResS.send_1406(param);
-	 }
-	    
-    //return json
-    //controller
-    @Operation(summary = "請求傳送確認訊息(1400)", description = "API功能說明")
-    @GetMapping(value = "/send_1400data")
-    public SendRs send_1400(@RequestBody SendRq param){
-        return OnblockNotTradResS.send_1400( param);
 	
 }

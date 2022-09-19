@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class EachSysStatusTabDao extends JpaRepository<BANK_STATUS, java.io.Serializable> {
+public class EachSysStatusTabRepository extends JpaRepository<BANK_STATUS, java.io.Serializable> {
     public List<BANK_STATUS> getData(){
         List<BANK_STATUS> list = null;
         StringBuffer sql = new StringBuffer();
