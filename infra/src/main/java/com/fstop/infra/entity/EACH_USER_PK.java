@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class EACHUSERPK implements Serializable {
+public class EACH_USER_PK implements Serializable {
 
     /**
      *
@@ -17,10 +17,10 @@ public class EACHUSERPK implements Serializable {
     private String USER_COMPANY;
     private String USER_ID;
 
-    public EACHUSERPK() {
+    public EACH_USER_PK() {
     }
 
-    public EACHUSERPK(String uSER_ID, String uSER_COMPANY) {
+    public EACH_USER_PK(String uSER_ID, String uSER_COMPANY) {
         USER_COMPANY = uSER_COMPANY;
         USER_ID = uSER_ID;
     }
@@ -43,7 +43,7 @@ public class EACHUSERPK implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        EACHUSERPK other = (EACHUSERPK) obj;
+        EACH_USER_PK other = (EACH_USER_PK) obj;
         if (USER_COMPANY == null) {
             if (other.USER_COMPANY != null)
                 return false;

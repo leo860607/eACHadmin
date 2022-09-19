@@ -1,20 +1,19 @@
 package com.fstop.eachadmin.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.HashMap;
-import java.util.LinkedList;
+
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+// import java.util.Optional;
+// import java.util.Set;
 
 import javax.xml.bind.JAXBException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fstop.eachadmin.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fstop.eachadmin.dto.PageSearchRq;
 import com.fstop.eachadmin.dto.PageSearchRs;
@@ -22,12 +21,13 @@ import com.fstop.eachadmin.dto.UndoneSendRq;
 import com.fstop.eachadmin.dto.UndoneSendRs;
 import com.fstop.eachadmin.repository.CommonSpringRepository;
 import com.fstop.eachadmin.repository.Page;
-import com.fstop.infra.entity.BankGroup;
+// import com.fstop.infra.entity.BankGroup;
 import com.fstop.infra.entity.ONPENDINGTAB;
 import com.fstop.infra.entity.ONPENDINGTAB_PK;
-import com.fstop.infra.entity.UndoneTxData;
+// import com.fstop.infra.entity.UndoneTxData;
 
-import io.swagger.v3.core.util.Json;
+import com.fstop.infra.entity.UNDONE_TXDATA;
+
 import util.DateTimeUtils;
 
 import util.StrUtils;
@@ -46,7 +46,7 @@ public class UndoneService {
 	private CommonSpringRepository commonSpringRepository;
 
 	// ----------------表單查詢產出------------------------------------------------------
-	public PageSearchRs pageSearch(Map<String, String> param) {
+	public PageSearchRs<UNDONE_TXDATA> pageSearch(PageSearchRq param) {
 		List<String> conditions_1 = new ArrayList<String>();
 		List<String> conditions_2 = new ArrayList<String>();
 		// 是否包含整批資料("N"表示不過濾)
@@ -128,12 +128,12 @@ public class UndoneService {
 		int pageSize = StrUtils.isEmpty(param.get("rows")) ? Integer.valueOf(param.get("rows")// TODOArguments.getStringArg("PAGE.SIZE")
 		) : Integer.valueOf(param.get("rows"));
 
-		Map rtnMap = new HashMap();
+		Map<String, Object> rtnMap = new HashMap<String, Object>();
 
-		List<UndoneTxData> list = null;
+		List<UNDONE_TXDATA> list = null;
 		Page page = null;
 		try {
-			list = new ArrayList<UndoneTxData>();
+			list = new ArrayList<UNDONE_TXDATA>();
 			String condition_1 = "", condition_2 = "";
 			condition_1 = combine(conditions_1);
 			condition_2 = combine(conditions_2);
@@ -232,7 +232,7 @@ public class UndoneService {
 			System.out.println("sql==>" + sql.toString().toUpperCase());
 //			page = vw_onblocktab_Dao.getDataIII(pageNo, pageSize, cntSQL.toString(), sql.toString(), cols, UNDONE_TXDATA.class);
 // 因為還沒有寫資料庫的串法,所以把跟資料庫相關的Dao都先註解,只留方法 20220914
-			list = (List<UndoneTxData>) page.getResult();
+			list = (List<UNDONE_TXDATA>) page.getResult();
 			System.out.println("UNDONE_TXDATA.list>>" + list);
 			list = list != null && list.size() == 0 ? null : list;
 		} catch (Exception e) {

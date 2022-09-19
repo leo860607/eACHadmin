@@ -9,27 +9,29 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity (name = "BANKBRANCH")
-@Table(name = "MASTER_BANK_BRANCH")
+//<<<<<<< HEAD
+@Entity (name = "EACH_USERLOG")
+@Table(name = "MASTER_EACH_USERLOG")
 @Getter
 @Setter
-public class BANKBRANCH implements Serializable {
+public class EACH_USERLOG implements Serializable {
 
-	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4585597083104668065L;
-	@EmbeddedId
-	private BANKBRANCHPK id ;
-	private	String	BRBK_NAME	;
-	private	String	TCH_ID	;
-	private	String	ACTIVE_DATE	;
-	private	String	STOP_DATE	;
-	private	String	SYNCSPDATE	;//分行的停用日期是否與總行的停用日期同步
-	private	String	CDATE	;
-	private	String	UDATE	;
+	private static final long serialVersionUID = 3291108105128791501L;
+	private EACH_USERLOG_PK id;
+	private String USERIP;
+	private String TXTIME;
+	private String UP_FUNC_ID;
+	private String FUNC_ID;
+	private String FUNC_TYPE;
+	private String OPITEM;
+	private String BFCHCON;
+	private String AFCHCON;
+	private String ADEXCODE;
 	
+	@EmbeddedId
 	
 	@Override
 	public int hashCode() {
@@ -46,7 +48,7 @@ public class BANKBRANCH implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BANKBRANCH other = (BANKBRANCH) obj;
+		EACH_USERLOG other = (EACH_USERLOG) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -54,6 +56,4 @@ public class BANKBRANCH implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 }

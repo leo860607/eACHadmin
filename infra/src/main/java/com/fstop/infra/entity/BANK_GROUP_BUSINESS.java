@@ -8,31 +8,22 @@ import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
-
-//<<<<<<< HEAD
-@Entity (name = "EACHUSERLOG")
-@Table(name = "MASTER_EACH_USERLOG")
+@Entity(name = "BANK_GROUP_BUSINESS")
+@Table(name = "MASTER_BANK_GROUP_BUSINESS")
 @Getter
 @Setter
-public class EACHUSERLOG implements Serializable {
+public class BANK_GROUP_BUSINESS implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3291108105128791501L;
-	private EACHUSERLOGPK id;
-	private String USERIP;
-	private String TXTIME;
-	private String UP_FUNC_ID;
-	private String FUNC_ID;
-	private String FUNC_TYPE;
-	private String OPITEM;
-	private String BFCHCON;
-	private String AFCHCON;
-	private String ADEXCODE;
+	private static final long serialVersionUID = 3032369843542344140L;
 	
+	private BANK_GROUPBUSINESS_PK id ;
+	private	String	CDATE	;
+	private	String	UDATE	;
 	@EmbeddedId
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -48,7 +39,7 @@ public class EACHUSERLOG implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		EACHUSERLOG other = (EACHUSERLOG) obj;
+		BANK_GROUP_BUSINESS other = (BANK_GROUP_BUSINESS) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -56,4 +47,6 @@ public class EACHUSERLOG implements Serializable {
 			return false;
 		return true;
 	}
+	
+	
 }

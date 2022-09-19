@@ -17,14 +17,14 @@ import lombok.Setter;
 @Table(name = "MASTER_BANK_CTBK")
 @Setter
 @Getter
-public class BANKCTBK implements Serializable {
+public class BANK_CTBK implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 9122816418378095677L;
 	@EmbeddedId
-	private BANKCTBKPK id ;
+	private BANK_CTBK_PK id ;
 	private String CTBK_ID;
 	private String CT_NOTE;
 	

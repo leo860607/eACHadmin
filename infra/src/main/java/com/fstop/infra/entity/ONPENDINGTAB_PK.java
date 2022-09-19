@@ -17,18 +17,7 @@ public class ONPENDINGTAB_PK implements Serializable {
 		OTXDATE = tXDATE;
 		OSTAN = sTAN;
 	}
-	public String getOTXDATE() {
-		return OTXDATE;
-	}
-	public void setOTXDATE(String tXDATE) {
-		OTXDATE = tXDATE;
-	}
-	public String getOSTAN() {
-		return OSTAN;
-	}
-	public void setOSTAN(String sTAN) {
-		OSTAN = sTAN;
-	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

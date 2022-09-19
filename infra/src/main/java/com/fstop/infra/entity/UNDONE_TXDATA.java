@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 
 //這支原生位置是bean，先放在entity裡面 20220916
-public class UNDONETXDATA {
+public class UNDONE_TXDATA {
 	private String PCODE;
 	private String TXDT;
 	private String TXDATE;

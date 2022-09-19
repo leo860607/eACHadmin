@@ -24,7 +24,7 @@ public class BANKOPBK implements Serializable {
 	 */
 	private static final long serialVersionUID = 1946783387317874612L;
 	@EmbeddedId
-	private BANKOPBKPK id ;
+	private BANKOPBK_PK id ;
 	private String OPBK_ID;
 	private String OP_NOTE;
 	@Transient

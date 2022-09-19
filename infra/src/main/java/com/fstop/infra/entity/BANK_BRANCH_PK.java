@@ -5,32 +5,30 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class BANKGROUPBUSINESSPK implements Serializable {
-	
+@Setter
+public class BANK_BRANCH_PK implements Serializable {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7440172946664063369L;
+	private static final long serialVersionUID = 8605216767974289486L;
 	
-	public BANKGROUPBUSINESSPK() {
+	public BANK_BRANCH_PK() {
 	}
-	public BANKGROUPBUSINESSPK(String bGBK_ID, String bUSINESS_TYPE_ID) {
+	public BANK_BRANCH_PK(String bGBK_ID, String bRBK_ID) {
 		BGBK_ID = bGBK_ID;
-		BUSINESS_TYPE_ID = bUSINESS_TYPE_ID;
+		BRBK_ID = bRBK_ID;
 	}
 	private	String	BGBK_ID	;
-	private	String	BUSINESS_TYPE_ID ;
+	private	String	BRBK_ID ;
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((BGBK_ID == null) ? 0 : BGBK_ID.hashCode());
-		result = prime
-				* result
-				+ ((BUSINESS_TYPE_ID == null) ? 0 : BUSINESS_TYPE_ID.hashCode());
+		result = prime * result + ((BRBK_ID == null) ? 0 : BRBK_ID.hashCode());
 		return result;
 	}
 	@Override
@@ -41,19 +39,20 @@ public class BANKGROUPBUSINESSPK implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BANKGROUPBUSINESSPK other = (BANKGROUPBUSINESSPK) obj;
+		BANK_BRANCH_PK other = (BANK_BRANCH_PK) obj;
 		if (BGBK_ID == null) {
 			if (other.BGBK_ID != null)
 				return false;
 		} else if (!BGBK_ID.equals(other.BGBK_ID))
 			return false;
-		if (BUSINESS_TYPE_ID == null) {
-			if (other.BUSINESS_TYPE_ID != null)
+		if (BRBK_ID == null) {
+			if (other.BRBK_ID != null)
 				return false;
-		} else if (!BUSINESS_TYPE_ID.equals(other.BUSINESS_TYPE_ID))
+		} else if (!BRBK_ID.equals(other.BRBK_ID))
 			return false;
 		return true;
 	}
+	
 	
 	
 }

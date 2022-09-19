@@ -16,11 +16,11 @@ import lombok.Setter;
 
 
 
-@Entity(name="SYSPARA")
-@Table(name="MASTER_SYSPARA")
+@Entity(name="SYS_PARA")
+@Table(name="MASTER_SYS_PARA")
 @Getter
 @Setter
-public class SYSPARA implements Serializable {
+public class SYS_PARA implements Serializable {
 	
 	/**
 	 * 
@@ -138,7 +138,7 @@ public class SYSPARA implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SYSPARA other = (SYSPARA) obj;
+		SYS_PARA other = (SYS_PARA) obj;
 		if (ACCT_LIMIT_SAMT == null) {
 			if (other.ACCT_LIMIT_SAMT != null)
 				return false;

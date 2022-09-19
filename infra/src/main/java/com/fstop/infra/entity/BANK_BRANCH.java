@@ -8,22 +8,29 @@ import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
-@Entity(name = "tw.org.twntch.po.BANK_GROUP_BUSINESS")
-@Table(name = "BANK_GROUP_BUSINESS")
+
+@Entity (name = "BANK_BRANCH")
+@Table(name = "MASTER_BANK_BRANCH")
 @Getter
 @Setter
-public class BANKGROUPBUSINESS implements Serializable {
+public class BANK_BRANCH implements Serializable {
 
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3032369843542344140L;
-	
-	private BANKGROUPBUSINESSPK id ;
+	private static final long serialVersionUID = 4585597083104668065L;
+	@EmbeddedId
+	private BANK_BRANCH_PK id ;
+	private	String	BRBK_NAME	;
+	private	String	TCH_ID	;
+	private	String	ACTIVE_DATE	;
+	private	String	STOP_DATE	;
+	private	String	SYNCSPDATE	;//分行的停用日期是否與總行的停用日期同步
 	private	String	CDATE	;
 	private	String	UDATE	;
-	@EmbeddedId
-
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -39,7 +46,7 @@ public class BANKGROUPBUSINESS implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BANKGROUPBUSINESS other = (BANKGROUPBUSINESS) obj;
+		BANK_BRANCH other = (BANK_BRANCH) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

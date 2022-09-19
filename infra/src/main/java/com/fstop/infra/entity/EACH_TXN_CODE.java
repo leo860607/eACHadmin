@@ -9,11 +9,11 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name= "EACHTXNCODE")
+@Entity(name= "EACH_TXN_CODE")
 @Table(name="MASTER_EACH_TXN_CODE")
 @Getter
 @Setter
-public class EACHTXNCODE implements Serializable {
+public class EACH_TXN_CODE implements Serializable {
 	/**
 	 * 
 	 */
@@ -48,7 +48,7 @@ public class EACHTXNCODE implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		EACHTXNCODE other = (EACHTXNCODE) obj;
+		EACH_TXN_CODE other = (EACH_TXN_CODE) obj;
 		if (BUSINESS_TYPE_ID == null) {
 			if (other.BUSINESS_TYPE_ID != null)
 				return false;

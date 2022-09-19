@@ -9,8 +9,8 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name = "tw.org.twntch.po.BANKAPSTATUSTAB")
-@Table(name = "BANKAPSTATUSTAB")
+@Entity(name = "BANKAPSTATUSTAB")
+@Table(name = "MASTER_BANKAPSTATUSTAB")
 
 @Getter
 @Setter
@@ -20,7 +20,7 @@ public class BANKAPSTATUSTAB implements Serializable{
 	 */
 	private static final long serialVersionUID = 7521516122770873553L;
 	@EmbeddedId
-	private BANKAPSTATUSTABPK id;
+	private BANKAPSTATUSTAB_PK id;
 	private String MBAPSTATUS;
 	
 

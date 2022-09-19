@@ -10,11 +10,11 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name= "WKDATECALENDAR")
-@Table(name="MASTER_WKDATECALENDAR")
+@Entity(name= "WK_DATE_CALENDAR")
+@Table(name="MASTER_WK_DATE_CALENDAR")
 @Getter
 @Setter
-public class WKDATECALENDAR implements Serializable {
+public class WK_DATE_CALENDAR implements Serializable {
 	
 	/**
 	 * 

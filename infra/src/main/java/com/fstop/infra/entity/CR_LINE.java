@@ -11,11 +11,11 @@ import javax.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name= "CRLINE")
+@Entity(name= "CR_LINE")
 @Table(name="MASTER_CRLINE")
 @Getter
 @Setter
-public class CRLINE implements Serializable {
+public class CR_LINE implements Serializable {
 	
 	
 	/**
@@ -36,14 +36,6 @@ public class CRLINE implements Serializable {
 	@OrderBy("BANK_ID ASC" )
 
 	
-	
-	@Transient
-	public String getBANK_NAME() {
-		return BANK_NAME;
-	}
-	public void setBANK_NAME(String bANK_NAME) {
-		BANK_NAME = bANK_NAME;
-	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -59,7 +51,7 @@ public class CRLINE implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CRLINE other = (CRLINE) obj;
+		CR_LINE other = (CR_LINE) obj;
 		if (BANK_ID == null) {
 			if (other.BANK_ID != null)
 				return false;
