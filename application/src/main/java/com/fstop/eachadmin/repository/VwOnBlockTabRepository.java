@@ -2,13 +2,22 @@ package com.fstop.eachadmin.repository;
 
 
 
-import tw.org.twntch.po.VW_ONBLOCKTAB;
-import tw.org.twntch.util.AutoAddScalar;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fstop.infra.entity.VW_ONBLOCKTAB;
+
+import tw.org.twntch.util.AutoAddScalar;
+
 @Repository
-public class VW_ONBLOCKTAB_Dao extends JpaRepository<VW_ONBLOCKTAB, java.io.Serializable> {
+public class VwOnBlockTabRepository {
+	@Autowired 
+	private JdbcTemplate jdbcTemplate;
+	
     public Page getData(int pageNo, int pageSize, String countQuerySql, String sql, String[] cols, Class targetClass){
         int totalCount = countData(countQuerySql);
         int startIndex = Page.getStartOfPage(pageNo, pageSize) + 1;
