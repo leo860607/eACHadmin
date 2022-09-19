@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fstop.eachadmin.dto.TxErrRq;
 import com.fstop.eachadmin.dto.TxErrRs;
-import com.fstop.eachadmin.dto.SendRq;
-import com.fstop.eachadmin.dto.SendRs;
 import com.fstop.eachadmin.service.TxErrService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +26,7 @@ public class TxErrController {
 	@Operation(summary = "查詢 API", description = "查詢按鈕")
 	@GetMapping(value = "/search")
 	public TxErrRs getPageSearch(@RequestBody TxErrRq param) {
-		return txErrService.pageSearch() ;
+		return txErrService.pageSearch(param) ;
 	}
 	
 	@Operation(summary = "檢視明細 API", description = "檢視明細")
@@ -37,23 +35,6 @@ public class TxErrController {
 		return TxErrService.searchByPk();
 	}
 	
-	@Operation(summary = "未知 API", description = "未知")
-	@GetMapping(value = "/detail")
-	public String txerrunknown() {
-		return "123";
-	}
 	
-	 @Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
-	 @GetMapping(value = "/send_1406data")
-	 public SendRs send_1406(@RequestBody SendRq param){
-	    return OnblockNotTradResS.send_1406(param);
-	 }
-	    
-    //return json
-    //controller
-    @Operation(summary = "請求傳送確認訊息(1400)", description = "API功能說明")
-    @GetMapping(value = "/send_1400data")
-    public SendRs send_1400(@RequestBody SendRq param){
-        return OnblockNotTradResS.send_1400( param);
 	
 }

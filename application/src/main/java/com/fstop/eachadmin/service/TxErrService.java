@@ -10,23 +10,24 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fstop.eachadmin.dto.TxErrRq;
+import com.fstop.eachadmin.dto.TxErrRs;
+import com.fstop.eachadmin.repository.OnBlockTabRepository;
 import com.fstop.eachadmin.repository.Page;
+import com.fstop.eachadmin.repository.VwOnBlockTabRepository;
 import com.fstop.infra.entity.TX_ERR;
+import com.fstop.infra.entity.VW_ONBLOCKTAB;
 
-import tw.org.twntch.db.dao.hibernate.ONBLOCKTAB_Dao;
-import tw.org.twntch.db.dao.hibernate.VW_ONBLOCKTAB_Dao;
-import tw.org.twntch.po.VW_ONBLOCKTAB;
 import util.DateTimeUtils;
 import util.StrUtils;
 
 @Service
 public class TxErrService {
 	@Autowired
-	private ONBLOCKTAB_Dao onblocktab_Dao;
+	private OnBlockTabRepository onblocktab_Dao;
 	@Autowired
-	private VW_ONBLOCKTAB_Dao vw_onblocktab_Dao;
+	private VwOnBlockTabRepository vw_onblocktab_Dao;
 	
-	public TxErrRq pageSearch(Map<String, String> param){
+	public TxErrRs pageSearch(Map<String, String> param){
 		String pageNo = StrUtils.isEmpty(param.get("page")) ?"0":param.get("page");
 //		String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
 //		TODO

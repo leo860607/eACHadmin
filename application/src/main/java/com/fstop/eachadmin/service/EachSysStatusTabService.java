@@ -7,7 +7,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
 
 import tw.org.twntch.db.dao.hibernate.EACHSYSSTATUSTAB_Dao;
-import com.fstop.infra.entity.EachSyssStatusTab;
+import com.fstop.infra.entity.EACHSYSSTATUSTAB;
 import util.DateTimeUtils;
 import util.JSONUtils;
 import util.StrUtils;
@@ -15,7 +15,7 @@ import util.zDateHandler;
 
 public class EachSysStatusTabService {
 	private EACHSYSSTATUSTAB_Dao eachsysstatustab_Dao;
-	private WkDateService wk_date_bo;
+	private WkDateService WkDateService;
 	
 	public String checkBizDate(Map<String, String> params){
 		String activeDate = StrUtils.isNotEmpty(params.get("activeDate")) ?params.get("activeDate") : "";
@@ -209,7 +209,7 @@ public class EachSysStatusTabService {
 		int tmp  = -1;
 		System.out.println("activeDate>>"+activeDate);
 		try{
-			list = wk_date_bo.getEachsysstatustab_Dao().getBusinessDate();
+			list = WkDateService.getEachsysstatustab_Dao().getBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 				tmp = zDateHandler.compareDiffDate( activeDate, businessDate , "yyyyMMdd");
@@ -273,7 +273,7 @@ public class EachSysStatusTabService {
 		String businessDate = "";
 		boolean isTxnDate = false;
 		try{
-			isTxnDate = wk_date_bo.isTxnDate();
+			isTxnDate = WkDateService.isTxnDate();
 			list = eachsysstatustab_Dao.getRptBusinessDate(isTxnDate);
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
@@ -385,11 +385,11 @@ public class EachSysStatusTabService {
 	public void setEachsysstatustab_Dao(EACHSYSSTATUSTAB_Dao eachsysstatustab_Dao) {
 		this.eachsysstatustab_Dao = eachsysstatustab_Dao;
 	}
-	public WkDateService getWk_date_bo() {
-		return wk_date_bo;
+	public WkDateService getWkDateService() {
+		return WkDateService;
 	}
-	public void setWk_date_bo(WkDateService wk_date_bo) {
-		this.wk_date_bo = wk_date_bo;
+	public void setWkDateService(WkDateService WkDateService) {
+		this.WkDateService =WkDateService;
 	}
 	
 	

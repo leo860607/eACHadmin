@@ -9,8 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.apache.struts.util.LabelValueBean;
+import lombok.extern.slf4j.Slf4j;
+//import org.apache.struts.util.LabelValueBean;
 
 import tw.org.twntch.aop.GenerieAop;
 import tw.org.twntch.db.dao.hibernate.EACH_FUNC_LIST_Dao;
@@ -18,18 +18,18 @@ import tw.org.twntch.db.dao.hibernate.EACH_USERLOG_Dao;
 import tw.org.twntch.db.dao.hibernate.EACH_USER_Dao;
 import tw.org.twntch.db.dao.hibernate.Page;
 import tw.org.twntch.form.Login_Form;
-import tw.org.twntch.po.EACH_FUNC_LIST;
-import tw.org.twntch.po.EACH_USER;
-import tw.org.twntch.po.EACH_USERLOG;
-import tw.org.twntch.po.EACH_USERLOG_PK;
-import tw.org.twntch.po.EACH_USER_PK;
-import tw.org.twntch.util.DateTimeUtils;
-import tw.org.twntch.util.JSONUtils;
-import tw.org.twntch.util.SpringAppCtxHelper;
-import tw.org.twntch.util.StrUtils;
-import tw.org.twntch.util.WebServletUtils;
-import tw.org.twntch.util.zDateHandler;
-
+import com.fstop.infra.entity.EACH_FUNC_LIST;
+import com.fstop.infra.entity.EACH_USER;
+import com.fstop.infra.entity.EACH_USERLOG;
+import com.fstop.infra.entity.EACH_USERLOG_PK;
+import com.fstop.infra.entity.EACH_USER_PK;
+import util.DateTimeUtils;
+import util.JSONUtils;
+import util.SpringAppCtxHelper;
+import util.StrUtils;
+import util.WebServletUtils;
+import util.zDateHandler;
+@Slf4j
 public class EachUserLogService extends GenerieAop {
 
 	private EACH_USER_Dao each_user_Dao;
@@ -299,69 +299,69 @@ public class EachUserLogService extends GenerieAop {
 	
 	
 	//按照USER_COMPANY找出所有USER
-	public List<LabelValueBean> getUserIdListByComId(String comId){
-		List<EACH_USER> userIdList = null;
-		List<LabelValueBean> list = null;
-		try{
-			if(StrUtils.isNotEmpty(comId)){
-				userIdList = each_user_Dao.getDataByComId(comId);
-			}else{
-				userIdList = each_user_Dao.getAll();
-			}
-			System.out.println("userIdList"+userIdList);
-			if(userIdList != null && userIdList.size() > 0){
-				list = new ArrayList<LabelValueBean>();
-				for(int i = 0; i < userIdList.size(); i++){
-					list.add(new LabelValueBean(userIdList.get(i).getUSER_ID(), userIdList.get(i).getUSER_ID()));
-				}
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		list = list == null? null : list.size() == 0? null : list;
-		System.out.println("list>>" + list);
-		return list;
-	}
+//	public List<LabelValueBean> getUserIdListByComId(String comId){
+//		List<EACH_USER> userIdList = null;
+//		List<LabelValueBean> list = null;
+//		try{
+//			if(StrUtils.isNotEmpty(comId)){
+//				userIdList = each_user_Dao.getDataByComId(comId);
+//			}else{
+//				userIdList = each_user_Dao.getAll();
+//			}
+//			System.out.println("userIdList"+userIdList);
+//			if(userIdList != null && userIdList.size() > 0){
+//				list = new ArrayList<LabelValueBean>();
+//				for(int i = 0; i < userIdList.size(); i++){
+//					list.add(new LabelValueBean(userIdList.get(i).getUSER_ID(), userIdList.get(i).getUSER_ID()));
+//				}
+//			}
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		list = list == null? null : list.size() == 0? null : list;
+//		System.out.println("list>>" + list);
+//		return list;
+//	}
 	
 	
 	//找出所有USER_COMPANY清單
-	public List<LabelValueBean> getUserCompanyList(){
-		List<EACH_USER_PK> usercompanyList = null;
-		List<LabelValueBean> list = null;
-		try{
-			usercompanyList = each_user_Dao.getUserCompanyList();
-			if(usercompanyList != null && usercompanyList.size() > 0){
-				list = new ArrayList<LabelValueBean>();
-				for(int i = 0; i < usercompanyList.size(); i++){
-					list.add(new LabelValueBean(usercompanyList.get(i).getUSER_COMPANY(), usercompanyList.get(i).getUSER_COMPANY()));
-				}
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		list = list == null? null : list.size() == 0? null : list;
-		System.out.println("list>>" + list);
-		return list;
-	}	
+//	public List<LabelValueBean> getUserCompanyList(){
+//		List<EACH_USER_PK> usercompanyList = null;
+//		List<LabelValueBean> list = null;
+//		try{
+//			usercompanyList = each_user_Dao.getUserCompanyList();
+//			if(usercompanyList != null && usercompanyList.size() > 0){
+//				list = new ArrayList<LabelValueBean>();
+//				for(int i = 0; i < usercompanyList.size(); i++){
+//					list.add(new LabelValueBean(usercompanyList.get(i).getUSER_COMPANY(), usercompanyList.get(i).getUSER_COMPANY()));
+//				}
+//			}
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		list = list == null? null : list.size() == 0? null : list;
+//		System.out.println("list>>" + list);
+//		return list;
+//	}	
 	//根據user_type找出關聯的USER_COMPANY清單
-	public List<LabelValueBean> getUserCompanyList(String user_type){
-		List<EACH_USER_PK> usercompanyList = null;
-		List<LabelValueBean> list = null;
-		try{
-			usercompanyList = each_user_Dao.getUserCompanyList(user_type);
-			if(usercompanyList != null && usercompanyList.size() > 0){
-				list = new ArrayList<LabelValueBean>();
-				for(int i = 0; i < usercompanyList.size(); i++){
-					list.add(new LabelValueBean(usercompanyList.get(i).getUSER_COMPANY(), usercompanyList.get(i).getUSER_COMPANY()));
-				}
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		list = list == null? null : list.size() == 0? null : list;
-		System.out.println("list>>" + list);
-		return list;
-	}	
+//	public List<LabelValueBean> getUserCompanyList(String user_type){
+//		List<EACH_USER_PK> usercompanyList = null;
+//		List<LabelValueBean> list = null;
+//		try{
+//			usercompanyList = each_user_Dao.getUserCompanyList(user_type);
+//			if(usercompanyList != null && usercompanyList.size() > 0){
+//				list = new ArrayList<LabelValueBean>();
+//				for(int i = 0; i < usercompanyList.size(); i++){
+//					list.add(new LabelValueBean(usercompanyList.get(i).getUSER_COMPANY(), usercompanyList.get(i).getUSER_COMPANY()));
+//				}
+//			}
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		list = list == null? null : list.size() == 0? null : list;
+//		System.out.println("list>>" + list);
+//		return list;
+//	}	
 	
 	//找出所有功能清單
 	public List getFuncList(){

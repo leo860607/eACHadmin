@@ -44,7 +44,7 @@ public class UndoneController {
     @Operation(summary = "業務 API", description = "總行業務下拉選單")
     @GetMapping(value = "/bsTypeIdList")
     public List<Map<String, String>> bsTypeIdList () {
-        return OnblockNotTradResS.getBsTypeIdList();
+        return undoneService.getBsTypeIdList();
     }
 
 	// 查詢

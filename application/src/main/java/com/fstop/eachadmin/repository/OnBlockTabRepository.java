@@ -1,15 +1,28 @@
 package com.fstop.eachadmin.repository;
 
 
-import tw.org.twntch.po.ONBLOCKTAB;
-import tw.org.twntch.po.ONBLOCKTAB_PK;
-import tw.org.twntch.util.AutoAddScalar;
-import tw.org.twntch.util.NumericUtil;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.sql.CallableStatement;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.SQLQuery;
+import org.hibernate.internal.SessionImpl;
+import org.hibernate.transform.Transformers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import util.AutoAddScalar;
+import util.NumericUtil;
+
 @Repository
-public class OnBlockTabDao extends JpaRepository<ONBLOCKTAB, ONBLOCKTAB_PK> {
+public class OnBlockTabRepository  {
+	@Autowired 
+	private JdbcTemplate jdbcTemplate;
 
     public List<Map> getTXNLOG_Detail(String sql, java.util.List<String> values) {
         return getDataRetMap(sql, values);
