@@ -14,10 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fstop.eachadmin.repository.BUSINESS_TYPE_Dao;
-import com.fstop.infra.dao.onpendingtabDao;
-import com.fstop.infra.entity.BUSINESS_TYPE;
-import com.fstop.infra.entity.onpendingtab;
-import com.fstop.infra.entity.onpendingtabPK;
+import com.fstop.infra.dao.OnPendingTabRepository;
+import com.fstop.infra.entity.BusinessType;
+import com.fstop.infra.entity.OnPendingTab;
+import com.fstop.infra.entity.OnPendingTabPk;
 
 import util.messageConverter;
 import util.DateTimeUtils;
@@ -27,7 +27,9 @@ import util.zDateHandler;
 import util.socketPackage.Body;
 import util.socketPackage.Header;
 
-import com.fstop.eachadmin.dto.DetailSendFuncDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fstop.eachadmin.dto.SendRq;
+import com.fstop.eachadmin.dto.SendRs;
 
 
 @Service
@@ -37,7 +39,7 @@ public class OnblockNotTradResService {
 	private BUSINESS_TYPE_Dao business_type_Dao ;
 	
 	@Autowired
-	onpendingtabDao onpendingtabR;
+	OnPendingTabRepository OnPendingTabR;
 
 	
 	// businessLabel
@@ -79,7 +81,7 @@ public class OnblockNotTradResService {
 	
 	
     //details----請求傳送未完成交易結果(1406)
-    public String send_1406(Map<String, String> param){
+    public SendRs send_1406(SendRq param){
 		/* 查詢未完成交易處理結果 
 			<?xml version="1.0" encoding="UTF-8" standalone="yes"?> 
 			<msg> 
@@ -102,36 +104,38 @@ public class OnblockNotTradResService {
 		 */
 		String json = "{}";
 		//String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
-		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
-		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;//bsformdto
+//		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;//innput
+		String stan = StrUtils.isNotEmpty(param.getStan())?param.getStan():"" ;//innput
+//		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;//innput
+		String txdate = StrUtils.isNotEmpty(param.getTxdate())?param.getTxdate():"" ;//innput
 		txdate = DateTimeUtils.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
 		String resultCode = "";
 		Map rtnMap = new HashMap();
 		try {
 			//先檢查onpendingtab中是否有該筆資料存在
-			onpendingtabPK id = new onpendingtabPK(txdate, stan);
-			Optional<onpendingtab> po = onpendingtabR.findById(id);
+			OnPendingTabPk id = new OnPendingTabPk(txdate, stan);
+			Optional<OnPendingTab> po = OnPendingTabR.findById(id);
 			if(po == null){
-				rtnMap.put("result", "FALSE");
-				rtnMap.put("msg", "失敗，資料尚未轉移，PK={STAN:"+stan+",TXDATE:"+txdate+"}");
+				rtnMap.put("result", "FALSE");//outtput
+				rtnMap.put("msg", "失敗，資料尚未轉移，PK={STAN:"+stan+",TXDATE:"+txdate+"}");//outtput
 			}else{
 //				20150529 add by hugo req by UAT-20150526-06
 				if(po.get().getBIZDATE() !=null){//表示已有處理結果
-					rtnMap.put("result", "FALSE");
-					rtnMap.put("msg", "已有未完成交易處理結果，營業日="+po.get().getBIZDATE());
+					rtnMap.put("result", "FALSE");//outtput
+					rtnMap.put("msg", "已有未完成交易處理結果，營業日="+po.get().getBIZDATE());//outtput
 				//TODO
 				//	json = JSONUtils.map2json(rtnMap);
-					return json;
+//					return json;
 				}
 				Header msgHeader = new Header();
-				msgHeader.setSystemHeader("eACH01");//11
-				msgHeader.setMsgType("0100");//11
-				msgHeader.setPrsCode("1406");//11
-				msgHeader.setStan("");//此案例未使用//11
-				msgHeader.setInBank("0000000");//11
-				msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」//11
-				msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));//11
-				msgHeader.setRspCode("0000");//11
+				msgHeader.setSystemHeader("eACH01");
+				msgHeader.setMsgType("0100");
+				msgHeader.setPrsCode("1406");
+				msgHeader.setStan("");//此案例未使用
+				msgHeader.setInBank("0000000");
+				msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
+				msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
+				msgHeader.setRspCode("0000");
 				socketPackage msg = new socketPackage();
 				msg.setHeader(msgHeader);
 				Body body = new Body();
@@ -146,16 +150,21 @@ public class OnblockNotTradResService {
 		} catch ( JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			rtnMap.put("result", "FALSE");
-			rtnMap.put("msg", "失敗，電文發送異常");
+			rtnMap.put("result", "FALSE");//outtput
+			rtnMap.put("msg", "失敗，電文發送異常");//outtput
 		}catch(Exception ee){
 			ee.printStackTrace();
-			rtnMap.put("result", "FALSE");
-			rtnMap.put("msg", "失敗，系統異常");
+			rtnMap.put("result", "FALSE");//outtput
+			rtnMap.put("msg", "失敗，系統異常");//outtput
 		}
 		//TODO
+		//object mapper把JS轉RS型別
+		
 //		json = JSONUtils.map2json(rtnMap);//json先不搬
-		return json;
+//		return json;
+		ObjectMapper mapper = new ObjectMapper();
+		SendRs result = mapper.convertValue(rtnMap, SendRs.class);
+		return result;
 	}
 //
 //=============================================================================
@@ -163,7 +172,7 @@ public class OnblockNotTradResService {
     
 	//===========================================================
 	//details----請求傳送確認訊息(1400)
-    public String send_1400(Map<String, String> param){
+    public SendRs send_1400(SendRq param){
 		/* 請求傳送確認訊息			
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?> 
 <msg> 
@@ -187,18 +196,20 @@ public class OnblockNotTradResService {
 
 		 */
 		String json = "{}";
-		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
-		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;
+//		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;//innput
+//		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;//innput
+		String stan = StrUtils.isNotEmpty(param.getStan())?param.getStan():"" ;//innput
+		String txdate = StrUtils.isNotEmpty(param.getTxdate())?param.getTxdate():"" ;//innput
 		txdate = DateTimeUtils.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
 		String resultCode = "";
 		Map rtnMap = new HashMap();
 		try {
 			//先檢查onpendingtab中是否有該筆資料存在
-			onpendingtabPK id = new onpendingtabPK(txdate, stan);
-			Optional<onpendingtab> po = onpendingtabR.findById(id);
+			OnPendingTabPk id = new OnPendingTabPk(txdate, stan);
+			Optional<OnPendingTab> po = OnPendingTabR.findById(id);
 			if(po != null){
-				rtnMap.put("result", "FALSE");
-				rtnMap.put("msg", "失敗，資料已轉移，PK={STAN:"+stan+",TXDATE:"+txdate+"}");
+				rtnMap.put("result", "FALSE");//outtput
+				rtnMap.put("msg", "失敗，資料已轉移，PK={STAN:"+stan+",TXDATE:"+txdate+"}");//outtput
 			}else{
 				Header msgHeader = new Header();
 				msgHeader.setSystemHeader("eACH01");
@@ -223,16 +234,22 @@ public class OnblockNotTradResService {
 		} catch ( JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			rtnMap.put("result", "FALSE");
-			rtnMap.put("msg", "失敗，電文發送異常");
+			rtnMap.put("result", "FALSE");//outtput
+			rtnMap.put("msg", "失敗，電文發送異常");//outtput
 		}catch(Exception ee){
 			ee.printStackTrace();
-			rtnMap.put("result", "FALSE");
-			rtnMap.put("msg", "失敗，系統異常");
+			rtnMap.put("result", "FALSE");//outtput
+			rtnMap.put("msg", "失敗，系統異常");//outtput
 		}
 		
+		//TODO
+		//object mapper 轉RS型別
+		ObjectMapper mapper = new ObjectMapper();
+		SendRs response = mapper.convertValue(rtnMap, SendRs.class);
+		
 //		json = JSONUtils.map2json(rtnMap);
-		return json;
+//		return json;
+		return response;
 	}
 	
 //===============================================================================

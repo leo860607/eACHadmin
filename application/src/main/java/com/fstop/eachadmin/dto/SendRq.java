@@ -1,5 +1,6 @@
 package com.fstop.eachadmin.dto;
 
+
 import java.util.List;
 
 
@@ -11,7 +12,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DetailSendFuncDto {
+public class SendRq {
 	
 	@Schema(description = "")
 	@JsonProperty("stan")

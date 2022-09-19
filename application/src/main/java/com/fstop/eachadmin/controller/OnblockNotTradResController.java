@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fstop.eachadmin.dto.DetailSendFuncDto;
+import com.fstop.eachadmin.dto.SendRq;
+import com.fstop.eachadmin.dto.SendRs;
 import com.fstop.eachadmin.dto.searchDataDto;
 import com.fstop.eachadmin.service.OnblockNotTradResService;
 
@@ -50,16 +51,16 @@ public class OnblockNotTradResController {
     //controller
     @Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
     @GetMapping(value = "/send_1406data")
-    public String send_1406(@RequestBody DetailSendFuncDto param){
-        return "service send_1406()";
+    public SendRs send_1406(@RequestBody SendRq param){
+    	return OnblockNotTradResS.send_1406(param);
     }
     
     //return json
     //controller
     @Operation(summary = "請求傳送確認訊息(1400)", description = "API功能說明")
     @GetMapping(value = "/send_1400data")
-    public String send_1400(@RequestBody DetailSendFuncDto param){
-        return "service send_1400()";
+    public SendRs send_1400(@RequestBody SendRq param){
+        return OnblockNotTradResS.send_1400( param);
 }
 
 }

@@ -23,7 +23,7 @@ public class OnPendingTab implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 7521516122770873553L;
-	private onpendingtabPK id;
+	private OnPendingTabPk id;
 	private String PCODE;
 	private String CLEARINGCODE;
 	private String OBIZDATE;
