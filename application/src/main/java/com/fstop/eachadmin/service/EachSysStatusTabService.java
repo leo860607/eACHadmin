@@ -6,15 +6,16 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import tw.org.twntch.db.dao.hibernate.EACHSYSSTATUSTAB_Dao;
+import com.fstop.eachadmin.repository.EachSysStatusTabRepository;
 import com.fstop.infra.entity.EACHSYSSTATUSTAB;
+
 import util.DateTimeUtils;
 import util.JSONUtils;
 import util.StrUtils;
 import util.zDateHandler;
 
 public class EachSysStatusTabService {
-	private EACHSYSSTATUSTAB_Dao eachsysstatustab_Dao;
+	private EachSysStatusTabRepository eachSysStatusTabRepository;
 	private WkDateService WkDateService;
 	
 	public String checkBizDate(Map<String, String> params){

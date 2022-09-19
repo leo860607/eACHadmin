@@ -1,39 +1,35 @@
 package com.fstop.eachadmin.service;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-//<<<<<<< HEAD
-import com.fstop.infra.entity.EACHSYSSTATUSTAB;
-import com.fstop.infra.entity.WK_DATE_CALENDAR;
+import org.apache.log4j.Logger;
 
 import tw.org.twntch.db.dao.hibernate.EACHSYSSTATUSTAB_Dao;
 import tw.org.twntch.db.dao.hibernate.WK_DATE_Dao;
-//>>>>>>> 0a1dbed6059ee90a5421435a331f3e7eaf6f90f1
+import tw.org.twntch.po.EACHSYSSTATUSTAB;
+import tw.org.twntch.po.WK_DATE_CALENDAR;
 //import tw.org.twntch.socket.Message;
 //import tw.org.twntch.socket.MessageConverter;
 //import tw.org.twntch.socket.SocketClient;
 //import tw.org.twntch.socket.Message.Body;
 //import tw.org.twntch.socket.Message.Header;
-//<<<<<<< HEAD
-import util.BeanUtils;
-import util.DateTimeUtils;
-import util.JSONUtils;
-import util.StrUtils;
-import util.zDateHandler;
+import tw.org.twntch.util.BeanUtils;
+import tw.org.twntch.util.DateTimeUtils;
+import tw.org.twntch.util.JSONUtils;
+import tw.org.twntch.util.StrUtils;
+import tw.org.twntch.util.zDateHandler;
 
-//>>>>>>> 0a1dbed6059ee90a5421435a331f3e7eaf6f90f1
 public class WkDateService {
 	private WK_DATE_Dao wk_date_Dao;
 	private EACHSYSSTATUSTAB_Dao eachsysstatustab_Dao;
-//	private SocketClient socketClient;
-	private EachUserLogService UserlogService;
-//	private log logger = log.getClass(WkDateService.class.getName());
+	private SocketClient socketClient;
+	private EACH_USERLOG_BO userlog_bo;
+	private Logger logger = Logger.getLogger(WkDateService.class.getName());
 	
 	/**
 	 * 根據目前營業日期往後取下一個營業日期
@@ -67,7 +63,7 @@ public class WkDateService {
 			System.out.println("IS_TXN_DATE>>"+po.getIS_TXN_DATE());
 			ret =true;
 		}
-		log.debug("isTxnDate.ret>>"+ret);
+		logger.debug("isTxnDate.ret>>"+ret);
 		return ret;
 	}
 	/**
@@ -98,8 +94,8 @@ public class WkDateService {
 		String last_date = zDateHandler.getLast_Date_of_Date(date);
 		System.out.println("getFirst_Bizdate_of_Month..first_date>>"+first_date);
 		System.out.println("getFirst_Bizdate_of_Month..last_date>>"+last_date);
-		log.debug("getFirst_Bizdate_of_Month..first_date>>"+first_date);
-		log.debug("getFirst_Bizdate_of_Month..last_date>>"+last_date);
+		logger.debug("getFirst_Bizdate_of_Month..first_date>>"+first_date);
+		logger.debug("getFirst_Bizdate_of_Month..last_date>>"+last_date);
 		List<Map> list =  wk_date_Dao.getFirst_Bizdate_of_Month(first_date, last_date);
 		if(list != null && list.size() !=0){
 			for(Map map:list){
@@ -121,8 +117,8 @@ public class WkDateService {
 		String last_date = zDateHandler.getLast_Date_of_Date(date);
 		System.out.println("getFirst_Bizdate_of_Month..first_date>>"+first_date);
 		System.out.println("getFirst_Bizdate_of_Month..last_date>>"+last_date);
-		log.debug("getFirst_Bizdate_of_Month..first_date>>"+first_date);
-		log.debug("getFirst_Bizdate_of_Month..last_date>>"+last_date);
+		logger.debug("getFirst_Bizdate_of_Month..first_date>>"+first_date);
+		logger.debug("getFirst_Bizdate_of_Month..last_date>>"+last_date);
 		List<Map> list =  wk_date_Dao.getLast_Bizdate_of_Month(first_date, last_date);
 		if(list != null && list.size() !=0){
 			for(Map map:list){
@@ -336,26 +332,26 @@ public class WkDateService {
 			if(wk_date_Dao.createWholeYearData(twYear)){
 				rtnMap.put("result", "TRUE");
 				rtnMap.put("msg", "民國" + twYear + "資料已產生!");
-				UserlogService.addLog("A", "成功，民國" + twYear + "資料已產生!", pkmap, pkmap);
+				userlog_bo.addLog("A", "成功，民國" + twYear + "資料已產生!", pkmap, pkmap);
 			}else{
 				rtnMap.put("result", "FALSE");
 				rtnMap.put("msg", "資料產生失敗!");
 				logmap.putAll(rtnMap);
-				UserlogService.writeFailLog("A", logmap, null, null, pkmap);
+				userlog_bo.writeFailLog("A", logmap, null, null, pkmap);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
 			rtnMap.put("result", "FALSE");
 			rtnMap.put("msg", "資料產生時發生錯誤!");
 			logmap.putAll(rtnMap);
-			UserlogService.writeFailLog("A", logmap, null, null, pkmap);
+			userlog_bo.writeFailLog("A", logmap, null, null, pkmap);
 		}
 		return rtnMap;
 	}
 	
 	public Map<String, String> send(WK_DATE_CALENDAR po){
 		Map<String, String> rtnMap = null;
-//		try{
+		try{
 			/* 產生電文內容
 			<header> 
 		        <SystemHeader>eACH01</SystemHeader> 
@@ -372,28 +368,28 @@ public class WkDateService {
 		         <IsBizDate></IsBizDate> 
 		    </body> 
 			*/
-//			Header msgHeader = new Header();
-//			msgHeader.setSystemHeader("eACH01");
-//			msgHeader.setMsgType("0100");
-//			msgHeader.setPrsCode("9101");
-//			msgHeader.setStan(wk_date_Dao.getStan());
-//			msgHeader.setInBank("0000000");
-//			msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
-//			msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
-//			msgHeader.setRspCode("0000");
-//			Message msg = new Message();
-//			msg.setHeader(msgHeader);
-//			Body body = new Body();
-//			body.setBizDate(DateTimeUtils.convertDate(po.getTXN_DATE(), "yyyyMMdd", "yyyyMMdd"));
-//			body.setIsBizDate(po.getIS_TXN_DATE());
-//			msg.setBody(body);
-//			String telegram = MessageConverter.marshalling(msg);
-//			rtnMap = socketClient.send(telegram);
-//			rtnMap.put("STAN", msgHeader.getStan());
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}
-//		return rtnMap;
+			Header msgHeader = new Header();
+			msgHeader.setSystemHeader("eACH01");
+			msgHeader.setMsgType("0100");
+			msgHeader.setPrsCode("9101");
+			msgHeader.setStan(wk_date_Dao.getStan());
+			msgHeader.setInBank("0000000");
+			msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
+			msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
+			msgHeader.setRspCode("0000");
+			Message msg = new Message();
+			msg.setHeader(msgHeader);
+			Body body = new Body();
+			body.setBizDate(DateTimeUtils.convertDate(po.getTXN_DATE(), "yyyyMMdd", "yyyyMMdd"));
+			body.setIsBizDate(po.getIS_TXN_DATE());
+			msg.setBody(body);
+			String telegram = MessageConverter.marshalling(msg);
+			rtnMap = socketClient.send(telegram);
+			rtnMap.put("STAN", msgHeader.getStan());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return rtnMap;
 	}
 	
 	//傳入修改前的營業日，欲修改的日期, 是否為營業日
@@ -457,17 +453,17 @@ public class WkDateService {
 	public void setEachsysstatustab_Dao(EACHSYSSTATUSTAB_Dao eachsysstatustab_Dao) {
 		this.eachsysstatustab_Dao = eachsysstatustab_Dao;
 	}
-//	public SocketClient getSocketClient() {
-//		return socketClient;
-//	}
-//	public void setSocketClient(SocketClient socketClient) {
-//		this.socketClient = socketClient;
-//	}
-	public EachUserLogService getUserlogService() {
-		return UserlogService;
+	public SocketClient getSocketClient() {
+		return socketClient;
 	}
-	public void setUserlog_bo(EachUserLogService UserlogService) {
-		this.UserlogService = UserlogService;
+	public void setSocketClient(SocketClient socketClient) {
+		this.socketClient = socketClient;
+	}
+	public EACH_USERLOG_BO getUserlog_bo() {
+		return userlog_bo;
+	}
+	public void setUserlog_bo(EACH_USERLOG_BO userlog_bo) {
+		this.userlog_bo = userlog_bo;
 	}
 	
 }
