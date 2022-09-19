@@ -27,8 +27,8 @@ import util.GenericsUtils;
 @Repository
 public class BusinessTypeRepository {
 	
-//    @Autowired
-//    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 	
 	// 暫時測試用
 	public List<?> testFunction(){

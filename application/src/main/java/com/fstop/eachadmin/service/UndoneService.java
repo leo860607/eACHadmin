@@ -6,8 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-// import java.util.Optional;
-// import java.util.Set;
+
 import java.util.Optional;
 
 import javax.xml.bind.JAXBException;
@@ -22,7 +21,7 @@ import com.fstop.eachadmin.repository.BankGroupRepository;
 import com.fstop.eachadmin.repository.BusinessTypeRepository;
 import com.fstop.eachadmin.repository.CommonSpringRepository;
 import com.fstop.eachadmin.repository.OnPendingTabRepository;
-import com.fstop.eachadmin.repository.OnPendingTabRepository;
+
 import com.fstop.eachadmin.repository.Page;
 import com.fstop.infra.entity.BANK_GROUP;
 import com.fstop.infra.entity.BANK_OPBK;
@@ -31,10 +30,8 @@ import com.fstop.infra.entity.BUSINESS_TYPE;
 import com.fstop.eachadmin.dto.UndoneSendRq;
 import com.fstop.eachadmin.dto.UndoneSendRs;
 
-// import com.fstop.infra.entity.BankGroup;
 import com.fstop.infra.entity.ONPENDINGTAB;
 import com.fstop.infra.entity.ONPENDINGTAB_PK;
-// import com.fstop.infra.entity.UndoneTxData;
 
 import com.fstop.infra.entity.UNDONE_TXDATA;
 
@@ -73,12 +70,12 @@ public class UndoneService {
 		// List<BANK_OPBK> list = business_type_Dao.getAllOpbkList(sql);
 		// TODO:
 		// jdbc 還沒有好, 暫時先用
-		List<BANK_OPBK> list = (List<BANK_OPBK>) businessTypeRepository.testFunction();
+		List<BANK_GROUP> list = bankGroupRepository.getBgbkIdList_Not_5_And_6();
 		List<Map<String, String>> beanList = new LinkedList<Map<String, String>>();
 
 		Map<String, String> bean = null;
 
-		for (BANK_OPBK po : list) {
+		for (BANK_GROUP po : list) {
 			po.getOPBK_ID();
 			String k = (String) po.getOPBK_ID() + " - " + po.getOPBK_NAME();
 			String v = (String) po.getOPBK_ID();
@@ -348,7 +345,7 @@ public class UndoneService {
 		 * 
 		 */
 		String json = "{}";
-		//  String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
+		// String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
 //		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;//innput
 		String stan = StrUtils.isNotEmpty(param.getStan()) ? param.getStan() : "";// innput
 //		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;//innput
@@ -357,7 +354,7 @@ public class UndoneService {
 		String resultCode = "";
 		Map rtnMap = new HashMap();
 		try {
-			//  先檢查onpendingtab中是否有該筆資料存在
+			// 先檢查onpendingtab中是否有該筆資料存在
 			ONPENDINGTAB_PK id = new ONPENDINGTAB_PK(txdate, stan);
 			Optional<ONPENDINGTAB> po = OnPendingTabR.findById(id);
 			if (po == null) {
@@ -376,7 +373,7 @@ public class UndoneService {
 				msgHeader.setSystemHeader("eACH01");
 				msgHeader.setMsgType("0100");
 				msgHeader.setPrsCode("1406");
-				msgHeader.setStan("");//  此案例未使用
+				msgHeader.setStan("");// 此案例未使用
 				msgHeader.setInBank("0000000");
 				msgHeader.setOutBank("9990000"); // 20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
 				msgHeader.setDateTime(zDateHandler.getDateNum() + zDateHandler.getTheTime().replaceAll(":", ""));
@@ -384,23 +381,23 @@ public class UndoneService {
 				socketPackage msg = new socketPackage();
 				msg.setHeader(msgHeader);
 				Body body = new Body();
-				body.setOSTAN(stan);//  bsformdto
-				body.setOTxDate(txdate);//  otxdate11//txdate bsformdto
+				body.setOSTAN(stan);// bsformdto
+				body.setOTxDate(txdate);// otxdate11//txdate bsformdto
 //				body.setResultCode(resultCode);
-				msg.setBody(body);//  11
+				msg.setBody(body);// 11
 				String telegram = messageConverter.marshalling(msg);
-				//  TODO
+				// TODO
 //				rtnMap = socketClient.send(telegram);//socket先註解
 			}
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			rtnMap.put("result", "FALSE");//  outtput
-			rtnMap.put("msg", "失敗，電文發送異常");//  outtput
-		}  catch  (Exception ee)  {
+			rtnMap.put("result", "FALSE");// outtput
+			rtnMap.put("msg", "失敗，電文發送異常");// outtput
+		} catch (Exception ee) {
 			ee.printStackTrace();
-			rtnMap.put("result", "FALSE");//  outtput
-			rtnMap.put("msg", "失敗，系統異常");//  outtput
+			rtnMap.put("result", "FALSE");// outtput
+			rtnMap.put("msg", "失敗，系統異常");// outtput
 		}
 		// TODO
 		// object mapper把JS轉RS型別
@@ -434,7 +431,7 @@ public class UndoneService {
 		String resultCode = "";
 		Map rtnMap = new HashMap();
 		try {
-			//  先檢查onpendingtab中是否有該筆資料存在
+			// 先檢查onpendingtab中是否有該筆資料存在
 			ONPENDINGTAB_PK id = new ONPENDINGTAB_PK(txdate, stan);
 			Optional<ONPENDINGTAB> po = OnPendingTabR.findById(id);
 			if (po != null) {
@@ -445,7 +442,7 @@ public class UndoneService {
 				msgHeader.setSystemHeader("eACH01");
 				msgHeader.setMsgType("0100");
 				msgHeader.setPrsCode("1400");
-				msgHeader.setStan("");//  此案例未使用
+				msgHeader.setStan("");// 此案例未使用
 				msgHeader.setInBank("0000000");
 				msgHeader.setOutBank("9990000"); // 20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
 				msgHeader.setDateTime(zDateHandler.getDateNum() + zDateHandler.getTheTime().replaceAll(":", ""));
@@ -458,18 +455,18 @@ public class UndoneService {
 //				body.setResultCode(resultCode);
 				msg.setBody(body);
 				String telegram = messageConverter.marshalling(msg);
-				//  TODO
+				// TODO
 //				rtnMap = socketClient.send(telegram);
 			}
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			rtnMap.put("result", "FALSE");//  outtput
-			rtnMap.put("msg", "失敗，電文發送異常");//  outtput
-		}  catch  (Exception ee)  {
+			rtnMap.put("result", "FALSE");// outtput
+			rtnMap.put("msg", "失敗，電文發送異常");// outtput
+		} catch (Exception ee) {
 			ee.printStackTrace();
-			rtnMap.put("result", "FALSE");//  outtput
-			rtnMap.put("msg", "失敗，系統異常");//  outtput
+			rtnMap.put("result", "FALSE");// outtput
+			rtnMap.put("msg", "失敗，系統異常");// outtput
 		}
 
 		// TODO
