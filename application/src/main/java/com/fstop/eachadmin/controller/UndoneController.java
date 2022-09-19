@@ -14,6 +14,8 @@ import com.fstop.eachadmin.service.UndoneService;
 import com.fstop.infra.entity.UNDONE_TXDATA;
 import com.fstop.eachadmin.dto.PageSearchRq;
 import com.fstop.eachadmin.dto.PageSearchRs;
+import com.fstop.eachadmin.dto.UndoneSendRq;
+import com.fstop.eachadmin.dto.UndoneSendRs;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -25,13 +27,20 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class UndoneController {
 	@Autowired
 	private OnblockNotTradResService OnblockNotTradResS;
-
+	
+	@Autowired
+	private UndoneService undoneService;
+	
+	
+	
+	//操作行
 	@Operation(summary = "操作行 API", description = "操作行下拉選單資料")
 	@GetMapping(value = "/opbkList")
 	public List<Map<String, String>> opbkList () {
-		return OnblockNotTradResS.getOpbkList();
+		return undoneService.getOpbkList();
 	}
     
+	//業務行
     @Operation(summary = "業務 API", description = "總行業務下拉選單")
     @GetMapping(value = "/bsTypeIdList")
     public List<Map<String, String>> bsTypeIdList () {
@@ -44,5 +53,23 @@ public class UndoneController {
 	public PageSearchRs<UNDONE_TXDATA> pageSearch(@RequestBody PageSearchRq param) {
 		return undoneService.pageSearch(param);
 	}
+	
+	//請求傳送未完成交易結果(1406)
+    @Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
+    @GetMapping(value = "/send_1406data")
+    public UndoneSendRs send_1406(@RequestBody UndoneSendRq param){
+    	return undoneService.send_1406(param);
+    }
+    
+    //return json
+    //controller
+    //請求傳送確認訊息(1400)
+    @Operation(summary = "請求傳送確認訊息(1400)", description = "API功能說明")
+    @GetMapping(value = "/send_1400data")
+    public UndoneSendRs send_1400(@RequestBody UndoneSendRq param){
+        return undoneService.send_1400(param);
+}
+	
+	
 
 }
