@@ -29,11 +29,11 @@ public class TxErrController {
 		return txErrService.pageSearch(param) ;
 	}
 	
-	@Operation(summary = "檢視明細 API", description = "檢視明細")
-	@GetMapping(value = "/detail")
-	public Map((String txdate, String stan) getSearchByPk() {
-		return TxErrService.searchByPk();
-	}
+//	@Operation(summary = "檢視明細 API", description = "檢視明細")
+//	@GetMapping(value = "/detail")
+//	public Map((String txdate, String stan) getSearchByPk() {
+//		return TxErrService.searchByPk();
+//	}
 	
 	
 	
