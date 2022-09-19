@@ -16,7 +16,7 @@ import com.fstop.eachadmin.dto.PageSearchRs;
 import com.fstop.eachadmin.repository.CommonSpringRepository;
 import com.fstop.eachadmin.repository.Page;
 
-import com.fstop.infra.entity.UNDONETXDATA;
+import com.fstop.infra.entity.UNDONE_TXDATA;
 
 import util.DateTimeUtils;
 
@@ -28,7 +28,7 @@ public class UndoneService {
 	private CommonSpringRepository commonSpringRepository;
 
 	// ----------------表單查詢產出------------------------------------------------------
-	public PageSearchRs<UNDONETXDATA> pageSearch(PageSearchRq param) {
+	public PageSearchRs<UNDONE_TXDATA> pageSearch(PageSearchRq param) {
 		List<String> conditions_1 = new ArrayList<String>();
 		List<String> conditions_2 = new ArrayList<String>();
 		// 是否包含整批資料("N"表示不過濾)
@@ -112,10 +112,10 @@ public class UndoneService {
 
 		Map<String, Object> rtnMap = new HashMap<String, Object>();
 
-		List<UNDONETXDATA> list = null;
+		List<UNDONE_TXDATA> list = null;
 		Page page = null;
 		try {
-			list = new ArrayList<UNDONETXDATA>();
+			list = new ArrayList<UNDONE_TXDATA>();
 			String condition_1 = "", condition_2 = "";
 			condition_1 = combine(conditions_1);
 			condition_2 = combine(conditions_2);
@@ -214,7 +214,7 @@ public class UndoneService {
 			System.out.println("sql==>" + sql.toString().toUpperCase());
 //			page = vw_onblocktab_Dao.getDataIII(pageNo, pageSize, cntSQL.toString(), sql.toString(), cols, UNDONE_TXDATA.class);
 // 因為還沒有寫資料庫的串法,所以把跟資料庫相關的Dao都先註解,只留方法 20220914
-			list = (List<UNDONETXDATA>) page.getResult();
+			list = (List<UNDONE_TXDATA>) page.getResult();
 			System.out.println("UNDONE_TXDATA.list>>" + list);
 			list = list != null && list.size() == 0 ? null : list;
 		} catch (Exception e) {
@@ -234,7 +234,7 @@ public class UndoneService {
 		}
 //-------------------資料轉換swagger輸出----------------------------------------------------
 		ObjectMapper mapper = new ObjectMapper();
-		PageSearchRs<UNDONETXDATA> result = mapper.convertValue(rtnMap, PageSearchRs.class);
+		PageSearchRs result = mapper.convertValue(rtnMap, PageSearchRs.class);
 		return result;
 	}
 

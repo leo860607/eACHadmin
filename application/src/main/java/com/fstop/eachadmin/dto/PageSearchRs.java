@@ -11,10 +11,10 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class PageSearchRs<UndoneTxData> {
+public class PageSearchRs<UNDONE_TXDATA> {
 
 	@JsonProperty("dataSumList")
-	private List<UndoneTxData> dataSumList;
+	private List<UNDONE_TXDATA> dataSumList;
 
 	@JsonProperty("total")
 	private Integer total;
@@ -26,6 +26,6 @@ public class PageSearchRs<UndoneTxData> {
 	private Integer records;
 
 	@JsonProperty("rows")
-	private List<UndoneTxData> rows;
+	private List<UNDONE_TXDATA> rows;
 
 }
