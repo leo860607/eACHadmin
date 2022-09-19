@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fstop.eachadmin.dto.PageSearchRq;
+import com.fstop.eachadmin.dto.PageSearchRs;
 import com.fstop.eachadmin.dto.UndoneSendRq;
 import com.fstop.eachadmin.dto.UndoneSendRs;
 
 import com.fstop.eachadmin.dto.searchDataDto;
 import com.fstop.eachadmin.service.OnblockNotTradResService;
 import com.fstop.eachadmin.service.UndoneService;
+import com.fstop.infra.entity.UNDONE_TXDATA;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,13 +44,13 @@ public class OnblockNotTradResController {
     public List<Map<String, String>> bsTypeIdList () {
         return OnblockNotTradResS.getBsTypeIdList();
     }
-
-//  @Operation(summary = "帳單明細 API", description = "API功能說明")
-//  @PostMapping(value = "/billdata")
-//  public String  billData(@RequestBody SearchDataDto param){
-//      return "ok";
-//  }
-
+ 
+    // 查詢
+ 	@Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
+ 	@PostMapping(value = "/pageSearch")
+ 	public PageSearchRs<UNDONE_TXDATA> pageSearch(@RequestBody PageSearchRq param) {
+ 		return UndoneS.pageSearch(param);
+ 	}
 
 	// return json
 	// controller
