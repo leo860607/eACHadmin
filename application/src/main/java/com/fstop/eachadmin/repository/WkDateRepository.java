@@ -1,17 +1,26 @@
 package com.fstop.eachadmin.repository;
 
 
-import tw.org.twntch.po.OPCTRANSACTIONLOGTAB;
-import tw.org.twntch.po.WK_DATE_CALENDAR;
-import tw.org.twntch.util.DateTimeUtils;
-import tw.org.twntch.util.StrUtils;
-import tw.org.twntch.util.zDateHandler;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import java.util.Map;
+
+import org.hibernate.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public class WkDateDao extends JpaRepository<WK_DATE_CALENDAR, java.io.Serializable> {
+import com.fstop.infra.entity.WK_DATE_CALENDAR;
 
+import tw.org.twntch.po.OPCTRANSACTIONLOGTAB;
+import util.DateTimeUtils;
+
+@Repository
+public class WkDateRepository  {
+
+	@Autowired 
+	private JdbcTemplate jdbcTemplate;
+	
     /**
      * @param first_date(西元年)
      * @param last_date(西元年)
