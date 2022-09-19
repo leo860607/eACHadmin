@@ -99,6 +99,8 @@ public class TxErrService {
 			
 			String cols[] = {"ERR_TYPE","TXDATE", "TXDT","STAN","SENDERBANKID","OUTBANKID","INBANKID","SENDERID","PCODE","TXAMT"};
 //			page = onblocktab_Dao.getDataIII(Integer.valueOf(pageNo), Integer.valueOf(pageSize), dummyQuery, sql.toString(), cols, TX_ERR.class);
+
+			// TODO
 			if(countAndSumList != null){
 				page.setTotalCount(Long.parseLong(countAndSumList.get(0).getNUM()));
 			}
@@ -238,7 +240,7 @@ public class TxErrService {
 		return conStr;
 	}
 	
-	public OnBlockTabRepository getOnblocktab_Dao() {
+	public OnBlockTabRepository getonblocktab_Dao() {
 		return onblocktab_Dao;
 	}
 	public void setOnblocktab_Dao(OnBlockTabRepository onblocktab_Dao) {
@@ -247,9 +249,24 @@ public class TxErrService {
 	public VwOnBlockTabRepository getVw_onblocktab_Dao() {
 		return vw_onblocktab_Dao;
 	}
+
+	public OnBlockTabRepository getOnblocktab_Dao() {
+		return onblocktab_Dao;
+	}
+
+	public void setOnBlockTabRepository(OnBlockTabRepository onblocktab_Dao) {
+		this.onblocktab_Dao = onblocktab_Dao;
+	}
+
+	public VwOnBlockTabRepository getvw_onblocktab_Dao() {
+		return vw_onblocktab_Dao;
+	}
+
 	public void setVw_onblocktab_Dao(VwOnBlockTabRepository vw_onblocktab_Dao) {
 		this.vw_onblocktab_Dao = vw_onblocktab_Dao;
 	}
+	
+
 	
 	
 }

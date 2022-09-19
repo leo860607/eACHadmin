@@ -5,15 +5,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.fstop.eachadmin.repository.EachSysStatusTabRepository;
 import com.fstop.infra.entity.EACHSYSSTATUSTAB;
+
 import util.DateTimeUtils;
 import util.JSONUtils;
 import util.StrUtils;
 import util.zDateHandler;
-
+@Service
 public class EachSysStatusTabService {
+	@Autowired
 	private EachSysStatusTabRepository eachsysstatustab_Dao;
 	private WkDateService WkDateService;
 	
@@ -209,7 +213,7 @@ public class EachSysStatusTabService {
 		int tmp  = -1;
 		System.out.println("activeDate>>"+activeDate);
 		try{
-			list = WkDateService.getEachsysstatustab_Dao().getBusinessDate();
+			list = WkDateService.geteachsysstatustab_Dao().getBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 				tmp = zDateHandler.compareDiffDate( activeDate, businessDate , "yyyyMMdd");
