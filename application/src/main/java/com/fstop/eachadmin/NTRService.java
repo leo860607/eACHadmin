@@ -10,7 +10,7 @@ import javax.xml.bind.JAXBException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fstop.infra.dao.onpendingtabDao;
+import com.fstop.infra.dao.OnPendingTabRepository;
 import com.fstop.infra.entity.onpendingtab;
 import com.fstop.infra.entity.onpendingtabPK;
 
@@ -27,7 +27,7 @@ import util.DateTimeUtils;
 public class NTRService {
 	
 	@Autowired
-	onpendingtabDao onpendingtabR;
+	OnPendingTabRepository onpendingtabR;
 	
 	//operation
 	public List<LabelValueBean> getOpbkList(){

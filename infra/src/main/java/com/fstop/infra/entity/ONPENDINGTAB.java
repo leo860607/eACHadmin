@@ -23,7 +23,7 @@ public class ONPENDINGTAB implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 7521516122770873553L;
-	private ONPENDINGTABPK id;
+	private ONPENDINGTAB_PK id;
 	private String PCODE;
 	private String CLEARINGCODE;
 	private String OBIZDATE;
