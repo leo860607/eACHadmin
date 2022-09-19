@@ -12,11 +12,11 @@ import javax.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name="TXNCODE")
+@Entity(name="TXN_CODE")
 @Table(name="MASTER_TXNCODE")
 @Getter
 @Setter
-public class TXNCODE implements Serializable{
+public class TXN_CODE implements Serializable{
 
 	/**
 	 * 

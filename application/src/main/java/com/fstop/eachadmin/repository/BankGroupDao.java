@@ -1,7 +1,6 @@
 package com.fstop.eachadmin.repository;
 
 
-
 import tw.org.twntch.po.BANKAPSTATUSTAB;
 import tw.org.twntch.po.BANKSYSSTATUSTAB;
 import tw.org.twntch.po.BANK_CTBK;

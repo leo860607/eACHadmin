@@ -9,11 +9,11 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name = "BUSINESSTYPE")
+@Entity(name = "BUSINESS_TYPE")
 @Table(name = "MASTER_BUSINESS_TYPE")
 @Getter
 @Setter
-public class BUSINESSTYPE implements Serializable {
+public class BUSINESS_TYPE implements Serializable {
 
 	/**
 	 * 
@@ -61,7 +61,7 @@ public class BUSINESSTYPE implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BUSINESSTYPE other = (BUSINESSTYPE) obj;
+		BUSINESS_TYPE other = (BUSINESS_TYPE) obj;
 		if (BUSINESS_TYPE_ID == null) {
 			if (other.BUSINESS_TYPE_ID != null)
 				return false;

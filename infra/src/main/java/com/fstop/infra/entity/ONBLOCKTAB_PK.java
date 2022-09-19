@@ -8,17 +8,17 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class ONBLOCKTABPK implements Serializable{
+public class ONBLOCKTAB_PK implements Serializable{
     /**
      *
      */
     private static final long serialVersionUID = -7923386334434878672L;
     private  String     TXDATE          ;
     private  String     STAN            ;
-    public ONBLOCKTABPK() {
+    public ONBLOCKTAB_PK() {
         super();
     }
-    public ONBLOCKTABPK(String tXDATE, String sTAN) {
+    public ONBLOCKTAB_PK(String tXDATE, String sTAN) {
         super();
         TXDATE = tXDATE;
         STAN = sTAN;

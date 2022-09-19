@@ -14,9 +14,9 @@ import javax.persistence.Transient;
 
 @Getter
 @Setter
-@Entity(name = "EACHUSER")
-@Table(name = "MASTER_EACHUSER")
-public class EACHUSER implements Serializable {
+@Entity(name = "EACH_USER")
+@Table(name = "MASTER_EACH_USER")
+public class EACH_USER implements Serializable {
 
 
     /**
@@ -60,7 +60,7 @@ public class EACHUSER implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        EACHUSER other = (EACHUSER) obj;
+        EACH_USER other = (EACH_USER) obj;
         if (USER_ID == null) {
             if (other.USER_ID != null)
                 return false;

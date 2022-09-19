@@ -20,7 +20,7 @@ public class ONBLOCKTABPO implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -4790279133399956018L;
-	private ONBLOCKTABPK id;
+	private ONBLOCKTAB_PK id;
 	private  String     TXDATE          ;    
 	private  String     STAN            ;    
 	private  String     PCODE           ;    

@@ -7,16 +7,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BANKBRANCHPK implements Serializable {
+public class BANK_BRANCH_PK implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8605216767974289486L;
 	
-	public BANKBRANCHPK() {
+	public BANK_BRANCH_PK() {
 	}
-	public BANKBRANCHPK(String bGBK_ID, String bRBK_ID) {
+	public BANK_BRANCH_PK(String bGBK_ID, String bRBK_ID) {
 		BGBK_ID = bGBK_ID;
 		BRBK_ID = bRBK_ID;
 	}
@@ -39,7 +39,7 @@ public class BANKBRANCHPK implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BANKBRANCHPK other = (BANKBRANCHPK) obj;
+		BANK_BRANCH_PK other = (BANK_BRANCH_PK) obj;
 		if (BGBK_ID == null) {
 			if (other.BGBK_ID != null)
 				return false;

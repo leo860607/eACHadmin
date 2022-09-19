@@ -2,7 +2,7 @@ package com.fstop.infra.entity;
 
 import java.io.Serializable;
 
-public class ONPENDINGTABPK implements Serializable {
+public class ONPENDINGTAB_PK implements Serializable {
 	/**
 	 * 
 	 */
@@ -11,24 +11,13 @@ public class ONPENDINGTABPK implements Serializable {
 	private String OSTAN;
 	
 	
-	public ONPENDINGTABPK() {
+	public ONPENDINGTAB_PK() {
 	}
-	public ONPENDINGTABPK(String tXDATE, String sTAN) {
+	public ONPENDINGTAB_PK(String tXDATE, String sTAN) {
 		OTXDATE = tXDATE;
 		OSTAN = sTAN;
 	}
-	public String getOTXDATE() {
-		return OTXDATE;
-	}
-	public void setOTXDATE(String tXDATE) {
-		OTXDATE = tXDATE;
-	}
-	public String getOSTAN() {
-		return OSTAN;
-	}
-	public void setOSTAN(String sTAN) {
-		OSTAN = sTAN;
-	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -45,7 +34,7 @@ public class ONPENDINGTABPK implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ONPENDINGTABPK other = (ONPENDINGTABPK) obj;
+		ONPENDINGTAB_PK other = (ONPENDINGTAB_PK) obj;
 		if (OSTAN == null) {
 			if (other.OSTAN != null)
 				return false;

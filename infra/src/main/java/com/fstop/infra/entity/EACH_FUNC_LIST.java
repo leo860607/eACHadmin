@@ -12,11 +12,11 @@ import javax.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name= "EACHFUNLIST")
+@Entity(name= "EACH_FUNC_LIST")
 @Table(name="Master_EachFuncList")
 @Getter
 @Setter
-public class EACHFUNLIST implements Serializable {
+public class EACH_FUNC_LIST implements Serializable {
 
     /**
      *
@@ -100,7 +100,7 @@ public class EACHFUNLIST implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        EACHFUNLIST other = (EACHFUNLIST) obj;
+        EACH_FUNC_LIST other = (EACH_FUNC_LIST) obj;
         if (AUTH_TYPE == null) {
             if (other.AUTH_TYPE != null)
                 return false;

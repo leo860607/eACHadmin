@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EACHUSERLOGPK implements Serializable {
+public class EACH_USERLOG_PK implements Serializable {
 
 	/**
 	 * 
@@ -18,9 +18,9 @@ public class EACHUSERLOGPK implements Serializable {
 	private String USERID;
 	
 	
-	public EACHUSERLOGPK() {
+	public EACH_USERLOG_PK() {
 	}
-	public EACHUSERLOGPK(String sERNO, String uSER_COMPANY, String uSERID) {
+	public EACH_USERLOG_PK(String sERNO, String uSER_COMPANY, String uSERID) {
 		SERNO = sERNO;
 		USER_COMPANY = uSER_COMPANY;
 		USERID = uSERID;
@@ -61,7 +61,7 @@ public class EACHUSERLOGPK implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		EACHUSERLOGPK other = (EACHUSERLOGPK) obj;
+		EACH_USERLOG_PK other = (EACH_USERLOG_PK) obj;
 		if (SERNO == null) {
 			if (other.SERNO != null)
 				return false;

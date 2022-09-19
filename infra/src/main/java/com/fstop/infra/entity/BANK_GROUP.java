@@ -10,11 +10,11 @@ import javax.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name = "BANKGROUP")
+@Entity(name = "BANK_GROUP")
 @Table(name = "MASTER_BANK_GROUP")
 @Getter
 @Setter
-public class BANKGROUP implements Serializable {
+public class BANK_GROUP implements Serializable {
 	private static final long serialVersionUID = 4098412301586046065L;
 
 	@Transient

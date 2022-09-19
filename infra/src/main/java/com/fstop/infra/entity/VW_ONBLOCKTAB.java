@@ -14,11 +14,11 @@ import javax.persistence.Transient;
 
 import lombok.Getter;
 import lombok.Setter;
-@Entity(name="tw.org.twntch.po.VW_ONBLOCKTAB")
-@Table(name = "VW_ONBLOCKTAB")
+@Entity(name="VW_ONBLOCKTAB")
+@Table(name = "MASTER_VW_ONBLOCKTAB")
 @Getter
 @Setter
-public class VWONBLOCKTAB implements Serializable{
+public class VW_ONBLOCKTAB implements Serializable{
 	
 	private String ACCTBAL;
 	private String ACCTCODE;

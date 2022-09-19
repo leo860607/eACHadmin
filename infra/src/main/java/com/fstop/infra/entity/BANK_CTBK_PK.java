@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BANKCTBKPK  implements Serializable{
+public class BANK_CTBK_PK  implements Serializable{
 
 	/**
 	 * 
@@ -16,10 +16,10 @@ public class BANKCTBKPK  implements Serializable{
 	private String BGBK_ID;
 	private String START_DATE;
 	
-	public BANKCTBKPK() {
+	public BANK_CTBK_PK() {
 	}
 	
-	public BANKCTBKPK(String bGBK_ID, String sTART_DATE) {
+	public BANK_CTBK_PK(String bGBK_ID, String sTART_DATE) {
 		super();
 		BGBK_ID = bGBK_ID;
 		START_DATE = sTART_DATE;
@@ -44,7 +44,7 @@ public class BANKCTBKPK  implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BANKCTBKPK other = (BANKCTBKPK) obj;
+		BANK_CTBK_PK other = (BANK_CTBK_PK) obj;
 		if (BGBK_ID == null) {
 			if (other.BGBK_ID != null)
 				return false;

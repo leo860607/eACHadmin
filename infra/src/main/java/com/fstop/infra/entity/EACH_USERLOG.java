@@ -10,17 +10,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 //<<<<<<< HEAD
-@Entity (name = "EACHUSERLOG")
+@Entity (name = "EACH_USERLOG")
 @Table(name = "MASTER_EACH_USERLOG")
 @Getter
 @Setter
-public class EACHUSERLOG implements Serializable {
+public class EACH_USERLOG implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3291108105128791501L;
-	private EACHUSERLOGPK id;
+	private EACH_USERLOG_PK id;
 	private String USERIP;
 	private String TXTIME;
 	private String UP_FUNC_ID;
@@ -48,7 +48,7 @@ public class EACHUSERLOG implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		EACHUSERLOG other = (EACHUSERLOG) obj;
+		EACH_USERLOG other = (EACH_USERLOG) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
