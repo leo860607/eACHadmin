@@ -1,6 +1,7 @@
 package com.fstop.eachadmin.dto;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TxErrRq<VW_ONBLOCKTAB> {
+public abstract class TxErrRq<VW_ONBLOCKTAB> implements Map<String,String> {
 	
 	@Schema(description = "營業日期")
 	@JsonProperty("BIZDATE")
