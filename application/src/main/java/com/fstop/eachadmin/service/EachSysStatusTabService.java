@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import tw.org.twntch.db.dao.hibernate.EACHSYSSTATUSTAB_Dao;
+import com.fstop.eachadmin.repository.EachSysStatusTabRepository;
 import com.fstop.infra.entity.EACHSYSSTATUSTAB;
 import util.DateTimeUtils;
 import util.JSONUtils;
@@ -14,7 +14,7 @@ import util.StrUtils;
 import util.zDateHandler;
 
 public class EachSysStatusTabService {
-	private EACHSYSSTATUSTAB_Dao eachsysstatustab_Dao;
+	private EachSysStatusTabRepository eachsysstatustab_Dao;
 	private WkDateService WkDateService;
 	
 	public String checkBizDate(Map<String, String> params){
@@ -378,11 +378,11 @@ public class EachSysStatusTabService {
 		return data;
 	}
 	
-	public EACHSYSSTATUSTAB_Dao getEachsysstatustab_Dao() {
+	public EachSysStatusTabRepository getEachsysstatustab_Dao() {
 		return eachsysstatustab_Dao;
 	}
 
-	public void setEachsysstatustab_Dao(EACHSYSSTATUSTAB_Dao eachsysstatustab_Dao) {
+	public void setEachsysstatustab_Dao(EachSysStatusTabRepository eachsysstatustab_Dao) {
 		this.eachsysstatustab_Dao = eachsysstatustab_Dao;
 	}
 	public WkDateService getWkDateService() {

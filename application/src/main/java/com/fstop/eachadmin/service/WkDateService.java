@@ -1,36 +1,35 @@
 package com.fstop.eachadmin.service;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-//<<<<<<< HEAD
+import lombok.extern.slf4j.Slf4j;
+
+import com.fstop.eachadmin.repository.EachSysStatusTabRepository;
+import com.fstop.eachadmin.repository.WkDateRepository;
 import com.fstop.infra.entity.EACHSYSSTATUSTAB;
 import com.fstop.infra.entity.WK_DATE_CALENDAR;
-
-import tw.org.twntch.db.dao.hibernate.EACHSYSSTATUSTAB_Dao;
-import tw.org.twntch.db.dao.hibernate.WK_DATE_Dao;
-//>>>>>>> 0a1dbed6059ee90a5421435a331f3e7eaf6f90f1
+import com.fstop.infra.entity.EACHSYSSTATUSTAB;
+import com.fstop.infra.entity.WK_DATE_CALENDAR;
 //import tw.org.twntch.socket.Message;
 //import tw.org.twntch.socket.MessageConverter;
 //import tw.org.twntch.socket.SocketClient;
 //import tw.org.twntch.socket.Message.Body;
 //import tw.org.twntch.socket.Message.Header;
-//<<<<<<< HEAD
 import util.BeanUtils;
 import util.DateTimeUtils;
 import util.JSONUtils;
 import util.StrUtils;
 import util.zDateHandler;
 
-//>>>>>>> 0a1dbed6059ee90a5421435a331f3e7eaf6f90f1
+@Slf4j
 public class WkDateService {
-	private WK_DATE_Dao wk_date_Dao;
-	private EACHSYSSTATUSTAB_Dao eachsysstatustab_Dao;
+	private WkDateRepository wk_date_Dao;
+	private EachSysStatusTabRepository eachsysstatustab_Dao;
 //	private SocketClient socketClient;
 	private EachUserLogService UserlogService;
 //	private log logger = log.getClass(WkDateService.class.getName());
@@ -393,7 +392,7 @@ public class WkDateService {
 //		}catch(Exception e){
 //			e.printStackTrace();
 //		}
-//		return rtnMap;
+		return rtnMap;
 	}
 	
 	//傳入修改前的營業日，欲修改的日期, 是否為營業日
@@ -444,17 +443,17 @@ public class WkDateService {
 		}
 	}
 
-	public WK_DATE_Dao getWk_date_Dao() {
+	public WkDateRepository getWk_date_Dao() {
 		return wk_date_Dao;
 	}
 
-	public void setWk_date_Dao(WK_DATE_Dao wk_date_Dao) {
+	public void setWk_date_Dao(WkDateRepository wk_date_Dao) {
 		this.wk_date_Dao = wk_date_Dao;
 	}
-	public EACHSYSSTATUSTAB_Dao getEachsysstatustab_Dao() {
+	public EachSysStatusTabRepository getEachsysstatustab_Dao() {
 		return eachsysstatustab_Dao;
 	}
-	public void setEachsysstatustab_Dao(EACHSYSSTATUSTAB_Dao eachsysstatustab_Dao) {
+	public void setEachsysstatustab_Dao(EachSysStatusTabRepository eachsysstatustab_Dao) {
 		this.eachsysstatustab_Dao = eachsysstatustab_Dao;
 	}
 //	public SocketClient getSocketClient() {
