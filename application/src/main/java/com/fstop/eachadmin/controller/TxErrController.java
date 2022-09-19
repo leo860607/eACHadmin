@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fstop.eachadmin.dto.TxErrDto;
+import com.fstop.eachadmin.dto.TxErrRq;
+import com.fstop.eachadmin.dto.TxErrRs;
+import com.fstop.eachadmin.dto.SendRq;
+import com.fstop.eachadmin.dto.SendRs;
 import com.fstop.eachadmin.service.TxErrService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,5 +42,18 @@ public class TxErrController {
 	public String txerrunknown() {
 		return "123";
 	}
+	
+	 @Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
+	 @GetMapping(value = "/send_1406data")
+	 public SendRs send_1406(@RequestBody SendRq param){
+	    return OnblockNotTradResS.send_1406(param);
+	 }
+	    
+    //return json
+    //controller
+    @Operation(summary = "請求傳送確認訊息(1400)", description = "API功能說明")
+    @GetMapping(value = "/send_1400data")
+    public SendRs send_1400(@RequestBody SendRq param){
+        return OnblockNotTradResS.send_1400( param);
 	
 }

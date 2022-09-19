@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fstop.eachadmin.dto.SendRq;
-import com.fstop.eachadmin.dto.SendRs;
+import com.fstop.eachadmin.dto.UndoneSendRq;
+import com.fstop.eachadmin.dto.UndoneSendRs;
 
 import com.fstop.eachadmin.dto.searchDataDto;
 import com.fstop.eachadmin.service.OnblockNotTradResService;
+import com.fstop.eachadmin.service.UndoneService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -48,6 +49,7 @@ public class OnblockNotTradResController {
 //  }
     
     
+<<<<<<< HEAD
 //  //return json
 //    //controller
 //    @Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
@@ -63,4 +65,21 @@ public class OnblockNotTradResController {
 //    public SendRs send_1400(@RequestBody SendRq param){
 //        return OnblockNotTradResS.send_1400( param);
 //}
+=======
+  //return json
+    //controller
+    @Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
+    @GetMapping(value = "/send_1406data")
+    public UndoneSendRs send_1406(@RequestBody UndoneSendRq param){
+    	return UndoneService.send_1406(param);
+    }
+    
+    //return json
+    //controller
+    @Operation(summary = "請求傳送確認訊息(1400)", description = "API功能說明")
+    @GetMapping(value = "/send_1400data")
+    public UndoneSendRs send_1400(@RequestBody UndoneSendRq param){
+        return UndoneService.send_1400(param);
+}
+>>>>>>> 8d356485c837e9eefa25893104647ea6c1159d92
 }
