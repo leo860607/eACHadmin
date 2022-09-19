@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+
+
 @Entity(name = "BUSINESS_TYPE")
 @Table(name = "MASTER_BUSINESS_TYPE")
 @Getter
@@ -39,6 +41,10 @@ public class BUSINESS_TYPE implements Serializable {
 	 */
 	@Id
 	private	String	BUSINESS_TYPE_ID	;
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	private	String	BUSINESS_TYPE_NAME	;
 	private	String	CDATE	;
 	private	String	UDATE	;

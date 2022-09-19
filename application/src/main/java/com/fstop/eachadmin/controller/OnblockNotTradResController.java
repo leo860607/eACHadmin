@@ -26,18 +26,18 @@ public class OnblockNotTradResController {
 
 	@Autowired
 	private OnblockNotTradResService OnblockNotTradResS;
-
-	@Operation(summary = "操作行 API", description = "操作行下拉選單資料")
-	@GetMapping(value = "/opbkList")
-	public List<Map<String, String>> opbkList () {
-		return OnblockNotTradResS.getOpbkList();
-	}
-    
-    @Operation(summary = "業務 API", description = "總行業務下拉選單")
-    @GetMapping(value = "/bsTypeIdList")
-    public List<Map<String, String>> bsTypeIdList () {
-        return OnblockNotTradResS.getBsTypeIdList();
-    }
+//
+//	@Operation(summary = "操作行 API", description = "操作行下拉選單資料")
+//	@GetMapping(value = "/opbkList")
+//	public List<Map<String, String>> opbkList () {
+//		return OnblockNotTradResS.getOpbkList();
+//	}
+//    
+//    @Operation(summary = "業務 API", description = "總行業務下拉選單")
+//    @GetMapping(value = "/bsTypeIdList")
+//    public List<Map<String, String>> bsTypeIdList () {
+//        return OnblockNotTradResS.getBsTypeIdList();
+//    }
     
 
     
@@ -48,18 +48,19 @@ public class OnblockNotTradResController {
 //  }
     
     
-  //return json
-    //controller
-    @Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
-    @GetMapping(value = "/send_1406data")
-    public SendRs send_1406(@RequestBody SendRq param){
-    	return OnblockNotTradResS.send_1406(param);
-    }
-    
-    //return json
-    //controller
-    @Operation(summary = "請求傳送確認訊息(1400)", description = "API功能說明")
-    @GetMapping(value = "/send_1400data")
-    public SendRs send_1400(@RequestBody SendRq param){
-        return OnblockNotTradResS.send_1400( param);
+//  //return json
+//    //controller
+//    @Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
+//    @GetMapping(value = "/send_1406data")
+//    public SendRs send_1406(@RequestBody SendRq param){
+//    	return OnblockNotTradResS.send_1406(param);
+//    }
+//    
+//    //return json
+//    //controller
+//    @Operation(summary = "請求傳送確認訊息(1400)", description = "API功能說明")
+//    @GetMapping(value = "/send_1400data")
+//    public SendRs send_1400(@RequestBody SendRq param){
+//        return OnblockNotTradResS.send_1400( param);
+//}
 }

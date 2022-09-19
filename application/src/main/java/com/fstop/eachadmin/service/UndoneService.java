@@ -3,7 +3,7 @@ package com.fstop.eachadmin.service;
 import java.util.ArrayList;
 
 import java.util.HashMap;
-
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,9 +13,11 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fstop.eachadmin.dto.PageSearchRq;
 import com.fstop.eachadmin.dto.PageSearchRs;
+import com.fstop.eachadmin.repository.BusinessTypeRepository;
 import com.fstop.eachadmin.repository.CommonSpringRepository;
 import com.fstop.eachadmin.repository.Page;
-
+import com.fstop.infra.entity.BANK_OPBK;
+import com.fstop.infra.entity.BUSINESS_TYPE;
 import com.fstop.infra.entity.UNDONE_TXDATA;
 
 import util.DateTimeUtils;
@@ -26,6 +28,9 @@ import util.StrUtils;
 public class UndoneService {
 	@Autowired
 	private CommonSpringRepository commonSpringRepository;
+	
+	@Autowired
+	private BusinessTypeRepository businessTypeRepository;
 
 	// ----------------表單查詢產出------------------------------------------------------
 	public PageSearchRs<UNDONE_TXDATA> pageSearch(PageSearchRq param) {
@@ -249,5 +254,56 @@ public class UndoneService {
 		}
 		return conStr;
 	}
+	
+//	====================
+	
+	public List<Map<String,String>> getOpbkList () {
+		
+		// String sql = "SELECT COALESCE( OP.OPBK_ID,'' ) AS OPBK_ID , COALESCE( BG.BGBK_NAME ,'' ) AS OPBK_NAME FROM ( SELECT DISTINCT OPBK_ID FROM EACHUSER.BANK_OPBK ) AS OP JOIN ( SELECT BGBK_ID, BGBK_NAME FROM BANK_GROUP WHERE BGBK_ATTR <> '6' ) AS BG ON OP.OPBK_ID = BG.BGBK_ID ORDER BY OP.OPBK_ID ";
+		// List<BANK_OPBK> list = business_type_Dao.getAllOpbkList(sql);
+		// TODO:
+		// jdbc 還沒有好, 暫時先用
+		List<BANK_OPBK> list = (List<BANK_OPBK>) businessTypeRepository.testFunction();
+		List<Map<String,String>> beanList = new LinkedList<Map<String,String>>();
+		
+		Map<String,String> bean = null;
+		
+		for(BANK_OPBK po : list){
+			po.getOPBK_ID();
+			String k =(String) po.getOPBK_ID() + " - " + po.getOPBK_NAME();
+			String v = (String) po.getOPBK_ID();
+			bean = new HashMap<String,String>();
+			bean.put(k, v);
+			beanList.add(bean);
+		}
+		System.out.println("beanList>>" + beanList);
+		return beanList;
+	}
+	
+	// businessLabel
+	public List<Map<String,String>> getBsTypeIdList () {
+		
+		// String sql = "FROM tw.org.twntch.po.BUSINESS_TYPE ORDER BY BUSINESS_TYPE_ID";
+		// List<BUSINESS_TYPE> list = business_type_Dao.find(sql);
+		// TODO:
+		// jdbc 還沒有好, 暫時先用
+		List<BUSINESS_TYPE> list = (List<BUSINESS_TYPE>) businessTypeRepository.testFunction();
+		List<Map<String,String>> beanList = new LinkedList<Map<String,String>>();
+		
+		Map<String,String> bean = null;
+		
+		for (BUSINESS_TYPE po :list) {
+			po.getBUSINESS_TYPE_ID();
+			String k = (String) po.getBUSINESS_TYPE_ID() + " - " + po.getBUSINESS_TYPE_NAME();
+			String v = (String) po.getBUSINESS_TYPE_ID();
+			bean = new HashMap<String,String>();
+			bean.put(k, v);
+			beanList.add(bean);
+		}
+		System.out.println("beanList>>" + beanList);
+		return beanList;
+	
+	
 
+}
 }

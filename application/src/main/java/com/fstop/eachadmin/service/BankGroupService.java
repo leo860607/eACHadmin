@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.fstop.eachadmin.repository.BankGroupRepository;
 import com.fstop.infra.entity.BANK_GROUP;
 @Service
+
 public class BankGroupService {
 	@Autowired
 	private BankGroupRepository bankGroupRepository;

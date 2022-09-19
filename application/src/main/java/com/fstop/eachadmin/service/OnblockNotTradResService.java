@@ -46,11 +46,11 @@ public class OnblockNotTradResService {
 	
 	@Autowired
 	OnPendingTabRepository OnPendingTabR;
-=======
+
 
 @Service
 public class OnblockNotTradResService {
->>>>>>> d13c44925deb5f3bfad91cf49074681bb79932ff
+
 
 	@Autowired
 	private BusinessTypeRepository businessTypeRepository ;
