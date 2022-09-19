@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import tw.org.twntch.util.AutoAddScalar;
-import tw.org.twntch.util.NumericUtil;
+import util.AutoAddScalar;
+import util.NumericUtil;
 
 @Repository
 public class OnBlockTabRepository  {

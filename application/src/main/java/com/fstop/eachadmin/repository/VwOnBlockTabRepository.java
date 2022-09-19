@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.fstop.infra.entity.VW_ONBLOCKTAB;
 
-import tw.org.twntch.util.AutoAddScalar;
+import util.AutoAddScalar;
 
 @Repository
 public class VwOnBlockTabRepository {
