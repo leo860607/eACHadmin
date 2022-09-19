@@ -16,8 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 @Repository
 public class BankGroupRepository {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+//    @Autowired
+//    private JdbcTemplate jdbcTemplate;
     
     
 	@SuppressWarnings("unchecked")

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fstop.eachadmin.dto.SendRq;
 import com.fstop.eachadmin.dto.SendRs;
+
 import com.fstop.eachadmin.dto.searchDataDto;
 import com.fstop.eachadmin.service.OnblockNotTradResService;
 
@@ -28,8 +29,8 @@ public class OnblockNotTradResController {
 
 	@Operation(summary = "操作行 API", description = "操作行下拉選單資料")
 	@GetMapping(value = "/opbkList")
-	public String opbkList () {
-		return "bank_group_bo.getBgbkIdList()";
+	public List<Map<String, String>> opbkList () {
+		return OnblockNotTradResS.getOpbkList();
 	}
     
     @Operation(summary = "業務 API", description = "總行業務下拉選單")
@@ -61,6 +62,4 @@ public class OnblockNotTradResController {
     @GetMapping(value = "/send_1400data")
     public SendRs send_1400(@RequestBody SendRq param){
         return OnblockNotTradResS.send_1400( param);
-}
-
 }
