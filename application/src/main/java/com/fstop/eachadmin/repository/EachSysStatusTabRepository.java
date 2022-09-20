@@ -23,68 +23,6 @@ public class EachSysStatusTabRepository{
 	
 	 @Autowired
     private JdbcTemplate jdbcTemplate;
-    
-	public List<BANKSTATUS> getData(){
-        List<BANKSTATUS> list = null;
-        StringBuffer sql = new StringBuffer();
-        sql.append("SELECT AP.BGBK_ID, AP.APID, AP.MBAPSTATUS, SYS.MBSYSSTATUS, ");
-        sql.append("CASE AP.MBAPSTATUS ");
-        sql.append("	WHEN '1' THEN '簽到' ");
-        sql.append("	WHEN '2' THEN '暫時簽退' ");
-        sql.append("	WHEN '9' THEN '簽退' END AS MBAPSTATUSNAME, ");
-        sql.append("CASE SYS.MBSYSSTATUS ");
-        sql.append("	WHEN '1' THEN '開機' ");
-        sql.append("	WHEN '2' THEN '押碼基碼同步' ");
-        sql.append("	WHEN '3' THEN '訊息通知' ");
-        sql.append("	WHEN '9' THEN '關機' END AS MBSYSSTATUSNAME ");
-        sql.append("FROM BANKAPSTATUSTAB AP JOIN BANKSYSSTATUSTAB SYS ON AP.BGBK_ID = SYS.BGBK_ID");
-
-
-        try{
-            org.hibernate.SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
-            String cols = "BGBK_ID,APID,MBAPSTATUS,MBSYSSTATUS,MBAPSTATUSNAME,MBSYSSTATUSNAME";
-            AutoAddScalar addscalar = new AutoAddScalar();
-            addscalar.addScalar(query, BANKSTATUS.class, cols.split(","));
-            query.setResultTransformer(org.hibernate.transform.Transformers.aliasToBean(BANKSTATUS.class));
-            list = query.list();
-        }catch(org.hibernate.HibernateException e){
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-    public List<BANKSTATUS> getData(String bgbkId, String apId){
-        List<BANKSTATUS> list = null;
-        StringBuffer sql = new StringBuffer();
-        sql.append("SELECT AP.BGBK_ID, AP.APID, AP.MBAPSTATUS, SYS.MBSYSSTATUS, ");
-        sql.append("CASE AP.MBAPSTATUS ");
-        sql.append("	WHEN '1' THEN '簽到' ");
-        sql.append("	WHEN '2' THEN '暫時簽退' ");
-        sql.append("	WHEN '9' THEN '簽退' END AS MBAPSTATUSNAME, ");
-        sql.append("CASE SYS.MBSYSSTATUS ");
-        sql.append("	WHEN '1' THEN '開機' ");
-        sql.append("	WHEN '2' THEN '押碼基碼同步' ");
-        sql.append("	WHEN '3' THEN '訊息通知' ");
-        sql.append("	WHEN '9' THEN '關機' END AS MBSYSSTATUSNAME ");
-        sql.append("FROM BANKAPSTATUSTAB AP JOIN BANKSYSSTATUSTAB SYS ON AP.BGBK_ID = SYS.BGBK_ID ");
-        sql.append("WHERE AP.BGBK_ID = :bgbkId AND AP.APID = :apId");
-
-
-        try{
-            org.hibernate.SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
-            String cols = "BGBK_ID,APID,MBAPSTATUS,MBSYSSTATUS,MBAPSTATUSNAME,MBSYSSTATUSNAME";
-            AutoAddScalar addscalar = new AutoAddScalar();
-            addscalar.addScalar(query, BANKSTATUS.class, cols.split(","));
-            query.setResultTransformer(org.hibernate.transform.Transformers.aliasToBean(BANKSTATUS.class));
-            query.setParameter("bgbkId", bgbkId);
-            query.setParameter("apId", apId);
-            list = query.list();
-        }catch(org.hibernate.HibernateException e){
-            e.printStackTrace();
-        }
-        return list;
-    }
-
     public List<EACHSYSSTATUSTAB> getEachSysStatus(){
         List<EACHSYSSTATUSTAB> list = null;
         StringBuffer sql = new StringBuffer();
@@ -102,29 +40,6 @@ public class EachSysStatusTabRepository{
         }
         return list;
     }
-
-    public boolean saveData(BANKAPSTATUSTAB ap, BANKSYSSTATUSTAB sys){
-        boolean result = false;
-        if(ap != null && sys != null){
-            Session session = getSessionFactory().openSession();
-            session.beginTransaction();
-
-            try {
-                session.saveOrUpdate(ap);
-                session.saveOrUpdate(sys);
-                session.beginTransaction().commit();
-                result = true;
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                session.beginTransaction().rollback();
-                result = false;
-            }
-            return result;
-        }
-        return result;
-    }
-
     /**
      * 取得目前營業日(依照DATEMODE判斷)
      * @return
@@ -196,29 +111,6 @@ public class EachSysStatusTabRepository{
         }catch(org.hibernate.HibernateException e){
             e.printStackTrace();
         }
-        return list;
-    }
-
-    /**
-     * 取得EACHSYSSTATUSTAB所有資料
-     * @return
-     */
-    public List<EACHSYSSTATUSTAB> getSYSSTATUSTAB(){
-        List<EACHSYSSTATUSTAB> list = null;
-        StringBuffer sql = new StringBuffer();
-
-        sql.append("SELECT SYSSTATUS,PREVDATE,THISDATE,NEXTDATE,DATEMODE,CLEARINGPHASE FROM EACHSYSSTATUSTAB");
-        try{
-            org.hibernate.SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
-            String cols = "SYSSTATUS,PREVDATE,THISDATE,NEXTDATE,DATEMODE,CLEARINGPHASE";
-            AutoAddScalar addscalar = new AutoAddScalar();
-            addscalar.addScalar(query, EACHSYSSTATUSTAB.class, cols.split(","));
-            query.setResultTransformer(org.hibernate.transform.Transformers.aliasToBean(EACHSYSSTATUSTAB.class));
-            list = query.list();
-        }catch(org.hibernate.HibernateException e){
-            e.printStackTrace();
-        }
-
         return list;
     }
 }

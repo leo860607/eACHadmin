@@ -13,11 +13,6 @@ import com.fstop.eachadmin.repository.EachSysStatusTabRepository;
 import com.fstop.eachadmin.repository.WkDateRepository;
 import com.fstop.infra.entity.EACHSYSSTATUSTAB;
 import com.fstop.infra.entity.WK_DATE_CALENDAR;
-//import tw.org.twntch.socket.Message;
-//import tw.org.twntch.socket.MessageConverter;
-//import tw.org.twntch.socket.SocketClient;
-//import tw.org.twntch.socket.Message.Body;
-//import tw.org.twntch.socket.Message.Header;
 import util.BeanUtils;
 import util.DateTimeUtils;
 import util.JSONUtils;
@@ -27,10 +22,7 @@ import util.zDateHandler;
 public class WkDateService {
 	private WkDateRepository wk_date_Dao;
 	private EachSysStatusTabRepository eachsysstatustab_Dao;
-//	private SocketClient socketClient;
 	private EachUserLogService userlog_bo;
-//	private Logger logger = Logger.getLogger(WkDateService.class.getName());
-	
 	/**
 	 * 根據目前營業日期往後取下一個營業日期
 	 * @param west_startDate
@@ -138,8 +130,7 @@ public class WkDateService {
 	public boolean isFirst_Bizdate_of_Month(String date){
 //		first_bizdate :回傳格式 為西元年yyyymmdd
 		String first_bizdate = getFirst_Bizdate_of_Month(date);
-		if(StrUtils.isNotEmpty(first_bizdate)){
-//			first_bizdate = DateTimeUtils.convertDate(first_bizdate, "yyyyMMdd", "yyyy/MM/dd");
+		if(StrUtils.isNotEmpty(first_bizdate)){		
 			first_bizdate = DateTimeUtils.convertDate(2,first_bizdate, "yyyyMMdd", "yyyy/MM/dd");
 			int equal = zDateHandler.compareDiffDate(first_bizdate, date);
 			if(equal == 0){
@@ -152,8 +143,6 @@ public class WkDateService {
 		}
 		
 	}
-	
-	
 	
 	public String search_toJson(Map<String, String> params){
 		String result = "";
@@ -348,71 +337,6 @@ public class WkDateService {
 		}
 		return rtnMap;
 	}
-	
-	public Map<String, String> send(WK_DATE_CALENDAR po){
-		Map<String, String> rtnMap = null;
-		try{
-			/* 產生電文內容
-			<header> 
-		        <SystemHeader>eACH01</SystemHeader> 
-		        <MsgType>0100</MsgType> 
-		        <PrsCode>9101</PrsCode> 
-		        <Stan>XXXXXXX</Stan> 
-		        <InBank>0000000</InBank> 
-		        <OutBank>9990000</OutBank> 
-		        <DateTime>YYYYMMDDHHMMSS</DateTime> 
-		        <RspCode>0000</RspCode> 
-		    </header> 
-		    <body> 
-		         <BizDate></BizDate> 
-		         <IsBizDate></IsBizDate> 
-		    </body> 
-			*/
-//			Header msgHeader = new Header();
-//			msgHeader.setSystemHeader("eACH01");
-//			msgHeader.setMsgType("0100");
-//			msgHeader.setPrsCode("9101");
-//			msgHeader.setStan(wk_date_Dao.getStan());
-//			msgHeader.setInBank("0000000");
-//			msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
-//			msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
-//			msgHeader.setRspCode("0000");
-//			Message msg = new Message();
-//			msg.setHeader(msgHeader);
-//			Body body = new Body();
-//			body.setBizDate(DateTimeUtils.convertDate(po.getTXN_DATE(), "yyyyMMdd", "yyyyMMdd"));
-//			body.setIsBizDate(po.getIS_TXN_DATE());
-//			msg.setBody(body);
-//			String telegram = MessageConverter.marshalling(msg);
-//			rtnMap = socketClient.send(telegram);
-//			rtnMap.put("STAN", msgHeader.getStan());
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}
-			Header msgHeader = new Header();
-			msgHeader.setSystemHeader("eACH01");
-			msgHeader.setMsgType("0100");
-			msgHeader.setPrsCode("9101");
-			msgHeader.setStan(wk_date_Dao.getStan());
-			msgHeader.setInBank("0000000");
-			msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
-			msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
-			msgHeader.setRspCode("0000");
-			Message msg = new Message();
-			msg.setHeader(msgHeader);
-			Body body = new Body();
-			body.setBizDate(DateTimeUtils.convertDate(po.getTXN_DATE(), "yyyyMMdd", "yyyyMMdd"));
-			body.setIsBizDate(po.getIS_TXN_DATE());
-			msg.setBody(body);
-			String telegram = MessageConverter.marshalling(msg);
-			rtnMap = socketClient.send(telegram);
-			rtnMap.put("STAN", msgHeader.getStan());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return rtnMap;
-	}
-	
 	//傳入修改前的營業日，欲修改的日期, 是否為營業日
 	public boolean checkBusinessDate(String bDate, String tDate, String isTxnDate){
 		//若要將tDate改為非營業日，則檢查傳入bDate的下下個營業日是否等於EACHSYSSTATUSTAB的NEXTDATE
@@ -468,18 +392,9 @@ public class WkDateService {
 	public void setWk_date_Dao(WkDateRepository wk_date_Dao) {
 		this.wk_date_Dao = wk_date_Dao;
 	}
-	public EachSysStatusTabRepository getEachsysstatustab_Dao() {
-		return eachsysstatustab_Dao;
-	}
 	public void setEachsysstatustab_Dao(EachSysStatusTabRepository eachsysstatustab_Dao) {
 		this.eachsysstatustab_Dao = eachsysstatustab_Dao;
 	}
-//	public SocketClient getSocketClient() {
-//		return socketClient;
-//	}
-//	public void setSocketClient(SocketClient socketClient) {
-//		this.socketClient = socketClient;
-//	}
 	public EachUserLogService getUserlog_bo() {
 		return userlog_bo;
 	}
