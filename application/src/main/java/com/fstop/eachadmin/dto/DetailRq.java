@@ -17,18 +17,20 @@ import lombok.Setter;
 public class DetailRq {
 	
 	@Schema(description = "")
-	@JsonProperty("stan")
-	private String stan;
+	@JsonProperty("STAN")
+	private String STAN;
 	
-	@JsonProperty("txDate")
-	private String txDate;
+	@JsonProperty("TXDATE")
+	private String TXDATE;
 	
 	@JsonProperty("bizdate")
 	private String bizdate;
 	
-	@JsonProperty("bizdate")
+	@JsonProperty("detailDataMap")
 	private Map detailDataMap;
 	
+	private Map DetailData;
+	private Map FILTER_BAT;
 	private String CLEARINGPHASE;
 	private String BIZDATE;
 	private String TXDT;
@@ -63,7 +65,7 @@ public class DetailRq {
 	private String FLPROCSEQ;
 	private String DATASEQ;
 	
-	private String STAN;
+
 	
 	
 }

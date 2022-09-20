@@ -1,5 +1,6 @@
 package com.fstop.eachadmin.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import com.fstop.infra.entity.ONBLOCKTAB_FORM;
 import com.fstop.infra.entity.UNDONE_TXDATA_FORM;
 
 import util.JSONUtils;
+
 @Service
 public class UndoneDetailService {
 	@Autowired
@@ -28,14 +30,11 @@ public class UndoneDetailService {
 	@Autowired
 	private UndoneService undoneService;
 
-	public DetailRs showDetail(DetailRq param) {
-	
+	public DetailRs showDetail(DetailRq param)  {
 
+		String txDate = param.getTXDATE();
+		String stan = param.getSTAN();
 
-	
-		String txDate = DetailRq.getTXDATE();
-		String stan = DetailRq.getSTAN();
-		
 		ONBLOCKTAB_FORM onblocktab_form = new ONBLOCKTAB_FORM();
 		Map detailDataMap = onblocktabService.showDetail(txDate, stan);
 		String bizdate = eachSysStatusTabService.getBusinessDateII();
@@ -138,38 +137,55 @@ public class UndoneDetailService {
 			detailDataMap.put("NEWFEE_NW", detailDataMap.get("NEWFEE") != null ? detailDataMap.get("NEWFEE") : "0");
 
 		}
-
-		onblocktab_form.setDetailData(detailDataMap);
+		
+		DetailRs detailRs = new DetailRs();
+		detailRs.setDetailData(detailDataMap);
 //-----------------------------------------------------------------------------------------------			
-		BeanUtils.copyProperties(DetailRq, DetailRq);
-		onblocktab_form.setIsUndone("Y");
-	
-	
-		System.out.println("FILTER_BAT>>" + DetailRq.getFILTER_BAT());
+		try {
+			BeanUtils.copyProperties(param,param);
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		detailRs.setIsUndone("Y");
+
+		System.out.println("FILTER_BAT>>" + param.getFILTER_BAT());
+		
 		// 操作行代號清單
 //		undone_txdata_form.setOpbkIdList(undone_txdata_bo.getOpbkIdList());
-		DetailRq.setOpbkIdList(undoneService.getOpbkList());
+		detailRs.setOpbkIdList(undoneService.getOpbkList());
 		// 業務類別清單
-		DetailRq.setBsTypeList(undoneService.getBsTypeIdList());
+		detailRs.setBsTypeList(undoneService.getBsTypeIdList());
 
 		String businessDate = eachSysStatusTabService.getBusinessDate();
-		DetailRq.setSTART_DATE(businessDate);
-		DetailRq.setEND_DATE(businessDate);
+		detailRs.setSTART_DATE(businessDate);
+		detailRs.setEND_DATE(businessDate);
 
-		Map userData = BeanUtils.describe(DetailRq.getUserData());
+		Map userData = null;
+		try {
+			userData = BeanUtils.describe(detailRs.getUserData());
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// 銀行端預設帶入操作行
 		if (((String) userData.get("USER_TYPE")).equals("B")) {
 //			20150407 edit by hugo 只會有操作行故只能抓總行檔 抓分行檔 997會查無資料
 //			BANK_BRANCH po = bank_branch_bo.searchByBrbkId((String)userData.get("USER_COMPANY")).get(0);
 //			undone_txdata_form.setOPBK_ID(bank_group_bo.search(po.getId().getBGBK_ID()).get(0).getOPBK_ID());
-			DetailRq.setOPBK_ID(undoneService.search((String) userData.get("USER_COMPANY")).get(0).getOPBK_ID());
+			detailRs.setOPBK_ID(undoneService.search((String) userData.get("USER_COMPANY")).get(0).getOPBK_ID());
 		}
-	
-	
-	
 
-	
-	return DetailRs;
-	
-}
+		return detailRs;
+
+	}
 }

@@ -18,4 +18,7 @@ public class DetailRs {
 	private Map userData;
 	private String OPBK_ID;
 	private Map DetailData;
+	private String IsUndone;
+	
+	
 }
