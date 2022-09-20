@@ -141,11 +141,11 @@ public class UndoneDetailService {
 
 		onblocktab_form.setDetailData(detailDataMap);
 //-----------------------------------------------------------------------------------------------			
-		BeanUtils.copyProperties(onblocktab_form, DetailRq);
+		BeanUtils.copyProperties(DetailRq, DetailRq);
 		onblocktab_form.setIsUndone("Y");
 	
 	
-		System.out.println("FILTER_BAT>>" + undone_txdata_form.getFILTER_BAT());
+		System.out.println("FILTER_BAT>>" + DetailRq.getFILTER_BAT());
 		// 操作行代號清單
 //		undone_txdata_form.setOpbkIdList(undone_txdata_bo.getOpbkIdList());
 		DetailRq.setOpbkIdList(undoneService.getOpbkList());
@@ -156,7 +156,7 @@ public class UndoneDetailService {
 		DetailRq.setSTART_DATE(businessDate);
 		DetailRq.setEND_DATE(businessDate);
 
-		Map userData = BeanUtils.describe(login_form.getUserData());
+		Map userData = BeanUtils.describe(DetailRq.getUserData());
 		// 銀行端預設帶入操作行
 		if (((String) userData.get("USER_TYPE")).equals("B")) {
 //			20150407 edit by hugo 只會有操作行故只能抓總行檔 抓分行檔 997會查無資料
