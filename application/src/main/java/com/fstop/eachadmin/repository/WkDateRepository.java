@@ -1,15 +1,18 @@
 package com.fstop.eachadmin.repository;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.server.Session;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fstop.infra.entity.BANK_GROUP;
 import com.fstop.infra.entity.WK_DATE_CALENDAR;
 
 import tw.org.twntch.po.OPCTRANSACTIONLOGTAB;
@@ -33,10 +36,12 @@ public class WkDateRepository  {
         sql.append(" FROM	EACHUSER.WK_DATE_CALENDAR ");
         sql.append(" where (txn_date between EACHUSER.TRANS_DATE(" + first_date + ",'T','') and  EACHUSER.TRANS_DATE(" + last_date + ",'T','') ) and IS_TXN_DATE='Y' ) ");
         sql.append(" where row_num =1 ");
-
-        org.hibernate.SQLQuery sqlquery = getCurrentSession().createSQLQuery(sql.toString());
-        sqlquery.setResultTransformer(org.hibernate.transform.Transformers.ALIAS_TO_ENTITY_MAP);
-        List<Map> list = sqlquery.list();
+        List list = new ArrayList();
+		list = jdbcTemplate.query(
+				sql.toString(),
+				new Object[] {org.hibernate.transform.Transformers.ALIAS_TO_ENTITY_MAP},
+				new BeanPropertyRowMapper(BANK_GROUP.class));
+    
         return list;
     }
 
@@ -52,10 +57,12 @@ public class WkDateRepository  {
         sql.append(" FROM	EACHUSER.WK_DATE_CALENDAR ");
         sql.append(" where (txn_date between EACHUSER.TRANS_DATE(" + first_date + ",'T','') and  EACHUSER.TRANS_DATE(" + last_date + ",'T','') ) and IS_TXN_DATE='Y' ) ");
         sql.append(" where row_num =1 ");
+        List list = new ArrayList();
+    	list = jdbcTemplate.query(
+				sql.toString(),
+				new Object[] {org.hibernate.transform.Transformers.ALIAS_TO_ENTITY_MAP},
+				new BeanPropertyRowMapper(BANK_GROUP.class));
 
-        org.hibernate.SQLQuery sqlquery = getCurrentSession().createSQLQuery(sql.toString());
-        sqlquery.setResultTransformer(org.hibernate.transform.Transformers.ALIAS_TO_ENTITY_MAP);
-        List<Map> list = sqlquery.list();
         return list;
     }
 
@@ -65,9 +72,12 @@ public class WkDateRepository  {
         StringBuffer sql = new StringBuffer();
         sql.append(" FROM tw.org.twntch.po.WK_DATE_CALENDAR WITHUR WHERE TXN_DATE LIKE :twYear ORDER BY TXN_DATE");
         try {
-            Query query = getCurrentSession().createQuery(sql.toString());
-            query.setParameter("twYear", twYear + "%");
-            list = query.list();
+         
+        	list = jdbcTemplate.query(
+    				sql.toString(),
+    				new Object[] {"twYear", twYear + "%"},
+    				new BeanPropertyRowMapper(BANK_GROUP.class));
+      
         } catch (org.hibernate.HibernateException e) {
             e.printStackTrace();
         }
@@ -79,9 +89,12 @@ public class WkDateRepository  {
         StringBuffer sql = new StringBuffer();
         sql.append(" FROM tw.org.twntch.po.WK_DATE_CALENDAR WITHUR WHERE TXN_DATE LIKE :twYearMonth ORDER BY TXN_DATE");
         try {
-            Query query = getCurrentSession().createQuery(sql.toString());
-            query.setParameter("twYearMonth", twYear + twMonth + "%");
-            list = query.list();
+           
+        	list = jdbcTemplate.query(
+    				sql.toString(),
+    				new Object[] {"twYearMonth", twYear + twMonth + "%"},
+    				new BeanPropertyRowMapper(BANK_GROUP.class));
+       
         } catch (org.hibernate.HibernateException e) {
             e.printStackTrace();
         }
@@ -93,10 +106,11 @@ public class WkDateRepository  {
         StringBuffer sql = new StringBuffer();
         sql.append(" FROM tw.org.twntch.po.WK_DATE_CALENDAR WITHUR WHERE TXN_DATE BETWEEN :startDate AND :endDate ORDER BY TXN_DATE");
         try {
-            Query query = getCurrentSession().createQuery(sql.toString());
-            query.setParameter("startDate", startDate);
-            query.setParameter("endDate", endDate);
-            list = query.list();
+           	list = jdbcTemplate.query(
+    				sql.toString(),
+    				new Object[] {startDate,endDate},
+    				new BeanPropertyRowMapper(BANK_GROUP.class));
+         
         } catch (org.hibernate.HibernateException e) {
             e.printStackTrace();
         }
