@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fstop.eachadmin.service.UndoneDetailService;
 import com.fstop.eachadmin.service.UndoneService;
 import com.fstop.infra.entity.UNDONE_TXDATA;
+import com.fstop.eachadmin.dto.DetailRq;
+import com.fstop.eachadmin.dto.DetailRs;
 import com.fstop.eachadmin.dto.PageSearchRq;
 import com.fstop.eachadmin.dto.PageSearchRs;
 import com.fstop.eachadmin.dto.UndoneSendRq;
@@ -27,6 +30,9 @@ public class UndoneController {
 
 	@Autowired
 	private UndoneService undoneService;
+
+	@Autowired
+	private UndoneDetailService undoneDetailService;
 
 	// 操作行
 	@Operation(summary = "操作行 API", description = "操作行下拉選單資料")
@@ -47,6 +53,12 @@ public class UndoneController {
 	@PostMapping(value = "/pageSearch")
 	public PageSearchRs<UNDONE_TXDATA> pageSearch(@RequestBody PageSearchRq param) {
 		return undoneService.pageSearch(param);
+	}
+	//明細
+	@Operation(summary = "明細", description = "明細表單產出")
+	@PostMapping(value = "/detail")
+	public DetailRs detail(@RequestBody DetailRq param) {
+		return undoneDetailService.showDetail(param);
 	}
 
 	// 請求傳送未完成交易結果(1406)
