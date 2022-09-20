@@ -2,9 +2,7 @@ package com.fstop.eachadmin.service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -13,13 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.fstop.eachadmin.dto.DetailRq;
 import com.fstop.eachadmin.dto.DetailRs;
-import com.fstop.eachadmin.repository.OnBlockTabRepository;
-import com.fstop.fcore.util.StrUtils;
-import com.fstop.infra.entity.LOGIN_FORM;
-import com.fstop.infra.entity.ONBLOCKTAB_FORM;
-import com.fstop.infra.entity.UNDONE_TXDATA_FORM;
 
-import util.JSONUtils;
+import com.fstop.fcore.util.StrUtils;
+
+import com.fstop.infra.entity.ONBLOCKTAB_FORM;
 
 @Service
 public class UndoneDetailService {
@@ -30,12 +25,11 @@ public class UndoneDetailService {
 	@Autowired
 	private UndoneService undoneService;
 
-	public DetailRs showDetail(DetailRq param)  {
+	public DetailRs showDetail(DetailRq param) {
 
 		String txDate = param.getTXDATE();
 		String stan = param.getSTAN();
 
-		ONBLOCKTAB_FORM onblocktab_form = new ONBLOCKTAB_FORM();
 		Map detailDataMap = onblocktabService.showDetail(txDate, stan);
 		String bizdate = eachSysStatusTabService.getBusinessDateII();
 //-----------------------------------------------------------------------------------------------				
@@ -137,12 +131,12 @@ public class UndoneDetailService {
 			detailDataMap.put("NEWFEE_NW", detailDataMap.get("NEWFEE") != null ? detailDataMap.get("NEWFEE") : "0");
 
 		}
-		
+
 		DetailRs detailRs = new DetailRs();
 		detailRs.setDetailData(detailDataMap);
 //-----------------------------------------------------------------------------------------------			
 		try {
-			BeanUtils.copyProperties(param,param);
+			BeanUtils.copyProperties(param, param);
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -153,7 +147,7 @@ public class UndoneDetailService {
 		detailRs.setIsUndone("Y");
 
 		System.out.println("FILTER_BAT>>" + param.getFILTER_BAT());
-		
+
 		// 操作行代號清單
 //		undone_txdata_form.setOpbkIdList(undone_txdata_bo.getOpbkIdList());
 		detailRs.setOpbkIdList(undoneService.getOpbkList());
