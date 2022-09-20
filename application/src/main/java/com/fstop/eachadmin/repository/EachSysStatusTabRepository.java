@@ -2,19 +2,30 @@ package com.fstop.eachadmin.repository;
 
 
 
-import tw.org.twntch.bean.BANK_STATUS;
-import tw.org.twntch.po.BANKAPSTATUSTAB;
-import tw.org.twntch.po.BANKSYSSTATUSTAB;
-import tw.org.twntch.po.EACHSYSSTATUSTAB;
-import tw.org.twntch.util.AutoAddScalar;
-import tw.org.twntch.util.zDateHandler;
+import java.util.List;
+
+import org.hibernate.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fstop.infra.entity.BANKAPSTATUSTAB;
+import com.fstop.infra.entity.BANKSTATUS;
+import com.fstop.infra.entity.BANKSYSSTATUSTAB;
+import com.fstop.infra.entity.EACHSYSSTATUSTAB;
+
+import util.zDateHandler;
+
 @Repository
-public class EachSysStatusTabRepository extends JpaRepository<BANK_STATUS, java.io.Serializable> {
-    public List<BANK_STATUS> getData(){
-        List<BANK_STATUS> list = null;
+public class EachSysStatusTabRepository{
+	
+	 @Autowired
+    private JdbcTemplate jdbcTemplate;
+    
+	public List<BANKSTATUS> getData(){
+        List<BANKSTATUS> list = null;
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT AP.BGBK_ID, AP.APID, AP.MBAPSTATUS, SYS.MBSYSSTATUS, ");
         sql.append("CASE AP.MBAPSTATUS ");
@@ -33,8 +44,8 @@ public class EachSysStatusTabRepository extends JpaRepository<BANK_STATUS, java.
             org.hibernate.SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
             String cols = "BGBK_ID,APID,MBAPSTATUS,MBSYSSTATUS,MBAPSTATUSNAME,MBSYSSTATUSNAME";
             AutoAddScalar addscalar = new AutoAddScalar();
-            addscalar.addScalar(query, BANK_STATUS.class, cols.split(","));
-            query.setResultTransformer(org.hibernate.transform.Transformers.aliasToBean(BANK_STATUS.class));
+            addscalar.addScalar(query, BANKSTATUS.class, cols.split(","));
+            query.setResultTransformer(org.hibernate.transform.Transformers.aliasToBean(BANKSTATUS.class));
             list = query.list();
         }catch(org.hibernate.HibernateException e){
             e.printStackTrace();
@@ -42,8 +53,8 @@ public class EachSysStatusTabRepository extends JpaRepository<BANK_STATUS, java.
         return list;
     }
 
-    public List<BANK_STATUS> getData(String bgbkId, String apId){
-        List<BANK_STATUS> list = null;
+    public List<BANKSTATUS> getData(String bgbkId, String apId){
+        List<BANKSTATUS> list = null;
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT AP.BGBK_ID, AP.APID, AP.MBAPSTATUS, SYS.MBSYSSTATUS, ");
         sql.append("CASE AP.MBAPSTATUS ");
@@ -63,8 +74,8 @@ public class EachSysStatusTabRepository extends JpaRepository<BANK_STATUS, java.
             org.hibernate.SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
             String cols = "BGBK_ID,APID,MBAPSTATUS,MBSYSSTATUS,MBAPSTATUSNAME,MBSYSSTATUSNAME";
             AutoAddScalar addscalar = new AutoAddScalar();
-            addscalar.addScalar(query, BANK_STATUS.class, cols.split(","));
-            query.setResultTransformer(org.hibernate.transform.Transformers.aliasToBean(BANK_STATUS.class));
+            addscalar.addScalar(query, BANKSTATUS.class, cols.split(","));
+            query.setResultTransformer(org.hibernate.transform.Transformers.aliasToBean(BANKSTATUS.class));
             query.setParameter("bgbkId", bgbkId);
             query.setParameter("apId", apId);
             list = query.list();
