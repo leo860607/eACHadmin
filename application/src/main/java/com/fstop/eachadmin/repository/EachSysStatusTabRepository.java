@@ -28,7 +28,7 @@ public class EachSysStatusTabRepository{
 	
 	 @Autowired
     private JdbcTemplate jdbcTemplate;
-<<<<<<< HEAD
+
     
 	public List<BANKSTATUS> getData(){
         List<BANKSTATUS> list = new ArrayList<BANKSTATUS>();
@@ -85,8 +85,7 @@ public class EachSysStatusTabRepository{
         return list;
     }
 
-=======
->>>>>>> 5ad18a0df1b60e844972f8a921fefec866a82de6
+
     public List<EACHSYSSTATUSTAB> getEachSysStatus(){
         List<EACHSYSSTATUSTAB> list = null;
         StringBuffer sql = new StringBuffer();
@@ -102,7 +101,7 @@ public class EachSysStatusTabRepository{
         }
         return list;
     }
-<<<<<<< HEAD
+
 
 //    public boolean saveData(BANKAPSTATUSTAB ap, BANKSYSSTATUSTAB sys){
 //        boolean result = false;
@@ -126,8 +125,7 @@ public class EachSysStatusTabRepository{
 //        return result;
 //    }
 
-=======
->>>>>>> 5ad18a0df1b60e844972f8a921fefec866a82de6
+
     /**
      * 取得目前營業日(依照DATEMODE判斷)
      * @param BUSINESS_DATE 
@@ -211,7 +209,7 @@ public class EachSysStatusTabRepository{
         }
         return list;
     }
-<<<<<<< HEAD
+
 
     /**
      * 取得EACHSYSSTATUSTAB所有資料
@@ -234,6 +232,5 @@ public class EachSysStatusTabRepository{
 
         return list;
     }
-=======
->>>>>>> 5ad18a0df1b60e844972f8a921fefec866a82de6
+
 }
