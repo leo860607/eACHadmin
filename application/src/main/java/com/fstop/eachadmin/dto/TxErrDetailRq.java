@@ -13,5 +13,9 @@ public class TxErrDetailRq {
 	private String NEWFEE;
 	private String SENDERBANKID_NAME;
 	private String TXN_NAME;
+	private String SENDERID;
+	private String NEWTXAMT;
+	
+	
 	
 }

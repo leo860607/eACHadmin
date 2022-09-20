@@ -1,6 +1,31 @@
 package com.fstop.eachadmin.service;
 
+import java.math.BigDecimal;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fstop.eachadmin.dto.DetailRq;
+import com.fstop.eachadmin.dto.DetailRs;
+import com.fstop.fcore.util.StrUtils;
+import com.fstop.infra.entity.ONBLOCKTAB_FORM;
+
 public class TxErrDetailService {
+	@Autowired
+	private TxErrService txErrService;
+	@Autowired
+	private EachSysStatusTabService eachSysStatusTabService;
+	@Autowired
+	private OnblocktabService onblocktabService;
+	public DetailRs showDetail(DetailRq param)  {
+
+		String txDate = param.getTXDATE();
+		String stan = param.getSTAN();
+
+		ONBLOCKTAB_FORM onblocktab_form = new ONBLOCKTAB_FORM();
+		Map detailDataMap = onblocktabService.showDetail(txDate, stan);
+		String bizdate = eachSysStatusTabService.getBusinessDateII();
+	
 	//20220321新增FOR EXTENDFEE 位數轉換
 	if(detailDataMap.get("EXTENDFEE")!=null) {
 	  BigDecimal orgNewExtendFee = (BigDecimal) detailDataMap.get("EXTENDFEE");
@@ -59,7 +84,7 @@ public class TxErrDetailService {
 	//如果FEE_TYPE為空 且結果為成功或未完成 新版手續call sp	
 	}else if (StrUtils.isEmpty((String)detailDataMap.get("FEE_TYPE")) && 
 			   ("成功".equals((String)detailDataMap.get("RESP"))||"未完成".equals((String)detailDataMap.get("RESP")))) {
-		Map newFeeDtailMap = onblocktab_bo.getNewFeeDetail(bizdate,(String) detailDataMap.get("TXN_NAME"),(String) detailDataMap.get("SENDERID")
+		Map newFeeDtailMap = onblocktabService.getNewFeeDetail(bizdate,(String) detailDataMap.get("TXN_NAME"),(String) detailDataMap.get("SENDERID")
 				,(String) detailDataMap.get("SENDERBANKID_NAME"),(String)detailDataMap.get("NEWTXAMT"));
 		detailDataMap.put("TXN_TYPE", newFeeDtailMap.get("TXN_TYPE"));
 		detailDataMap.put("NEWSENDERFEE_NW", newFeeDtailMap.get("NEWSENDERFEE_NW"));
@@ -72,7 +97,7 @@ public class TxErrDetailService {
 	//如果FEE_TYPE為空 且結果為失敗或處理中 新版手續跟舊的一樣
 	}else if (StrUtils.isEmpty((String)detailDataMap.get("FEE_TYPE")) && 
 			   ("失敗".equals((String)detailDataMap.get("RESP"))||"處理中".equals((String)detailDataMap.get("RESP")))) {
-		Map newFeeDtailMap = onblocktab_bo.getNewFeeDetail(bizdate,(String) detailDataMap.get("TXN_NAME"),(String) detailDataMap.get("SENDERID")
+		Map newFeeDtailMap = onblocktabService.getNewFeeDetail(bizdate,(String) detailDataMap.get("TXN_NAME"),(String) detailDataMap.get("SENDERID")
 				,(String) detailDataMap.get("SENDERBANKID_NAME"),(String)detailDataMap.get("NEWTXAMT"));
 		detailDataMap.put("TXN_TYPE", newFeeDtailMap.get("TXN_TYPE"));
 		detailDataMap.put("NEWSENDERFEE_NW", detailDataMap.get("NEWSENDERFEE")!=null?detailDataMap.get("NEWSENDERFEE"):"0");
@@ -83,7 +108,6 @@ public class TxErrDetailService {
 		detailDataMap.put("NEWFEE_NW",detailDataMap.get("NEWFEE")!=null?detailDataMap.get("NEWFEE"):"0");
 	
 	}
-	tx_err_form.setDetailData(detailDataMap);
-	
-	
+		return TxErrDetailRs;
+	}	
 }
