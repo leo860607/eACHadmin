@@ -3,6 +3,7 @@ package com.fstop.eachadmin.repository;
 
 import java.sql.CallableStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.hibernate.internal.SessionImpl;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import util.NumericUtil;
@@ -169,21 +171,23 @@ public class OnBlockTabRepository  {
 
 	
 	//待修改
-    public Page getDataIII(int pageNo, int pageSize, String countQuerySql, String sql, String[] cols,
-                           Class targetClass) {
+    public Page getDataIII(int pageNo, int pageSize, String countQuerySql, String sql, String[] cols, Class targetClass) {
         int totalCount = countDataIII(countQuerySql);
         int startIndex = Page.getStartOfPage(pageNo, pageSize) + 1;
         int lastIndex = pageNo * pageSize;
         sql += " ) AS TEMP_ WHERE ROWNUMBER >= " + startIndex + " AND ROWNUMBER <= " + lastIndex;
-
-        org.hibernate.SQLQuery query = getCurrentSession().createSQLQuery(sql);
-        AutoAddScalar addscalar = new AutoAddScalar();
-        addscalar.addScalar(query, targetClass, cols);
-        query.setResultTransformer(org.hibernate.transform.Transformers.aliasToBean(targetClass));
-        // 實際查詢返回分頁對像
-        java.util.List list = query.list();
-
-        return new Page(startIndex - 1, totalCount, pageSize, list);
+//        org.hibernate.SQLQuery query = getCurrentSession().createSQLQuery(sql);
+//        AutoAddScalar addscalar = new AutoAddScalar();
+//        addscalar.addScalar(query, targetClass, cols);
+//        query.setResultTransformer(org.hibernate.transform.Transformers.aliasToBean(targetClass));
+//        // 實際查詢返回分頁對像
+//        java.util.List list = query.list();
+//
+//        return new Page(startIndex - 1, totalCount, pageSize, list);
+        
+        List list = new ArrayList();
+     	list=jdbcTemplate.query(sql,new BeanPropertyRowMapper(targetClass));
+     	return new Page(startIndex - 1, totalCount, pageSize, list);
     }
 
 //    public int countDataIII(String countQuerySql) {
@@ -408,12 +412,12 @@ public class OnBlockTabRepository  {
 
 public int countDataIII(String countQuerySql){
         int count=0;
-        SQLQuery query=getCurrentSession().createSQLQuery(countQuerySql);
-        query.addScalar("NUM");
+        
+        List list = new ArrayList();
+     	list=jdbcTemplate.query(countQuerySql,new BeanPropertyRowMapper(List.class));
         try{
-        List<Integer> countList=query.list();
-        if(countList!=null&&countList.size()>0){
-        count=(Integer)countList.get(0);
+        if(list!=null&&list.size()>0){
+        count=(Integer)list.get(0);
         }
         }catch(Exception e){
         e.printStackTrace();
@@ -529,4 +533,3 @@ public int countDataIII(String countQuerySql){
 //        }
 //        }
         }
-}
