@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+/fcore/.settings/org.eclipse.jdt.apt.core.prefs
+/infra/.settings/org.eclipse.jdt.apt.core.prefs

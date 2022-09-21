@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface OnPendingTabRepository extends JpaRepository<ONPENDINGTAB, ONPENDINGTAB_PK>{
 
 
+
 }

@@ -26,9 +26,9 @@ public class EACHSYSSTATUSTAB implements Serializable {
 	private String  NEXTDATE;
 	private String  DATEMODE;
 	private String  CLEARINGPHASE;
-	
-	@Transient
 	private String BUSINESS_DATE;
+	
+	
 		
 	
 	

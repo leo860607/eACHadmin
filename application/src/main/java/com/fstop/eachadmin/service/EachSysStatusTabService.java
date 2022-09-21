@@ -8,8 +8,13 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fstop.eachadmin.dto.EachSysStatusTabRq;
+import com.fstop.eachadmin.dto.EachSysStatusTabRs;
+import com.fstop.eachadmin.dto.UndoneSendRs;
 import com.fstop.eachadmin.repository.EachSysStatusTabRepository;
 import com.fstop.infra.entity.EACHSYSSTATUSTAB;
+import com.fstop.infra.entity.UNDONE_TXDATA;
 
 import util.DateTimeUtils;
 import util.JSONUtils;
@@ -19,18 +24,18 @@ import util.zDateHandler;
 public class EachSysStatusTabService {
 	@Autowired
 	private EachSysStatusTabRepository eachsysstatustab_Dao;
+	@Autowired
 	private WkDateService WkDateService;
 	
-	public String checkBizDate(Map<String, String> params){
+	public EachSysStatusTabRs<EACHSYSSTATUSTAB> checkBizDate(EachSysStatusTabRq params){
 		String activeDate = StrUtils.isNotEmpty(params.get("activeDate")) ?params.get("activeDate") : "";
 		String bizDate = "";
-		String json = "{}";
 		Map<String,String> retmap = new HashMap<String,String>();
 		if(StrUtils.isEmpty(activeDate)){
 			retmap.put("result", "FALSE");
 			retmap.put("msg", "activeDate 不可為空值");
-			json = JSONUtils.map2json(retmap);
-			return json;
+//			json = JSONUtils.map2json(retmap);
+//			return json;
 		}
 		bizDate = getBusinessDate();
 		activeDate = DateTimeUtils.convertDate(DateTimeUtils.INTERCONVERSION, activeDate, "yyyyMMdd", "yyyyMMdd");
@@ -41,9 +46,12 @@ public class EachSysStatusTabService {
 			retmap.put("result", "FALSE");
 			retmap.put("msg", "activeDate:"+activeDate+"大於"+bizDate+"");
 		}
-		json = JSONUtils.map2json(retmap);
-		
-		return json;
+//		json = JSONUtils.map2json(retmap);
+//		
+//		return json;
+		ObjectMapper mapper = new ObjectMapper();
+		EachSysStatusTabRs result1 = mapper.convertValue(retmap, EachSysStatusTabRs.class);
+		return result1;
 	}
 	
 	/**
@@ -52,19 +60,18 @@ public class EachSysStatusTabService {
 	 * @param compareWay > , <  , = , >= , <=
 	 * @return true or false
 	 */
-	public String checkBizDate2(Map<String, String> params){
+	public EachSysStatusTabRs<EACHSYSSTATUSTAB> checkBizDate2(EachSysStatusTabRq params){
 		String activeDate = StrUtils.isNotEmpty(params.get("activeDate")) ?params.get("activeDate") : "";
 		String compareWay = StrUtils.isNotEmpty(params.get("compareWay")) ?params.get("compareWay") : "";
 		System.out.println("activeDate : "+activeDate);
 		System.out.println("compareWay : "+compareWay);
 		String bizDate = "";
-		String json = "{}";
 		Map<String,String> retmap = new HashMap<String,String>();
 		if(StrUtils.isEmpty(activeDate)){
 			retmap.put("result", "FALSE");
 			retmap.put("msg", "activeDate 不可為空值");
-			json = JSONUtils.map2json(retmap);
-			return json;
+//			json = JSONUtils.map2json(retmap);
+//			return json;
 		}
 		bizDate = getBusinessDate();
 //		activeDate = DateTimeUtils.convertDate(DateTimeUtils.INTERCONVERSION, activeDate, "yyyyMMdd", "yyyyMMdd");
@@ -118,9 +125,12 @@ public class EachSysStatusTabService {
 			}
 			break;
 		}
-		json = JSONUtils.map2json(retmap);
-		
-		return json;
+//		json = JSONUtils.map2json(retmap);
+//		
+//		return json;
+		ObjectMapper mapper = new ObjectMapper();
+		EachSysStatusTabRs result1 = mapper.convertValue(retmap, EachSysStatusTabRs.class);
+		return result1;
 	}
 	
 	
@@ -130,19 +140,18 @@ public class EachSysStatusTabService {
 	 * @param compareWay > , <  , = , >= , <=
 	 * @return true or false
 	 */
-	public String checkBizDate3(Map<String, String> params){
+	public EachSysStatusTabRs<EACHSYSSTATUSTAB> checkBizDate3(EachSysStatusTabRq params){
 		String activeDate = StrUtils.isNotEmpty(params.get("activeDate")) ?params.get("activeDate") : "";
 		String compareWay = StrUtils.isNotEmpty(params.get("compareWay")) ?params.get("compareWay") : "";
 		System.out.println("activeDate : "+activeDate);
 		System.out.println("compareWay : "+compareWay);
 		String bizDate = "";
-		String json = "{}";
 		Map<String,String> retmap = new HashMap<String,String>();
 		if(StrUtils.isEmpty(activeDate)){
 			retmap.put("result", "FALSE");
 			retmap.put("msg", "activeDate 不可為空值");
-			json = JSONUtils.map2json(retmap);
-			return json;
+//			json = JSONUtils.map2json(retmap);
+//			return json;
 		}
 		bizDate = getThisBusinessDate();
 //		activeDate = DateTimeUtils.convertDate(DateTimeUtils.INTERCONVERSION, activeDate, "yyyyMMdd", "yyyyMMdd");
@@ -196,9 +205,12 @@ public class EachSysStatusTabService {
 			}
 			break;
 		}
-		json = JSONUtils.map2json(retmap);
-		
-		return json;
+//		json = JSONUtils.map2json(retmap);
+//		
+//		return json;
+		ObjectMapper mapper = new ObjectMapper();
+		EachSysStatusTabRs result1 = mapper.convertValue(retmap, EachSysStatusTabRs.class);
+		return result1;
 	}
 	
 	/**
@@ -213,7 +225,7 @@ public class EachSysStatusTabService {
 		int tmp  = -1;
 		System.out.println("activeDate>>"+activeDate);
 		try{
-			list = WkDateService.geteachsysstatustab_Dao().getBusinessDate();
+			list = WkDateService.getEachsysstatustab_Dao().getThisBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 				tmp = zDateHandler.compareDiffDate( activeDate, businessDate , "yyyyMMdd");
@@ -240,7 +252,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String businessDate = "";
 		try{
-			list = eachsysstatustab_Dao.getBusinessDate();
+			list = eachsysstatustab_Dao.getThisBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 				businessDate = DateTimeUtils.convertDate(businessDate, "yyyyMMdd", "yyyyMMdd");
@@ -259,7 +271,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String businessDate = "";
 		try{
-			list = eachsysstatustab_Dao.getBusinessDate();
+			list = eachsysstatustab_Dao.getThisBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 			}
@@ -278,7 +290,7 @@ public class EachSysStatusTabService {
 		boolean isTxnDate = false;
 		try{
 			isTxnDate = WkDateService.isTxnDate();
-			list = eachsysstatustab_Dao.getRptBusinessDate(isTxnDate);
+			list = eachsysstatustab_Dao.getRptBusinessDate(isTxnDate, isTxnDate);
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 				businessDate = DateTimeUtils.convertDate(businessDate, "yyyyMMdd", "yyyyMMdd");

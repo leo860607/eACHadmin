@@ -2,21 +2,21 @@ package com.fstop.eachadmin.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
+@Data
 @Getter
 @Setter
+public class EachSysStatusTabRs<EACHSYSSTATUSTAB> {
 
-public class UndoneSendRs {
-
-	@Schema(description = "訊息")
-	@JsonProperty("msg")
-	private String msg;
-
-	@Schema(description = "結果")
+	@Schema(description = "")
 	@JsonProperty("result")
 	private String result;
-
+	
+	@Schema(description = " ")
+	@JsonProperty("msg")
+	private String msg;
 }

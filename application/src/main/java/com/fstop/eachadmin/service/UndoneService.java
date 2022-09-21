@@ -21,8 +21,7 @@ import com.fstop.eachadmin.repository.BankGroupRepository;
 import com.fstop.eachadmin.repository.BusinessTypeRepository;
 import com.fstop.eachadmin.repository.CommonSpringRepository;
 import com.fstop.eachadmin.repository.OnPendingTabRepository;
-
-import com.fstop.eachadmin.repository.Page;
+import com.fstop.fcore.util.Page;
 import com.fstop.infra.entity.BANK_GROUP;
 import com.fstop.infra.entity.BANK_OPBK;
 import com.fstop.infra.entity.BUSINESS_TYPE;
@@ -59,7 +58,7 @@ public class UndoneService {
 	@Autowired
 	private BankGroupRepository bankGroupRepository;
 
-	// 操作行
+	// 操作行------------------------------------------------------
 	public List<Map<String, String>> getOpbkList() {
 
 		// String sql = "SELECT COALESCE( OP.OPBK_ID,'' ) AS OPBK_ID , COALESCE(
@@ -87,7 +86,7 @@ public class UndoneService {
 		return beanList;
 	}
 
-	// 業務行
+	// 業務行------------------------------------------------------
 	public List<Map<String, String>> getBsTypeIdList() {
 
 		// String sql = "FROM tw.org.twntch.po.BUSINESS_TYPE ORDER BY BUSINESS_TYPE_ID";
@@ -333,7 +332,8 @@ public class UndoneService {
 		return conStr;
 	}
 
-	// details----請求傳送未完成交易結果(1406)
+	// details----請求傳送未完成交易結果(1406)------------------------------------------------------
+	@SuppressWarnings({ "unchecked", "unused" })
 	public UndoneSendRs send_1406(UndoneSendRq param) {
 		/*
 		 * 查詢未完成交易處理結果 <?xml version="1.0" encoding="UTF-8" standalone="yes"?> <msg>
@@ -352,6 +352,7 @@ public class UndoneService {
 		String txdate = StrUtils.isNotEmpty(param.getTxdate()) ? param.getTxdate() : "";// innput
 		txdate = DateTimeUtils.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
 		String resultCode = "";
+		@SuppressWarnings("rawtypes")
 		Map rtnMap = new HashMap();
 		try {
 			// 先檢查onpendingtab中是否有該筆資料存在
@@ -409,7 +410,8 @@ public class UndoneService {
 		return result;
 	}
 
-	// details----請求傳送確認訊息(1400)
+	// details----請求傳送確認訊息(1400)------------------------------------------------------
+	@SuppressWarnings("unchecked")
 	public UndoneSendRs send_1400(UndoneSendRq param) {
 		/*
 		 * 請求傳送確認訊息 <?xml version="1.0" encoding="UTF-8" standalone="yes"?> <msg>
@@ -422,13 +424,16 @@ public class UndoneService {
 		 * 
 		 * 
 		 */
+		@SuppressWarnings("unused")
 		String json = "{}";
 //		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;//innput
 //		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;//innput
 		String stan = StrUtils.isNotEmpty(param.getStan()) ? param.getStan() : "";// innput
 		String txdate = StrUtils.isNotEmpty(param.getTxdate()) ? param.getTxdate() : "";// innput
 		txdate = DateTimeUtils.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
+		@SuppressWarnings("unused")
 		String resultCode = "";
+		@SuppressWarnings("rawtypes")
 		Map rtnMap = new HashMap();
 		try {
 			// 先檢查onpendingtab中是否有該筆資料存在
@@ -454,6 +459,7 @@ public class UndoneService {
 				body.setOTxDate(txdate);
 //				body.setResultCode(resultCode);
 				msg.setBody(body);
+				@SuppressWarnings("unused")
 				String telegram = messageConverter.marshalling(msg);
 				// TODO
 //				rtnMap = socketClient.send(telegram);
@@ -478,4 +484,136 @@ public class UndoneService {
 //		return json;
 		return response;
 	}
+
+	// details----票交所代為處理未完成交易(send)------------------------------------------------------
+	@SuppressWarnings("unchecked")
+	public UndoneSendRs send(UndoneSendRq param) {
+		/*
+		 * 未完成處理結果 沖正作業電文格式 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+		 * <msg> <header> <SystemHeader>eACH01</SystemHeader> <MsgType>0100</MsgType>
+		 * <PrsCode>1403</PrsCode> <Stan>XXXXXXX</Stan> <InBank>0000000</InBank>
+		 * <OutBank>9990000</OutBank> <DateTime>YYYYMMDDHHMMSS</DateTime>
+		 * <RspCode>0000</RspCode> </header> <body> <OTxDate></OTxDate> <OSTAN></OSTAN>
+		 * <ResultCode></ResultCode> </body> </msg>
+		 * 
+		 * ResultCode - 00 成功 - 01 失敗(沖正)
+		 * 
+		 */
+		String json = "{}";
+//		String stan = StrUtils.isNotEmpty(param.get("STAN"))?param.get("STAN"):"" ;
+//		String txdate = StrUtils.isNotEmpty(param.get("TXDATE"))?param.get("TXDATE"):"" ;
+		String stan = StrUtils.isNotEmpty(param.getStan()) ? param.getStan() : "";
+		String txdate = StrUtils.isNotEmpty(param.getStan()) ? param.getStan() : "";
+
+		String type = StrUtils.isNotEmpty(param.getStan()) ? param.getStan() : "";
+//		String type = StrUtils.isNotEmpty(param.get("TYPE"))?param.get("TYPE"):"" ;
+
+//		txdate = DateTimeUtils.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
+		txdate = DateTimeUtils.convertDate(2, txdate, "yyyy-MM-dd", "yyyyMMdd");
+
+		String resultCode = "";
+		@SuppressWarnings("rawtypes")
+		Map rtnMap = new HashMap();
+		try {
+			// 先檢查onpendingtab中是否有該筆資料存在
+			ONPENDINGTAB_PK id = new ONPENDINGTAB_PK(txdate, stan);
+			Optional<ONPENDINGTAB> po = OnPendingTabR.findById(id);
+			if (po == null) {
+				rtnMap.put("result", "FALSE");
+				rtnMap.put("msg", "失敗，資料尚未轉移，PK={STAN:" + stan + ",TXDATE:" + txdate + "}");
+			} else {
+//				20150529 add by hugo req by UAT-20150526-06
+				if (po.get().getBIZDATE() != null) {// 表示已有處理結果
+					rtnMap.put("result", "FALSE");
+					rtnMap.put("msg", "已有未完成交易處理結果，營業日=" + po.get().getBIZDATE());
+//					TODO
+//					json = JSONUtils.map2json(rtnMap);
+//					return json;
+				}
+
+//				判斷type來選擇電文種類 普鴻尚未完成
+				if (type.equals("S")) {
+					resultCode = "00";
+				}
+				if (type.equals("F")) {
+					resultCode = "01";
+				}
+				Header msgHeader = new Header();
+				msgHeader.setSystemHeader("eACH01");
+				msgHeader.setMsgType("0100");
+				msgHeader.setPrsCode("1403");
+				msgHeader.setStan("");// 此案例未使用
+				msgHeader.setInBank("");// 此案例未使用
+				msgHeader.setOutBank("9990000"); // 20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
+				msgHeader.setDateTime(zDateHandler.getDateNum() + zDateHandler.getTheTime().replaceAll(":", ""));
+				msgHeader.setRspCode("0000");
+				socketPackage msg = new socketPackage();
+				msg.setHeader(msgHeader);
+				Body body = new Body();
+				body.setOSTAN(stan);
+				body.setOTxDate(txdate);
+				body.setResultCode(resultCode);
+				msg.setBody(body);
+				String telegram = messageConverter.marshalling(msg);
+//				rtnMap = socketClient.send(telegram);
+
+				// 過10秒後再查詢，檢查是否已沖正完畢
+				Thread.sleep(5 * 1000);
+				po = OnPendingTabR.findById(id);
+				if (po != null) {
+					if (po.get().getACHFLAG().equals("*")) {
+						rtnMap.put("result", "TRUE");
+						rtnMap.put("msg", "成功，已完成作業");
+					} else {
+						rtnMap.put("result", "FALSE");
+						rtnMap.put("msg", "失敗，未完成作業");
+					}
+				} else {
+					rtnMap.put("result", "FALSE");
+					rtnMap.put("msg", "失敗，無此資料，PK={STAN:" + stan + ",TXDATE:" + txdate + "}");
+				}
+			}
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			rtnMap.put("result", "FALSE");
+			rtnMap.put("msg", "失敗，電文發送異常");
+		} catch (Exception ee) {
+			ee.printStackTrace();
+			rtnMap.put("result", "FALSE");
+			rtnMap.put("msg", "失敗，系統異常");
+		}
+//		json = JSONUtils.map2json(rtnMap);
+//		return json;
+		// TODO
+		// object mapper 轉RS型別
+		ObjectMapper mapper = new ObjectMapper();
+		UndoneSendRs result = mapper.convertValue(rtnMap, UndoneSendRs.class);// 這裡面是甚麼?尚未確認
+		return result;
+	}
+	//明細
+	public List<BANK_GROUP> search(String bgbkId){
+		List<BANK_GROUP> list = null ;
+		if(StrUtils.isEmpty(bgbkId)){
+//			list = bank_group_Dao.getAll();
+			list = bankGroupRepository.getAllData();
+		}else{
+//			list = new ArrayList<BANK_GROUP>();
+//			BANK_GROUP po = bank_group_Dao.get(bgbkId);
+//			if(po != null){
+//				list.add(po);
+//			}
+			list = bankGroupRepository.getDataByBgbkId(bgbkId);
+		}
+		System.out.println("list>>"+list);
+		list = list == null? null : list.size() == 0? null:list;
+		
+		//測試
+		//bank_group_Dao.creatWK();
+		
+		return list;
+	}
+	
+	
+
 }

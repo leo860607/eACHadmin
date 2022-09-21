@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fstop.eachadmin.dto.TxErrRq;
 import com.fstop.eachadmin.dto.TxErrRs;
 import com.fstop.eachadmin.repository.OnBlockTabRepository;
-import com.fstop.eachadmin.repository.Page;
 import com.fstop.eachadmin.repository.VwOnBlockTabRepository;
 import com.fstop.infra.entity.TX_ERR;
 import com.fstop.infra.entity.VW_ONBLOCKTAB;

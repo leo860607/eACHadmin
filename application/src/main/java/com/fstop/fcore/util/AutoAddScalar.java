@@ -1,21 +1,23 @@
-package tw.org.twntch.util;
+package com.fstop.fcore.util;
 
 
-
-import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.SQLQuery;
-import org.hibernate.type.NullableType;
+
 import org.hibernate.type.Type;
+import org.springframework.lang.Nullable;
+
+import lombok.extern.slf4j.Slf4j;
 /**
  * @author Hugo
  *
  *
  *
  */
+@Slf4j
 public class AutoAddScalar {
 
-	Logger logger = Logger.getLogger(AutoAddScalar.class.getName());
+//	Logger logger = Logger.getLogger(AutoAddScalar.class.getName());
 	
 	/**
 	 * 根據傳入的欄位名稱及PO來自動使用org.hibernate.SQLQuery.addScalar(col , Type)
@@ -36,7 +38,7 @@ public class AutoAddScalar {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("AutoAddScalar.addScalar.Exception==>"+e);
+			log.error("AutoAddScalar.addScalar.Exception==>"+e);
 		}
 		
 	}
@@ -52,9 +54,9 @@ public class AutoAddScalar {
 		try {
 			rtobj = clas.getMethod(col).getReturnType();
 		} catch (SecurityException e) {
-			logger.error("AutoAddScalar.getType.SecurityException="+e);
+			log.error("AutoAddScalar.getType.SecurityException="+e);
 		} catch (NoSuchMethodException e) {
-			logger.error("AutoAddScalar.getType.NoSuchMethodException="+e);
+			log.error("AutoAddScalar.getType.NoSuchMethodException="+e);
 		}
 		return rtobj;
 	}
@@ -75,11 +77,11 @@ public class AutoAddScalar {
 			if(type.equals("BIGINTEGER")){
 				type = "BIG_INTEGER";
 			}
-			return (Type) Hibernate.class.getField(type).get(NullableType.class);
+			return (Type) Hibernate.class.getField(type).get(Nullable.class);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			logger.debug("AutoAddScalar.decideHibernateType.Exception=>"+e);
+			log.debug("AutoAddScalar.decideHibernateType.Exception=>"+e);
 			return null ;
 		}
 		
