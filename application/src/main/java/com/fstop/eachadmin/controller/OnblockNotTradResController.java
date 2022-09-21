@@ -3,8 +3,6 @@ package com.fstop.eachadmin.controller;
 import java.util.List;
 import java.util.Map;
 
-import com.fstop.eachadmin.dto.*;
-import com.fstop.eachadmin.service.NTRDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fstop.eachadmin.dto.ObtkNtrRq;
+import com.fstop.eachadmin.dto.ObtkNtrRs;
+import com.fstop.eachadmin.dto.PageSearchRq;
+import com.fstop.eachadmin.dto.PageSearchRs;
+import com.fstop.eachadmin.dto.UndoneSendRq;
+import com.fstop.eachadmin.dto.UndoneSendRs;
 import com.fstop.eachadmin.service.UndoneService;
 import com.fstop.infra.entity.UNDONE_TXDATA;
 
@@ -25,6 +29,7 @@ public class OnblockNotTradResController {
 
 	@Autowired
 	private NTRDetailService NTRDetailS;
+	
 	@Autowired
 	private UndoneService UndoneS;
 

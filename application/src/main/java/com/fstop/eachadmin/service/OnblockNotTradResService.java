@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.xml.bind.JAXBException;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -14,15 +15,20 @@ import org.springframework.stereotype.Service;
 
 import com.fstop.eachadmin.repository.BusinessTypeRepository;
 import com.fstop.eachadmin.repository.OnPendingTabRepository;
-
+import com.fstop.infra.entity.BANK_BRANCH;
 import com.fstop.infra.entity.BANK_OPBK;
 
 import com.fstop.infra.entity.BUSINESS_TYPE;
+import com.fstop.infra.entity.ONBLOCKTAB;
+import com.fstop.infra.entity.ONBLOCKTAB_FORM;
 import com.fstop.infra.entity.ONPENDINGTAB;
 import com.fstop.infra.entity.ONPENDINGTAB_PK;
+import com.fstop.infra.entity.ONBLOCKTAB_NOTTRAD_RESF;
 
 import util.messageConverter;
+import util.BeanUtils;
 import util.DateTimeUtils;
+import util.JSONUtils;
 import util.StrUtils;
 import util.socketPackage;
 import util.zDateHandler;
@@ -30,6 +36,8 @@ import util.socketPackage.Body;
 import util.socketPackage.Header;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fstop.eachadmin.dto.LoginFormDto;
+import com.fstop.eachadmin.dto.ObtkNtrRq;
 import com.fstop.eachadmin.dto.UndoneSendRq;
 import com.fstop.eachadmin.dto.UndoneSendRs;
 
@@ -44,7 +52,11 @@ public class OnblockNotTradResService {
 
 	@Autowired
 	private BusinessTypeRepository businessTypeRepository;
-
+	
+	@Autowired 
+	private OnBlockTabService onBlockTabService;
+	
+	
 	// 暫時測試用
 	public void testFunction() {
 		System.out.println("哭哭");
@@ -100,6 +112,130 @@ public class OnblockNotTradResService {
 		}
 		System.out.println("beanList>>" + beanList);
 		return beanList;
+	}
+	
+	//帳單明細
+	//只需要用到產生檢視明細資料的部分
+	public List<Map<String, String>> NTRDetail(ObtkNtrRq params){
+//		ONBLOCKTAB_NOTTRAD_RESF obktNtR_form = (ONBLOCKTAB_NOTTRAD_RESF) form ;		
+//		String target = "";
+//		String ac_key = StrUtils.isEmpty(obktNtR_form.getAc_key())?"":obktNtR_form.getAc_key();
+//		target = StrUtils.isEmpty(obktNtR_form.getTarget())?"search":obktNtR_form.getTarget();
+//		obktNtR_form.setTarget(target);
+//		List<BANK_BRANCH> list = null;
+//		List<ONBLOCKTAB> onblist = null;
+//		//String onblist ="";
+//		System.out.println("ONBLOCKTAB_NotTradRes_Action is start target>> " + target);
+//		System.out.println("ONBLOCKTAB_NotTradRes_Action is start ac_key>> " + ac_key);
+//		//方法裡面沒有用到先註解
+////		loginFormDto login_form = (loginFormDto) WebServletUtils.getRequest().getSession().getAttribute("login_form");
+//		Map<String,String> m = new HashMap<String,String>();
+				
+		if(StrUtils.isNotEmpty(ac_key) && !ac_key.equals("back")){			
+			if(ac_key.equals("search")){				
+				
+			}else if(ac_key.equals("edit")){
+				BeanUtils.populate(obktNtR_form, JSONUtils.json2map(obktNtR_form.getEdit_params()));
+				String txDate = obktNtR_form.getTXDATE();
+				String stan = obktNtR_form.getSTAN();
+				System.out.println("TXDATE>>"+txDate);
+				System.out.println("STAN>>"+stan);
+				ONBLOCKTAB_FORM onblocktab_form = new ONBLOCKTAB_FORM();
+				Map detailDataMap=onBlockTabService.showNotTradResDetail(txDate,stan);
+				//要用舊的營業日去查手續費
+				String obizdate = obktNtR_form.getOLDBIZDATE();
+				
+				//20220321新增FOR EXTENDFEE 位數轉換
+				if(detailDataMap.get("EXTENDFEE")!=null) {
+				  BigDecimal orgNewExtendFee = (BigDecimal) detailDataMap.get("EXTENDFEE");
+				   //去逗號除100 1,000 > 1000/100 = 10
+				  String strOrgNewExtendFee = orgNewExtendFee.toString();
+				   double realNewExtendFee = Double.parseDouble(strOrgNewExtendFee.replace(",", ""))/100;
+				   detailDataMap.put("NEWEXTENDFEE", String.valueOf(realNewExtendFee));
+				}else {
+					//如果是null 顯示空字串
+					detailDataMap.put("NEWEXTENDFEE", "");
+				}
+				
+				//如果FEE_TYPE有值 且結果為成功或未完成  此功能都拿新的值
+				if(StrUtils.isNotEmpty((String)detailDataMap.get("FEE_TYPE")) && 
+				   ("成功".equals((String)detailDataMap.get("RESP"))||"未完成".equals((String)detailDataMap.get("RESP")))) {
+					switch ((String)detailDataMap.get("FEE_TYPE")){
+					case "A":
+						detailDataMap.put("TXN_TYPE","固定");
+						break;
+					case "B":
+						detailDataMap.put("TXN_TYPE","外加");
+						break;
+					case "C":
+						detailDataMap.put("TXN_TYPE","百分比");
+						break;
+					case "D":
+						detailDataMap.put("TXN_TYPE","級距");
+						break;
+					}
+					
+				//如果FEE_TYPE有值 且結果為失敗或處理中 此功能都拿新的值
+				}else if (StrUtils.isNotEmpty((String)detailDataMap.get("FEE_TYPE")) && 
+						   ("失敗".equals((String)detailDataMap.get("RESP"))||"處理中".equals((String)detailDataMap.get("RESP")))) {
+					switch ((String)detailDataMap.get("FEE_TYPE")){
+					case "A":
+						detailDataMap.put("TXN_TYPE","固定");
+						break;
+					case "B":
+						detailDataMap.put("TXN_TYPE","外加");
+						break;
+					case "C":
+						detailDataMap.put("TXN_TYPE","百分比");
+						break;
+					case "D":
+						detailDataMap.put("TXN_TYPE","級距");
+						break;
+					}
+					
+//					detailDataMap.put("NEWSENDERFEE_NW", detailDataMap.get("NEWSENDERFEE")!=null?detailDataMap.get("NEWSENDERFEE"):"0");
+//					detailDataMap.put("NEWINFEE_NW", detailDataMap.get("NEWINFEE")!=null?detailDataMap.get("NEWINFEE"):"0");
+//					detailDataMap.put("NEWOUTFEE_NW", detailDataMap.get("NEWOUTFEE")!=null?detailDataMap.get("NEWOUTFEE"):"0");
+//					detailDataMap.put("NEWWOFEE_NW", detailDataMap.get("NEWWOFEE")!=null?detailDataMap.get("NEWWOFEE"):"0");
+//					detailDataMap.put("NEWEACHFEE_NW", detailDataMap.get("NEWEACHFEE")!=null?detailDataMap.get("NEWEACHFEE"):"0");
+//					detailDataMap.put("NEWFEE_NW",detailDataMap.get("NEWFEE")!=null?detailDataMap.get("NEWFEE"):"0");
+					
+				//如果FEE_TYPE為空 且結果為成功或未完成 新版手續call sp  此功能都拿新的值
+				}else if (StrUtils.isEmpty((String)detailDataMap.get("FEE_TYPE")) && 
+						   ("成功".equals((String)detailDataMap.get("RESP"))||"未完成".equals((String)detailDataMap.get("RESP")))) {
+					Map newFeeDtailMap = onBlockTabService.getNewFeeDetail(obizdate,(String) detailDataMap.get("TXN_NAME"),(String) detailDataMap.get("SENDERID")
+							,(String) detailDataMap.get("SENDERBANKID_NAME"),(String)detailDataMap.get("NEWTXAMT"));
+					detailDataMap.put("TXN_TYPE", newFeeDtailMap.get("TXN_TYPE"));
+					detailDataMap.put("NEWSENDERFEE_NW", newFeeDtailMap.get("NEWSENDERFEE_NW"));
+					detailDataMap.put("NEWINFEE_NW", newFeeDtailMap.get("NEWINFEE_NW"));
+					detailDataMap.put("NEWOUTFEE_NW", newFeeDtailMap.get("NEWOUTFEE_NW"));
+					detailDataMap.put("NEWWOFEE_NW", newFeeDtailMap.get("NEWWOFEE_NW"));
+					detailDataMap.put("NEWEACHFEE_NW", newFeeDtailMap.get("NEWEACHFEE_NW"));
+					detailDataMap.put("NEWFEE_NW", newFeeDtailMap.get("NEWFEE_NW"));
+					
+				//如果FEE_TYPE為空 且結果為失敗或處理中 call sp 拿FEE_TYPE	  此功能都拿新的值
+				}else if (StrUtils.isEmpty((String)detailDataMap.get("FEE_TYPE")) && 
+						   ("失敗".equals((String)detailDataMap.get("RESP"))||"處理中".equals((String)detailDataMap.get("RESP")))) {
+					Map newFeeDtailMap = onBlockTabService.getNewFeeDetail(obizdate,(String) detailDataMap.get("TXN_NAME"),(String) detailDataMap.get("SENDERID")
+							,(String) detailDataMap.get("SENDERBANKID_NAME"),(String)detailDataMap.get("NEWTXAMT"));
+					
+					detailDataMap.put("TXN_TYPE", newFeeDtailMap.get("TXN_TYPE"));
+					detailDataMap.put("NEWSENDERFEE_NW", newFeeDtailMap.get("NEWSENDERFEE")!=null?newFeeDtailMap.get("NEWSENDERFEE"):"0");
+					detailDataMap.put("NEWINFEE_NW", newFeeDtailMap.get("NEWINFEE")!=null?newFeeDtailMap.get("NEWINFEE"):"0");
+					detailDataMap.put("NEWOUTFEE_NW", newFeeDtailMap.get("NEWOUTFEE")!=null?newFeeDtailMap.get("NEWOUTFEE"):"0");
+					detailDataMap.put("NEWWOFEE_NW", newFeeDtailMap.get("NEWWOFEE")!=null?newFeeDtailMap.get("NEWWOFEE"):"0");
+					detailDataMap.put("NEWEACHFEE_NW", newFeeDtailMap.get("NEWEACHFEE")!=null?newFeeDtailMap.get("NEWEACHFEE"):"0");
+					detailDataMap.put("NEWFEE_NW",newFeeDtailMap.get("NEWFEE")!=null?newFeeDtailMap.get("NEWFEE"):"0");
+				
+				}
+				onblocktab_form.setDetailData(detailDataMap);
+				onblocktab_form.setIsUndoneRes("Y");
+				BeanUtils.copyProperties(onblocktab_form, obktNtR_form);
+				request.setAttribute("onblocktab_form", onblocktab_form);
+			}
+		}
+		System.out.println("forward to >> " + target);
+		return (mapping.findForward(target));
 	}
 
 }
