@@ -262,7 +262,10 @@ public class OnBlockTabRepository  {
         query.setResultTransformer(org.hibernate.transform.Transformers.ALIAS_TO_ENTITY_MAP);
         return query.list();
     }
-
+    
+     
+//    TODO 這個是Call SQL內的SQL?
+//    public Map getNewFeeDetail(String sql) {
     public Map getNewFeeDetail(String bizdate, String txid, String senderid, String senderbankid, String txamt) {
         java.util.Map resultMap = new java.util.HashMap();
 //		System.out.println("getNewFeeDetail");
@@ -273,6 +276,7 @@ public class OnBlockTabRepository  {
 
         String sql = "{CALL SP_CAL_NWFEE_SINGLE(?,?,?,?,?,?,?,?,?,?,?,?)}";
         try {
+        	resultMap=jdbcTemplate.query()
             java.sql.CallableStatement callableStatement = ((org.hibernate.internal.SessionImpl) getCurrentSession()).connection().prepareCall(sql);
             callableStatement.setString(1, bizdate);
             callableStatement.setString(2, txid);
