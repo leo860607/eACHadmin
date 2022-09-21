@@ -23,7 +23,6 @@ import com.fstop.eachadmin.repository.CommonSpringRepository;
 import com.fstop.eachadmin.repository.OnPendingTabRepository;
 import com.fstop.fcore.util.Page;
 import com.fstop.infra.entity.BANK_GROUP;
-import com.fstop.infra.entity.BANK_OPBK;
 import com.fstop.infra.entity.BUSINESS_TYPE;
 
 import com.fstop.eachadmin.dto.UndoneSendRq;
@@ -591,13 +590,14 @@ public class UndoneService {
 		UndoneSendRs result = mapper.convertValue(rtnMap, UndoneSendRs.class);// 這裡面是甚麼?尚未確認
 		return result;
 	}
-	//明細
-	public List<BANK_GROUP> search(String bgbkId){
-		List<BANK_GROUP> list = null ;
-		if(StrUtils.isEmpty(bgbkId)){
+
+	// 明細------------------------------------------------------
+	public List<BANK_GROUP> search(String bgbkId) {
+		List<BANK_GROUP> list = null;
+		if (StrUtils.isEmpty(bgbkId)) {
 //			list = bank_group_Dao.getAll();
 			list = bankGroupRepository.getAllData();
-		}else{
+		} else {
 //			list = new ArrayList<BANK_GROUP>();
 //			BANK_GROUP po = bank_group_Dao.get(bgbkId);
 //			if(po != null){
@@ -605,15 +605,13 @@ public class UndoneService {
 //			}
 			list = bankGroupRepository.getDataByBgbkId(bgbkId);
 		}
-		System.out.println("list>>"+list);
-		list = list == null? null : list.size() == 0? null:list;
-		
-		//測試
-		//bank_group_Dao.creatWK();
-		
+		System.out.println("list>>" + list);
+		list = list == null ? null : list.size() == 0 ? null : list;
+
+		// 測試
+		// bank_group_Dao.creatWK();
+
 		return list;
 	}
-	
-	
 
 }

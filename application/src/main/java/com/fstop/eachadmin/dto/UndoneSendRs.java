@@ -18,5 +18,4 @@ public class UndoneSendRs {
 	@Schema(description = "結果")
 	@JsonProperty("result")
 	private String result;
-
 }

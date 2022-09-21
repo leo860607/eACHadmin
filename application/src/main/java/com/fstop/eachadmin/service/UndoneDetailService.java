@@ -9,12 +9,11 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fstop.eachadmin.dto.DetailRq;
 import com.fstop.eachadmin.dto.DetailRs;
-
+import com.fstop.eachadmin.dto.UndoneSendRs;
 import com.fstop.fcore.util.StrUtils;
-
-import com.fstop.infra.entity.ONBLOCKTAB_FORM;
 
 @Service
 public class UndoneDetailService {
@@ -134,50 +133,53 @@ public class UndoneDetailService {
 
 		DetailRs detailRs = new DetailRs();
 		detailRs.setDetailData(detailDataMap);
+		ObjectMapper mapper = new ObjectMapper();
+		UndoneSendRs result = mapper.convertValue(detailDataMap, UndoneSendRs.class);
+
 //-----------------------------------------------------------------------------------------------			
-		try {
-			BeanUtils.copyProperties(param, param);
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		detailRs.setIsUndone("Y");
+//		try {
+//			BeanUtils.copyProperties(param, param);
+//		} catch (IllegalAccessException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (InvocationTargetException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		detailRs.setIsUndone("Y");
+//
+//		System.out.println("FILTER_BAT>>" + param.getFILTER_BAT());
 
-		System.out.println("FILTER_BAT>>" + param.getFILTER_BAT());
-
-		// 操作行代號清單
-//		undone_txdata_form.setOpbkIdList(undone_txdata_bo.getOpbkIdList());
-		detailRs.setOpbkIdList(undoneService.getOpbkList());
-		// 業務類別清單
-		detailRs.setBsTypeList(undoneService.getBsTypeIdList());
-
-		String businessDate = eachSysStatusTabService.getBusinessDate();
-		detailRs.setSTART_DATE(businessDate);
-		detailRs.setEND_DATE(businessDate);
-
-		Map userData = null;
-		try {
-			userData = BeanUtils.describe(detailRs.getUserData());
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// 銀行端預設帶入操作行
-		if (((String) userData.get("USER_TYPE")).equals("B")) {
-//			20150407 edit by hugo 只會有操作行故只能抓總行檔 抓分行檔 997會查無資料
-//			BANK_BRANCH po = bank_branch_bo.searchByBrbkId((String)userData.get("USER_COMPANY")).get(0);
-//			undone_txdata_form.setOPBK_ID(bank_group_bo.search(po.getId().getBGBK_ID()).get(0).getOPBK_ID());
-			detailRs.setOPBK_ID(undoneService.search((String) userData.get("USER_COMPANY")).get(0).getOPBK_ID());
-		}
+//		// 操作行代號清單
+////		undone_txdata_form.setOpbkIdList(undone_txdata_bo.getOpbkIdList());
+//		detailRs.setOpbkIdList(undoneService.getOpbkList());
+//		// 業務類別清單
+//		detailRs.setBsTypeList(undoneService.getBsTypeIdList());
+//
+//		String businessDate = eachSysStatusTabService.getBusinessDate();
+//		detailRs.setSTART_DATE(businessDate);
+//		detailRs.setEND_DATE(businessDate);
+//
+//		Map userData = null;
+//		try {
+//			userData = BeanUtils.describe(detailRs.getUserData());
+//		} catch (IllegalAccessException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (InvocationTargetException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (NoSuchMethodException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		// 銀行端預設帶入操作行
+//		if (((String) userData.get("USER_TYPE")).equals("B")) {
+////			20150407 edit by hugo 只會有操作行故只能抓總行檔 抓分行檔 997會查無資料
+////			BANK_BRANCH po = bank_branch_bo.searchByBrbkId((String)userData.get("USER_COMPANY")).get(0);
+////			undone_txdata_form.setOPBK_ID(bank_group_bo.search(po.getId().getBGBK_ID()).get(0).getOPBK_ID());
+//			detailRs.setOPBK_ID(undoneService.search((String) userData.get("USER_COMPANY")).get(0).getOPBK_ID());
+//		}
 
 		return detailRs;
 
