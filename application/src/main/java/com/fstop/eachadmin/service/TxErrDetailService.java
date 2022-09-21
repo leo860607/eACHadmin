@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.fstop.eachadmin.dto.DetailRs;
 import com.fstop.eachadmin.dto.TxErrDetailRq;
 import com.fstop.eachadmin.dto.TxErrDetailRs;
 import com.fstop.fcore.util.StrUtils;
@@ -113,6 +111,7 @@ public class TxErrDetailService {
 		
 		TxErrDetailRs txerrDetailRs = new TxErrDetailRs();
 		txerrDetailRs.setDetailData(detailDataMap);
+		return txerrDetailRs;
 
 		
 	}
