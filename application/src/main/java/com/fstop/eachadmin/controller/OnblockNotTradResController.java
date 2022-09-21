@@ -16,6 +16,7 @@ import com.fstop.eachadmin.dto.PageSearchRq;
 import com.fstop.eachadmin.dto.PageSearchRs;
 import com.fstop.eachadmin.dto.UndoneSendRq;
 import com.fstop.eachadmin.dto.UndoneSendRs;
+import com.fstop.eachadmin.service.NTRDetailService;
 import com.fstop.eachadmin.service.UndoneService;
 import com.fstop.infra.entity.UNDONE_TXDATA;
 

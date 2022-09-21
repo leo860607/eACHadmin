@@ -228,7 +228,7 @@ public class WkDateService {
 		WK_DATE_CALENDAR po = null;
 		try {
 			if(StrUtils.isNotEmpty(txnDate)){
-				po = wk_date_Dao.get(txnDate);
+				po = wkDateRepository.get(txnDate);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -364,30 +364,14 @@ public class WkDateService {
 		return rtnMap;
 	}
 	
-	public Map<String, String> send(WK_DATE_CALENDAR po){
-		Map<String, String> rtnMap = null;
-		try{
-			/* 產生電文內容
-			<header> 
-		        <SystemHeader>eACH01</SystemHeader> 
-		        <MsgType>0100</MsgType> 
-		        <PrsCode>9101</PrsCode> 
-		        <Stan>XXXXXXX</Stan> 
-		        <InBank>0000000</InBank> 
-		        <OutBank>9990000</OutBank> 
-		        <DateTime>YYYYMMDDHHMMSS</DateTime> 
-		        <RspCode>0000</RspCode> 
-		    </header> 
-		    <body> 
-		         <BizDate></BizDate> 
-		         <IsBizDate></IsBizDate> 
-		    </body> 
-			*/
+//	public Map<String, String> send(WK_DATE_CALENDAR po){
+//		Map<String, String> rtnMap = null;
+//		try{
 //			Header msgHeader = new Header();
 //			msgHeader.setSystemHeader("eACH01");
 //			msgHeader.setMsgType("0100");
 //			msgHeader.setPrsCode("9101");
-//			msgHeader.setStan(wk_date_Dao.getStan());
+//			msgHeader.setStan(wkDateRepository.getStan());
 //			msgHeader.setInBank("0000000");
 //			msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
 //			msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
@@ -404,29 +388,8 @@ public class WkDateService {
 //		}catch(Exception e){
 //			e.printStackTrace();
 //		}
-			Header msgHeader = new Header();
-			msgHeader.setSystemHeader("eACH01");
-			msgHeader.setMsgType("0100");
-			msgHeader.setPrsCode("9101");
-			msgHeader.setStan(wkDateRepository.getStan());
-			msgHeader.setInBank("0000000");
-			msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
-			msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
-			msgHeader.setRspCode("0000");
-			Message msg = new Message();
-			msg.setHeader(msgHeader);
-			Body body = new Body();
-			body.setBizDate(DateTimeUtils.convertDate(po.getTXN_DATE(), "yyyyMMdd", "yyyyMMdd"));
-			body.setIsBizDate(po.getIS_TXN_DATE());
-			msg.setBody(body);
-			String telegram = MessageConverter.marshalling(msg);
-			rtnMap = socketClient.send(telegram);
-			rtnMap.put("STAN", msgHeader.getStan());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return rtnMap;
-	}
+//		return rtnMap;
+//	}
 	
 	//傳入修改前的營業日，欲修改的日期, 是否為營業日
 	public boolean checkBusinessDate(String bDate, String tDate, String isTxnDate){
