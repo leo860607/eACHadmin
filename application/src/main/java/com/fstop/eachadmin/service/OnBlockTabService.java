@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.struts.util.LabelValueBean;
+
 
 import tw.org.twntch.po.VW_ONBLOCKTAB;
 import tw.org.twntch.db.dao.hibernate.BANK_GROUP_Dao;

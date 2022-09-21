@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fstop.eachadmin.dto.ObtkNtrRq;
+import com.fstop.eachadmin.dto.ObtkNtrRs;
 import com.fstop.eachadmin.dto.PageSearchRq;
 import com.fstop.eachadmin.dto.PageSearchRs;
 import com.fstop.eachadmin.dto.UndoneSendRq;
@@ -46,12 +48,19 @@ public class OnblockNotTradResController {
     }
  
     // 查詢
- 	@Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
- 	@PostMapping(value = "/pageSearch")
- 	public PageSearchRs<UNDONE_TXDATA> pageSearch(@RequestBody PageSearchRq param) {
- 		return UndoneS.pageSearch(param);
- 	}
-
+   	@Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
+   	@PostMapping(value = "/pageSearch")
+   	public PageSearchRs<UNDONE_TXDATA> pageSearch(@RequestBody PageSearchRq param) {
+   		return UndoneS.pageSearch(param);
+   	}
+   	
+    // 帳單明細按鈕
+  	@Operation(summary = "查詢按鈕", description = "查詢按鈕(label),進到查詢表單頁面")
+  	@PostMapping(value = "/pageSearch")
+  	public ObtkNtrRs<UNDONE_TXDATA> NTRDetail(@RequestBody ObtkNtrRq param) {
+  		return OnblockNotTradResS.NTRDetail(param);
+  	}
+    
 	// return json
 	// controller
 	@Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
