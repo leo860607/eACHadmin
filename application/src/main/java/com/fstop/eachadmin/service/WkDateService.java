@@ -1,11 +1,19 @@
 package com.fstop.eachadmin.service;
 
 import java.util.ArrayList;
+
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.mail.Message;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.StreamingHttpOutputMessage.Body;
+import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,6 +21,8 @@ import com.fstop.eachadmin.repository.EachSysStatusTabRepository;
 import com.fstop.eachadmin.repository.WkDateRepository;
 import com.fstop.infra.entity.EACHSYSSTATUSTAB;
 import com.fstop.infra.entity.WK_DATE_CALENDAR;
+
+import ch.qos.logback.classic.pattern.MessageConverter;
 //import tw.org.twntch.socket.Message;
 //import tw.org.twntch.socket.MessageConverter;
 //import tw.org.twntch.socket.SocketClient;
@@ -22,12 +32,17 @@ import util.BeanUtils;
 import util.DateTimeUtils;
 import util.JSONUtils;
 import util.StrUtils;
+import util.socketPackage.Header;
 import util.zDateHandler;
+@Service
 @Slf4j
 public class WkDateService {
-	private WkDateRepository wk_date_Dao;
+	@Autowired
+	private WkDateRepository wkDateRepository;
+	@Autowired
 	private EachSysStatusTabRepository eachsysstatustab_Dao;
 //	private SocketClient socketClient;
+	@Autowired
 	private EachUserLogService userlog_bo;
 //	private Logger logger = Logger.getLogger(WkDateService.class.getName());
 	
@@ -40,7 +55,7 @@ public class WkDateService {
 	public String getNextBizdateByThisDate(String west_startDate , int dateType){
 		String nextBizdate = "";
 		try {
-			nextBizdate = wk_date_Dao.gotoBusinessDate(west_startDate, 1);
+			nextBizdate = wkDateRepository.gotoBusinessDate(west_startDate, 1);
 			nextBizdate = DateTimeUtils.convertDate(dateType, nextBizdate, "yyyyMMdd", "yyyyMMdd");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -58,7 +73,7 @@ public class WkDateService {
 		boolean ret = false;
 //		TODO 之後可能還要加入颱風天的判斷
 		String today = zDateHandler.getTWDate();
-		WK_DATE_CALENDAR po = wk_date_Dao.get(today);
+		WK_DATE_CALENDAR po = wkDateRepository.get(today);
 		if(po!=null && StrUtils.isNotEmpty(po.getIS_TXN_DATE()) && po.getIS_TXN_DATE().equals("Y")){
 			System.out.println("IS_TXN_DATE>>"+po.getIS_TXN_DATE());
 			ret =true;
@@ -74,7 +89,7 @@ public class WkDateService {
 	public boolean isTxnDate(String date){
 		boolean ret = false;
 		String today = date ;
-		WK_DATE_CALENDAR po = wk_date_Dao.get(today);
+		WK_DATE_CALENDAR po = wkDateRepository.get(today);
 		if(po!=null && StrUtils.isNotEmpty(po.getIS_TXN_DATE()) && po.getIS_TXN_DATE().equals("Y")){
 			System.out.println("TXN_DATE>>"+po.getIS_TXN_DATE());
 			ret =true;
@@ -96,7 +111,7 @@ public class WkDateService {
 		System.out.println("getFirst_Bizdate_of_Month..last_date>>"+last_date);
 		log.debug("getFirst_Bizdate_of_Month..first_date>>"+first_date);
 		log.debug("getFirst_Bizdate_of_Month..last_date>>"+last_date);
-		List<Map> list =  wk_date_Dao.getFirst_Bizdate_of_Month(first_date, last_date);
+		List<Map> list =  wkDateRepository.getFirst_Bizdate_of_Month(first_date, last_date);
 		if(list != null && list.size() !=0){
 			for(Map map:list){
 				if(map.get("TXN_DATE") != null){
@@ -119,7 +134,7 @@ public class WkDateService {
 		System.out.println("getFirst_Bizdate_of_Month..last_date>>"+last_date);
 		log.debug("getFirst_Bizdate_of_Month..first_date>>"+first_date);
 		log.debug("getFirst_Bizdate_of_Month..last_date>>"+last_date);
-		List<Map> list =  wk_date_Dao.getLast_Bizdate_of_Month(first_date, last_date);
+		List<Map> list =  wkDateRepository.getLast_Bizdate_of_Month(first_date, last_date);
 		if(list != null && list.size() !=0){
 			for(Map map:list){
 				if(map.get("TXN_DATE") != null){
@@ -196,9 +211,9 @@ public class WkDateService {
 		try {
 			if(StrUtils.isNotEmpty(twYear)){
 				if(StrUtils.isNotEmpty(twMonth)){
-					list = wk_date_Dao.getByTwYearMonth(twYear, twMonth);
+					list = wkDateRepository.getByTwYearMonth(twYear, twMonth);
 				}else{
-					list = wk_date_Dao.getByTwYear(twYear);
+					list = wkDateRepository.getByTwYear(twYear);
 				}
 			}
 		} catch (Exception e) {
@@ -226,7 +241,7 @@ public class WkDateService {
 		Map pkmap = new HashMap();
 		Map oldmap = new HashMap();
 		try{
-			WK_DATE_CALENDAR tmp = wk_date_Dao.get(po.getTXN_DATE());
+			WK_DATE_CALENDAR tmp = wkDateRepository.get(po.getTXN_DATE());
 			
 			pkmap.put("TXN_DATE", po.getTXN_DATE());
 			if(tmp == null){
@@ -266,14 +281,14 @@ public class WkDateService {
 						return rtnMap;
 					}else{
 //						wk_date_Dao.save(po);
-						wk_date_Dao.saveII(po, oldmap, pkmap);
+						wkDateRepository.saveII(po, oldmap, pkmap);
 						rtnMap.put("result", "TRUE");
 						rtnMap.put("msg", "儲存成功");
 					}
 				}
 			}else{
 //				wk_date_Dao.save(po);
-				wk_date_Dao.saveII(po, oldmap, pkmap);
+				wkDateRepository.saveII(po, oldmap, pkmap);
 				rtnMap.put("result", "TRUE");
 				rtnMap.put("msg", "儲存成功");
 			}
@@ -326,10 +341,10 @@ public class WkDateService {
 			if(list != null && list.size() != 0){
 				rtnMap.put("result", "FALSE");
 				rtnMap.put("msg", "該年份已有資料，不可重複產生!");
-				wk_date_Dao.saveFail_PK(null, pkmap, "年份錯誤，請輸入民國年!");
+				wkDateRepository.saveFail_PK(null, pkmap, "年份錯誤，請輸入民國年!");
 				return rtnMap;
 			}
-			if(wk_date_Dao.createWholeYearData(twYear)){
+			if(wkDateRepository.createWholeYearData(twYear)){
 				rtnMap.put("result", "TRUE");
 				rtnMap.put("msg", "民國" + twYear + "資料已產生!");
 				userlog_bo.addLog("A", "成功，民國" + twYear + "資料已產生!", pkmap, pkmap);
@@ -393,7 +408,7 @@ public class WkDateService {
 			msgHeader.setSystemHeader("eACH01");
 			msgHeader.setMsgType("0100");
 			msgHeader.setPrsCode("9101");
-			msgHeader.setStan(wk_date_Dao.getStan());
+			msgHeader.setStan(wkDateRepository.getStan());
 			msgHeader.setInBank("0000000");
 			msgHeader.setOutBank("9990000");	//20150109 FANNY說 票交發動的電文，「OUTBANK」必須固定為「9990000」
 			msgHeader.setDateTime(zDateHandler.getDateNum()+zDateHandler.getTheTime().replaceAll(":", ""));
@@ -421,7 +436,7 @@ public class WkDateService {
 		if(isTxnDate.equalsIgnoreCase("Y")){
 			compareDate = tDate;
 		}else if(isTxnDate.equalsIgnoreCase("N")){
-			compareDate = wk_date_Dao.gotoBusinessDate(bDate, 2);
+			compareDate = wkDateRepository.gotoBusinessDate(bDate, 2);
 		}
 		
 		int timeoutCount = 5;	//五次
@@ -451,7 +466,7 @@ public class WkDateService {
 	
 	//nDate=現在營業日,tDate=欲修改的營業日
 	public boolean isPreBizdate(String nDate, String tDate){
-		String bDate = wk_date_Dao.gotoBusinessDate(tDate, -1);
+		String bDate = wkDateRepository.gotoBusinessDate(tDate, -1);
 		if(nDate.equals(bDate)){
 			System.out.println("@@@ " + nDate + " is previous bizdate( " + bDate + " ) of " + tDate);
 			return true;
@@ -462,11 +477,11 @@ public class WkDateService {
 	}
 
 	public WkDateRepository getWk_date_Dao() {
-		return wk_date_Dao;
+		return wkDateRepository;
 	}
 
 	public void setWk_date_Dao(WkDateRepository wk_date_Dao) {
-		this.wk_date_Dao = wk_date_Dao;
+		this.wkDateRepository = wk_date_Dao;
 	}
 	public EachSysStatusTabRepository getEachsysstatustab_Dao() {
 		return eachsysstatustab_Dao;
