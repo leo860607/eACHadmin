@@ -28,8 +28,7 @@ public class TxErrService {
 	private OnBlockTabRepository onblocktab_Dao;
 	@Autowired
 	private VwOnBlockTabRepository vw_onblocktab_Dao;
-	@Autowired
-	private TxErrService tx_err_bo;
+
 	@Autowired
 	private EachSysStatusTabService eachsysstatustab_bo;
 	@Autowired
