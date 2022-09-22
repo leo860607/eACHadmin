@@ -31,4 +31,5 @@ public class TxErrRs<VW_ONBLOCKTAB>{
 	@JsonProperty("ROWS")
 	private List<VW_ONBLOCKTAB> rows;
 	
+	
 }

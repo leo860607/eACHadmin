@@ -12,8 +12,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public abstract class PageSearchRq implements Map<String, String> {
-
+public  class PageSearchRq  {
 	@Schema(description = "交易日期")
 	@JsonProperty("filter_bat")
 	private String filter_bat;
@@ -44,5 +43,20 @@ public abstract class PageSearchRq implements Map<String, String> {
 
 	@JsonProperty("pageSize")
 	private int pageSize;
+
+	@JsonProperty("ResultCode")
+	private String ResultCode;
+
+	@JsonProperty("Page")
+	private String Row;
+
+	@JsonProperty("Page")
+	private String Page;
+
+	@JsonProperty("sord")
+	private String sord;
+
+	@JsonProperty("sidx")
+	private String sidx;
 
 }
