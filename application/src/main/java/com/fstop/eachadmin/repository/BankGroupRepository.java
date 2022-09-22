@@ -16,7 +16,7 @@ public class BankGroupRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<BANK_GROUP> getBgbkIdList_Not_5_And_6() {
 		List<BANK_GROUP> list = new ArrayList<BANK_GROUP>();
 //		Query query = getCurrentSession().createQuery("FROM tw.org.twntch.po.BANK_GROUP BANK_GROUP WHERE BGBK_ATTR <> '6' AND BGBK_ATTR <> '5' ORDER BY BGBK_ID");
@@ -27,6 +27,7 @@ public class BankGroupRepository {
 		return list;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<BANK_GROUP> getAllData() {
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT ");
@@ -79,6 +80,7 @@ public class BankGroupRepository {
 		return list;
 	}
 
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<BANK_GROUP> getDataByBgbkId(String bgbkId) {
 		StringBuffer sql = new StringBuffer();
 		sql.append("SELECT ");

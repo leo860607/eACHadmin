@@ -23,7 +23,7 @@ import com.fstop.eachadmin.dto.PageSearchRs;
 import com.fstop.eachadmin.repository.BankGroupRepository;
 import com.fstop.eachadmin.repository.BusinessTypeRepository;
 import com.fstop.eachadmin.repository.CommonSpringRepository;
-import com.fstop.eachadmin.repository.OnPendingTabRepository;
+//import com.fstop.eachadmin.repository.OnPendingTabRepository;
 import com.fstop.fcore.util.Page;
 import com.fstop.infra.entity.BANK_GROUP;
 import com.fstop.infra.entity.BUSINESS_TYPE;
