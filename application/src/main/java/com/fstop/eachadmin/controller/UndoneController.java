@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +21,6 @@ import com.fstop.eachadmin.dto.UndoneSendRq;
 import com.fstop.eachadmin.dto.UndoneSendRs;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "測試用")
@@ -63,7 +63,7 @@ public class UndoneController {
 
 	// 請求傳送未完成交易結果(1406)
 	@Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
-	@GetMapping(value = "/send_1406data")
+	@PostMapping(value = "/send_1406data")
 	public UndoneSendRs send_1406(@RequestBody UndoneSendRq param) {
 		return undoneService.send_1406(param);
 	}
@@ -72,14 +72,14 @@ public class UndoneController {
 	// controller
 	// 請求傳送確認訊息(1400)
 	@Operation(summary = "請求傳送確認訊息(1400)", description = "API功能說明")
-	@GetMapping(value = "/send_1400data")
+	@PostMapping(value = "/send_1400data")
 	public UndoneSendRs send_1400(@RequestBody UndoneSendRq param) {
 		return undoneService.send_1400(param);
 	}
 	
 	// 票交所代為處理未完成交易(send)
 	@Operation(summary = "票交所代為處理未完成交易(send)", description = "API功能說明")
-	@GetMapping(value = "/send_data")
+	@PostMapping(value = "/send_data")
 	public UndoneSendRs send(@RequestBody UndoneSendRq param) {
 		return undoneService.send(param);
 	}
