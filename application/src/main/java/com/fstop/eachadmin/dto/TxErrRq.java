@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class TxErrRq<VW_ONBLOCKTAB> implements Map<String,String> {
+public class TxErrRq<VW_ONBLOCKTAB> {
 	
 	@Schema(description = "營業日期")
 	@JsonProperty("BIZDATE")
@@ -28,5 +28,13 @@ public abstract class TxErrRq<VW_ONBLOCKTAB> implements Map<String,String> {
 	@Schema(description = "")
 	@JsonProperty("ROWS")
 	private List<VW_ONBLOCKTAB> rows;
+	
+	@Schema(description = "")
+	@JsonProperty("SIDX")
+	private String sidx;
+	
+	@Schema(description = "")
+	@JsonProperty("SORD")
+	private String sord;
 	
 }

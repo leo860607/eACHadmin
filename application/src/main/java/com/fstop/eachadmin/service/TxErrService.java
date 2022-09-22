@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +16,7 @@ import com.fstop.eachadmin.repository.OnBlockTabRepository;
 import com.fstop.eachadmin.repository.VwOnBlockTabRepository;
 import com.fstop.infra.entity.TX_ERR;
 import com.fstop.infra.entity.VW_ONBLOCKTAB;
+import com.fstop.fcore.util.*;
 
 import com.fstop.eachadmin.dto.TxErrDetailRq;
 import com.fstop.eachadmin.dto.TxErrDetailRs;
@@ -34,8 +34,8 @@ public class TxErrService {
 	@Autowired
 	private OnblocktabService onblocktab_bo;
 
-	public TxErrRs pageSearch(Map<String, String> param) {
-		String pageNo = StrUtils.isEmpty(param.get("page")) ? "0" : param.get("page");
+	public TxErrRs pageSearch(TxErrRq param) {
+		String pageNo = StrUtils.isEmpty(param.getPage()) ? "0" : param.getPage();
 //		String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
 //		TODO
 		Map rtnMap = new HashMap();
@@ -100,8 +100,8 @@ public class TxErrService {
 			sql.append(withTemp.toString());
 			sql.append("SELECT * FROM ( ");
 			sql.append("    SELECT ROWNUMBER() OVER(");
-			if (StrUtils.isNotEmpty(param.get("sidx"))) {
-				sql.append("ORDER BY " + param.get("sidx") + " " + param.get("sord"));
+			if (StrUtils.isNotEmpty(param.getSidx())) {
+				sql.append("ORDER BY " + param.getSidx() + " " + param.getSord());
 			}
 			sql.append(") AS ROWNUMBER, C.* ");
 			sql.append("    FROM TEMP_2 AS C ");
@@ -126,38 +126,26 @@ public class TxErrService {
 			e.printStackTrace();
 		}
 
-		if (page == null) {
-			rtnMap.put("total", "0");
-			rtnMap.put("page", "0");
-			rtnMap.put("records", "0");
-			rtnMap.put("rows", new ArrayList());
-		} else {
-			rtnMap.put("total", page.getTotalPageCount());
-			rtnMap.put("page", String.valueOf(page.getCurrentPageNo()));
-			rtnMap.put("records", page.getTotalCount());
-			rtnMap.put("rows", list);
-		}
-
 		ObjectMapper mapper = new ObjectMapper();
 		TxErrRs result = mapper.convertValue(rtnMap, TxErrRs.class);
 		return result;
 	}
 
-	public List<String> getConditionList(Map<String, String> param) {
+	public List<String> getConditionList(TxErrRq param) {
 		List<String> conditionList = new ArrayList<String>();
 
 		List<String> conditions = new ArrayList<String>();
 
 		String bizdate = "";
-		if (StrUtils.isNotEmpty(param.get("BIZDATE").trim())) {
-			bizdate = DateTimeUtils.convertDate(param.get("BIZDATE").trim(), "yyyyMMdd", "yyyyMMdd");
+		if (StrUtils.isNotEmpty(param.getBIZDATE().trim())) {
+			bizdate = DateTimeUtils.convertDate(param.getBIZDATE().trim(), "yyyyMMdd", "yyyyMMdd");
 			conditions.add(" A.BIZDATE = '" + bizdate + "' ");
 		}
 
 		String clearingPhase = "";
-		if (StrUtils.isNotEmpty(param.get("CLEARINGPHASE").trim())
-				&& !param.get("CLEARINGPHASE").trim().equals("all")) {
-			clearingPhase = param.get("CLEARINGPHASE").trim();
+		if (StrUtils.isNotEmpty(param.getCLEARINGPHASE().trim())
+				&& !param.getCLEARINGPHASE().equals("all")) {
+			clearingPhase = param.getCLEARINGPHASE().trim();
 			conditions.add(" A.CLEARINGPHASE = '" + clearingPhase + "' ");
 		}
 
