@@ -55,7 +55,7 @@ public class UndoneController {
 	public PageSearchRs<UNDONE_TXDATA> pageSearch(@RequestBody PageSearchRq param) {
 		return undoneService.pageSearch(param);
 	}
-	//明細
+	// 明細
 	@Operation(summary = "明細", description = "明細表單產出")
 	@PostMapping(value = "/detail")
 	public DetailRs detail(@RequestBody DetailRq param) {
@@ -78,7 +78,7 @@ public class UndoneController {
 		return undoneService.send_1400(param);
 	}
 	
-	//票交所代為處理未完成交易(send)
+	// 票交所代為處理未完成交易(send)
 	@Operation(summary = "票交所代為處理未完成交易(send)", description = "API功能說明")
 	@GetMapping(value = "/send_data")
 	public UndoneSendRs send(@RequestBody UndoneSendRq param) {

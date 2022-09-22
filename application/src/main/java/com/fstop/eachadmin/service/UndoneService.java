@@ -59,13 +59,12 @@ public class UndoneService {
 
 	@Autowired
 	private BankGroupRepository bankGroupRepository;
-	
+
 	@Autowired
 	private EachSysStatusTabService eachSysStatusTabService;
-	
+
 	@Autowired
 	private OnblocktabService onblocktabService;
-
 
 	// 操作行------------------------------------------------------
 	public List<Map<String, String>> getOpbkList() {
@@ -124,7 +123,7 @@ public class UndoneService {
 		List<String> conditions_1 = new ArrayList<String>();
 		List<String> conditions_2 = new ArrayList<String>();
 		// 是否包含整批資料("N"表示不過濾)
-		String filter_bat =  param.getFilter_bat() == null ? "N" : "Y";
+		String filter_bat = param.getFilter_bat() == null ? "N" : "Y";
 
 		/* 20150210 HUANGPU 改以營業日(BIZDATE)查詢資料，非交易日期(TXDATE) */
 		String startDate = "";
@@ -140,8 +139,7 @@ public class UndoneService {
 		}
 
 		String clearingphase = "";
-		if (StrUtils.isNotEmpty(param.getClearingphase().trim())
-				&& !param.getClearingphase().equals("all")) {
+		if (StrUtils.isNotEmpty(param.getClearingphase().trim()) && !param.getClearingphase().equals("all")) {
 			clearingphase = param.getClearingphase().trim();
 			conditions_1.add(" CLEARINGPHASE = '" + clearingphase + "' ");
 		}
@@ -154,8 +152,7 @@ public class UndoneService {
 		}
 
 		String businessTypeId = "";
-		if (StrUtils.isNotEmpty(param.getBusinessTypeId().trim())
-				&& !param.getBusinessTypeId().trim().equals("all")) {
+		if (StrUtils.isNotEmpty(param.getBusinessTypeId().trim()) && !param.getBusinessTypeId().trim().equals("all")) {
 			businessTypeId = param.getBusinessTypeId().trim();
 			conditions_1.add(" BUSINESS_TYPE_ID = '" + businessTypeId + "' ");
 		}
@@ -605,29 +602,6 @@ public class UndoneService {
 		return result;
 	}
 
-	// 明細------------------------------------------------------
-	public List<BANK_GROUP> search(String bgbkId) {
-		List<BANK_GROUP> list = null;
-		if (StrUtils.isEmpty(bgbkId)) {
-//			list = bank_group_Dao.getAll();
-			list = bankGroupRepository.getAllData();
-		} else {
-//			list = new ArrayList<BANK_GROUP>();
-//			BANK_GROUP po = bank_group_Dao.get(bgbkId);
-//			if(po != null){
-//				list.add(po);
-//			}
-			list = bankGroupRepository.getDataByBgbkId(bgbkId);
-		}
-		System.out.println("list>>" + list);
-		list = list == null ? null : list.size() == 0 ? null : list;
-
-		// 測試
-		// bank_group_Dao.creatWK();
-
-		return list;
-	}
-
 	// 查詢明細------------------------------------------------------
 	public DetailRs showDetail(DetailRq param) {
 
@@ -787,6 +761,6 @@ public class UndoneService {
 //		}
 
 		return detailRs;
- 
+
 	}
 }
