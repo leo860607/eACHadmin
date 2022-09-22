@@ -26,6 +26,7 @@ import com.fstop.eachadmin.repository.CommonSpringRepository;
 import com.fstop.eachadmin.repository.OnPendingTabRepository;
 import com.fstop.fcore.util.Page;
 import com.fstop.infra.entity.BANK_GROUP;
+import com.fstop.infra.entity.BANK_OPBK;
 import com.fstop.infra.entity.BUSINESS_TYPE;
 
 import com.fstop.eachadmin.dto.UndoneSendRq;
@@ -70,25 +71,23 @@ public class UndoneService {
 	// 操作行------------------------------------------------------
 	public List<Map<String, String>> getOpbkList() {
 
-		// String sql = "SELECT COALESCE( OP.OPBK_ID,'' ) AS OPBK_ID , COALESCE(
-		// BG.BGBK_NAME ,'' ) AS OPBK_NAME FROM ( SELECT DISTINCT OPBK_ID FROM
-		// EACHUSER.BANK_OPBK ) AS OP JOIN ( SELECT BGBK_ID, BGBK_NAME FROM BANK_GROUP
-		// WHERE BGBK_ATTR <> '6' ) AS BG ON OP.OPBK_ID = BG.BGBK_ID ORDER BY OP.OPBK_ID
-		// ";
-		// List<BANK_OPBK> list = business_type_Dao.getAllOpbkList(sql);
-		// TODO:
-		// jdbc 還沒有好, 暫時先用
-		List<BANK_GROUP> list = bankGroupRepository.getBgbkIdList_Not_5_And_6();
+		String sql = "SELECT COALESCE( OP.OPBK_ID,'' ) AS OPBK_ID , COALESCE( BG.BGBK_NAME ,'' ) AS OPBK_NAME FROM ( SELECT DISTINCT OPBK_ID FROM EACHUSER.BANK_OPBK ) AS OP JOIN ( SELECT BGBK_ID, BGBK_NAME FROM BANK_GROUP WHERE BGBK_ATTR <> '6' ) AS BG ON OP.OPBK_ID = BG.BGBK_ID ORDER BY OP.OPBK_ID";
+		List<BANK_OPBK> list = businessTypeRepository.getAllOpbkList(sql);
 		List<Map<String, String>> beanList = new LinkedList<Map<String, String>>();
 
 		Map<String, String> bean = null;
 
-		for (BANK_GROUP po : list) {
-			po.getOPBK_ID();
-			String k = (String) po.getOPBK_ID() + " - " + po.getOPBK_NAME();
-			String v = (String) po.getOPBK_ID();
+		for (BANK_OPBK po : list) {
+			
+			String k1 = "BankName";
+			String v1 = (String) po.getOPBK_NAME();
+			
+			String k2 = "BankId";
+			String v2 = (String) po.getOPBK_ID();
+			
 			bean = new HashMap<String, String>();
-			bean.put(k, v);
+			bean.put(k1, v1);
+			bean.put(k2, v2);
 			beanList.add(bean);
 		}
 		System.out.println("beanList>>" + beanList);
@@ -98,21 +97,23 @@ public class UndoneService {
 	// 業務行------------------------------------------------------
 	public List<Map<String, String>> getBsTypeIdList() {
 
-		// String sql = "FROM tw.org.twntch.po.BUSINESS_TYPE ORDER BY BUSINESS_TYPE_ID";
-		// List<BUSINESS_TYPE> list = business_type_Dao.find(sql);
-		// TODO:
-		// jdbc 還沒有好, 暫時先用
-		List<BUSINESS_TYPE> list = (List<BUSINESS_TYPE>) businessTypeRepository.testFunction();
+		String sql = "SELECT * FROM BUSINESS_TYPE ORDER BY BUSINESS_TYPE_ID";
+		List<BUSINESS_TYPE> list = businessTypeRepository.find(sql);
 		List<Map<String, String>> beanList = new LinkedList<Map<String, String>>();
 
 		Map<String, String> bean = null;
 
 		for (BUSINESS_TYPE po : list) {
-			po.getBUSINESS_TYPE_ID();
-			String k = (String) po.getBUSINESS_TYPE_ID() + " - " + po.getBUSINESS_TYPE_NAME();
-			String v = (String) po.getBUSINESS_TYPE_ID();
+			
+			String k1 = "BusinessTypeName";
+			String v1 = (String) po.getBUSINESS_TYPE_NAME();
+			
+			String k2 = "BusinessTypeID";
+			String v2 = (String) po.getBUSINESS_TYPE_ID();
+			
 			bean = new HashMap<String, String>();
-			bean.put(k, v);
+			bean.put(k1, v1);
+			bean.put(k2, v2);
 			beanList.add(bean);
 		}
 		System.out.println("beanList>>" + beanList);
