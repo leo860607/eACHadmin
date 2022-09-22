@@ -23,7 +23,7 @@ import com.fstop.eachadmin.dto.PageSearchRs;
 import com.fstop.eachadmin.repository.BankGroupRepository;
 import com.fstop.eachadmin.repository.BusinessTypeRepository;
 import com.fstop.eachadmin.repository.CommonSpringRepository;
-import com.fstop.eachadmin.repository.OnPendingTabRepository;
+//import com.fstop.eachadmin.repository.OnPendingTabRepository;
 import com.fstop.fcore.util.Page;
 import com.fstop.infra.entity.BANK_GROUP;
 import com.fstop.infra.entity.BANK_OPBK;
@@ -60,13 +60,12 @@ public class UndoneService {
 
 	@Autowired
 	private BankGroupRepository bankGroupRepository;
-	
+
 	@Autowired
 	private EachSysStatusTabService eachSysStatusTabService;
-	
+
 	@Autowired
 	private OnblocktabService onblocktabService;
-
 
 	// 操作行------------------------------------------------------
 	public List<Map<String, String>> getOpbkList() {
@@ -125,59 +124,57 @@ public class UndoneService {
 		List<String> conditions_1 = new ArrayList<String>();
 		List<String> conditions_2 = new ArrayList<String>();
 		// 是否包含整批資料("N"表示不過濾)
-		String filter_bat = param.get("FILTER_BAT") == null ? "N" : "Y";
+		String filter_bat = param.getFilter_bat() == null ? "N" : "Y";
 
 		/* 20150210 HUANGPU 改以營業日(BIZDATE)查詢資料，非交易日期(TXDATE) */
 		String startDate = "";
-		if (StrUtils.isNotEmpty(param.get("START_DATE").trim())) {
-			startDate = param.get("START_DATE").trim();
+		if (StrUtils.isNotEmpty(param.getStartDate().trim())) {
+			startDate = param.getStartDate().trim();
 			conditions_1.add(" BIZDATE >= '" + DateTimeUtils.convertDate(startDate, "yyyyMMdd", "yyyyMMdd") + "' ");
 		}
 
 		String endDate = "";
-		if (StrUtils.isNotEmpty(param.get("END_DATE").trim())) {
-			endDate = param.get("END_DATE").trim();
+		if (StrUtils.isNotEmpty(param.getEndDate().trim())) {
+			endDate = param.getEndDate().trim();
 			conditions_1.add(" BIZDATE <= '" + DateTimeUtils.convertDate(endDate, "yyyyMMdd", "yyyyMMdd") + "' ");
 		}
 
 		String clearingphase = "";
-		if (StrUtils.isNotEmpty(param.get("CLEARINGPHASE").trim())
-				&& !param.get("CLEARINGPHASE").trim().equals("all")) {
-			clearingphase = param.get("CLEARINGPHASE").trim();
+		if (StrUtils.isNotEmpty(param.getClearingphase().trim()) && !param.getClearingphase().equals("all")) {
+			clearingphase = param.getClearingphase().trim();
 			conditions_1.add(" CLEARINGPHASE = '" + clearingphase + "' ");
 		}
 
 		String bgbkId = "";
-		if (StrUtils.isNotEmpty(param.get("BGBK_ID").trim()) && !param.get("BGBK_ID").trim().equals("all")) {
-			bgbkId = param.get("BGBK_ID").trim();
+		if (StrUtils.isNotEmpty(param.getBgbkId().trim()) && !param.getBgbkId().trim().equals("all")) {
+			bgbkId = param.getBgbkId().trim();
 			conditions_1.add(
 					" (SENDERHEAD = '" + bgbkId + "' OR OUTHEAD = '" + bgbkId + "' OR INHEAD = '" + bgbkId + "') ");
 		}
 
 		String businessTypeId = "";
-		if (StrUtils.isNotEmpty(param.get("BUSINESS_TYPE_ID").trim())
-				&& !param.get("BUSINESS_TYPE_ID").trim().equals("all")) {
-			businessTypeId = param.get("BUSINESS_TYPE_ID").trim();
+		if (StrUtils.isNotEmpty(param.getBusinessTypeId().trim()) && !param.getBusinessTypeId().trim().equals("all")) {
+			businessTypeId = param.getBusinessTypeId().trim();
 			conditions_1.add(" BUSINESS_TYPE_ID = '" + businessTypeId + "' ");
 		}
 
 		String ostan = "";
-		if (StrUtils.isNotEmpty(param.get("OSTAN")) && !param.get("OSTAN").equals("all")) {
-			ostan = param.get("OSTAN");
+		if (StrUtils.isNotEmpty(param.getOstan()) && !param.getOstan().equals("all")) {
+			ostan = param.getOstan();
 			conditions_1.add(" STAN = '" + ostan + "' ");
 		}
 
-		if (StrUtils.isNotEmpty(param.get("RESULTCODE")) && !param.get("RESULTCODE").equals("all")) {
-			if ("A".equals(param.get("RESULTCODE"))) {
+		if (StrUtils.isNotEmpty(param.getResultCode()) && !param.getResultCode().equals("all")) {
+			if ("A".equals(param.getResultCode())) {
 				conditions_1.add(" RESULTCODE IS NOT NULL ");
-			} else if ("P".equals(param.get("RESULTCODE"))) {
+			} else if ("P".equals(param.getResultCode())) {
 				conditions_1.add(" RESULTCODE IS NULL ");
 			}
 		}
 
 		String opbkId = "";
-		if (StrUtils.isNotEmpty(param.get("OPBK_ID").trim()) && !param.get("OPBK_ID").trim().equals("all")) {
-			opbkId = param.get("OPBK_ID").trim();
+		if (StrUtils.isNotEmpty(param.getOpbkId().trim()) && !param.getOpbkId().trim().equals("all")) {
+			opbkId = param.getOpbkId().trim();
 			if (filter_bat.equals("Y")) {
 				conditions_2.addAll(conditions_1);
 				conditions_2.add(" COALESCE(FLBIZDATE,'') <> ''  ");
@@ -199,9 +196,9 @@ public class UndoneService {
 			}
 		}
 
-		int pageNo = StrUtils.isEmpty(param.get("page")) ? 0 : Integer.valueOf(param.get("page"));
-		int pageSize = StrUtils.isEmpty(param.get("rows")) ? Integer.valueOf(param.get("rows")// TODOArguments.getStringArg("PAGE.SIZE")
-		) : Integer.valueOf(param.get("rows"));
+		int pageNo = StrUtils.isEmpty(param.getPage()) ? 0 : Integer.valueOf(param.getPage());
+		int pageSize = StrUtils.isEmpty(param.getRow()) ? Integer.valueOf(param.getRow()// TODOArguments.getStringArg("PAGE.SIZE")
+		) : Integer.valueOf(param.getRow());
 
 		Map<String, Object> rtnMap = new HashMap<String, Object>();
 
@@ -212,22 +209,22 @@ public class UndoneService {
 			String condition_1 = "", condition_2 = "";
 			condition_1 = combine(conditions_1);
 			condition_2 = combine(conditions_2);
-			String sord = StrUtils.isNotEmpty(param.get("sord")) ? param.get("sord") : "";
-			String sidx = StrUtils.isNotEmpty(param.get("sidx")) ? param.get("sidx") : "";
+			String sord = StrUtils.isNotEmpty(param.getSord()) ? param.getSord() : "";
+			String sidx = StrUtils.isNotEmpty(param.getSidx()) ? param.getSidx() : "";
 			String orderSQL = StrUtils.isNotEmpty(sidx) ? " ORDER BY " + sidx + " " + sord : "";
 			StringBuffer tmpSQL = new StringBuffer();
 			StringBuffer cntSQL = new StringBuffer();
 			StringBuffer sumSQL = new StringBuffer();
 			StringBuffer sql = new StringBuffer();
-			if (StrUtils.isNotEmpty(param.get("sidx"))) {
+			if (StrUtils.isNotEmpty(param.getSidx())) {
 //				if("TXDT".equalsIgnoreCase(param.get("sidx"))){
 //					orderSQL = " ORDER BY NEWTXDT "+param.get("sord");
 //				}
 //				if("TXAMT".equalsIgnoreCase(param.get("sidx"))){
 //					orderSQL = " ORDER BY NEWTXAMT "+param.get("sord");
 //				}
-				if ("RESULTCODE".equalsIgnoreCase(param.get("sidx"))) {
-					orderSQL = " ORDER BY NEWRESULT " + param.get("sord");
+				if ("RESULTCODE".equalsIgnoreCase(param.getSidx())) {
+					orderSQL = " ORDER BY NEWRESULT " + param.getSord();
 				}
 			}
 			tmpSQL.append(" WITH TEMP AS ");
@@ -606,29 +603,6 @@ public class UndoneService {
 		return result;
 	}
 
-	// 明細------------------------------------------------------
-	public List<BANK_GROUP> search(String bgbkId) {
-		List<BANK_GROUP> list = null;
-		if (StrUtils.isEmpty(bgbkId)) {
-//			list = bank_group_Dao.getAll();
-			list = bankGroupRepository.getAllData();
-		} else {
-//			list = new ArrayList<BANK_GROUP>();
-//			BANK_GROUP po = bank_group_Dao.get(bgbkId);
-//			if(po != null){
-//				list.add(po);
-//			}
-			list = bankGroupRepository.getDataByBgbkId(bgbkId);
-		}
-		System.out.println("list>>" + list);
-		list = list == null ? null : list.size() == 0 ? null : list;
-
-		// 測試
-		// bank_group_Dao.creatWK();
-
-		return list;
-	}
-
 	// 查詢明細------------------------------------------------------
 	public DetailRs showDetail(DetailRq param) {
 
@@ -788,6 +762,6 @@ public class UndoneService {
 //		}
 
 		return detailRs;
- 
+
 	}
 }
