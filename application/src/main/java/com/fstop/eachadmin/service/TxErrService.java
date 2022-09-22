@@ -28,7 +28,6 @@ public class TxErrService {
 	private OnBlockTabRepository onblocktab_Dao;
 	@Autowired
 	private VwOnBlockTabRepository vw_onblocktab_Dao;
-
 	@Autowired
 	private EachSysStatusTabService eachsysstatustab_bo;
 	@Autowired
@@ -280,7 +279,7 @@ public TxErrDetailRs showDetail(TxErrDetailRq param) {
 		String txdate = param.getTXDATE();
 		String stan = param.getSTAN();
 		
-		Map detailDataMap =tx_err_bo.searchByPk(txdate, stan);
+		Map detailDataMap =searchByPk(txdate, stan);
 		String bizdate = eachsysstatustab_bo.getBusinessDateII();
 		
 		//20220321新增FOR EXTENDFEE 位數轉換
