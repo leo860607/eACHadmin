@@ -13,6 +13,7 @@ import org.hibernate.internal.SessionImpl;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -30,16 +31,16 @@ public class OnBlockTabRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	@Autowired
+
 	private SimpleJdbcCall simpleJdbcCall;
 
 	// 待修改
 	public Page getDataIII(int pageNo, int pageSize, String countQuerySql, String sql, String[] cols,
 			Class targetClass) {
 		int totalCount = countDataIII(countQuerySql);
-		int startIndex = Page.getStartOfPage(pageNo, pageSize) + 1;
+//		int startIndex = Page.getStartOfPage(pageNo, pageSize) + 1;
 		int lastIndex = pageNo * pageSize;
-		sql += " ) AS TEMP_ WHERE ROWNUMBER >= " + startIndex + " AND ROWNUMBER <= " + lastIndex;
+//		sql += " ) AS TEMP_ WHERE ROWNUMBER >= " + startIndex + " AND ROWNUMBER <= " + lastIndex;
 //        org.hibernate.SQLQuery query = getCurrentSession().createSQLQuery(sql);
 //        AutoAddScalar addscalar = new AutoAddScalar();
 //        addscalar.addScalar(query, targetClass, cols);
@@ -51,7 +52,8 @@ public class OnBlockTabRepository {
 
 		List list = new ArrayList();
 		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(targetClass));
-		return new Page(startIndex - 1, totalCount, pageSize, list);
+//		return new Page(startIndex - 1, totalCount, pageSize, list);
+		return new PageImpl(list);
 	}
 
 //    改寫存取SQL的Stored Procedures

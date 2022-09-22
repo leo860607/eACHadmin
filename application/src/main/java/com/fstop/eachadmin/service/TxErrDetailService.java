@@ -4,11 +4,13 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.fstop.eachadmin.dto.TxErrDetailRq;
 import com.fstop.eachadmin.dto.TxErrDetailRs;
 import com.fstop.fcore.util.StrUtils;
 
-
+@Service
 public class TxErrDetailService {
 	@Autowired
 	private TxErrService tx_err_bo;

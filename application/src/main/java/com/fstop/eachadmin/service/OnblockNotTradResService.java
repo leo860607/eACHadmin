@@ -52,8 +52,8 @@ public class OnblockNotTradResService {
 //	@Autowired
 //	private BUSINESS_TYPE_Dao business_type_Dao ;
 
-	@Autowired
-	OnPendingTabRepository OnPendingTabR;
+//	@Autowired
+//	OnPendingTabRepository OnPendingTabR;
 	ObtkNtrRs obtkNtRRs;
 	@Autowired
 	UndoneService undoneService;

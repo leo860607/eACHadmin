@@ -41,10 +41,7 @@ public class WkDateService {
 	private WkDateRepository wkDateRepository;
 	@Autowired
 	private EachSysStatusTabRepository eachsysstatustab_Dao;
-//	private SocketClient socketClient;
-	@Autowired
-	private EachUserLogService userlog_bo;
-//	private Logger logger = Logger.getLogger(WkDateService.class.getName());
+
 	
 	/**
 	 * 根據目前營業日期往後取下一個營業日期
@@ -73,7 +70,8 @@ public class WkDateService {
 		boolean ret = false;
 //		TODO 之後可能還要加入颱風天的判斷
 		String today = zDateHandler.getTWDate();
-		WK_DATE_CALENDAR po = wkDateRepository.get(today);
+//		WK_DATE_CALENDAR po = wkDateRepository.get(today);
+		WK_DATE_CALENDAR po = null;
 		if(po!=null && StrUtils.isNotEmpty(po.getIS_TXN_DATE()) && po.getIS_TXN_DATE().equals("Y")){
 			System.out.println("IS_TXN_DATE>>"+po.getIS_TXN_DATE());
 			ret =true;
@@ -89,7 +87,8 @@ public class WkDateService {
 	public boolean isTxnDate(String date){
 		boolean ret = false;
 		String today = date ;
-		WK_DATE_CALENDAR po = wkDateRepository.get(today);
+//		WK_DATE_CALENDAR po = wkDateRepository.get(today);
+		WK_DATE_CALENDAR po = null;
 		if(po!=null && StrUtils.isNotEmpty(po.getIS_TXN_DATE()) && po.getIS_TXN_DATE().equals("Y")){
 			System.out.println("TXN_DATE>>"+po.getIS_TXN_DATE());
 			ret =true;
@@ -228,7 +227,6 @@ public class WkDateService {
 		WK_DATE_CALENDAR po = null;
 		try {
 			if(StrUtils.isNotEmpty(txnDate)){
-				po = wkDateRepository.get(txnDate);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -347,19 +345,16 @@ public class WkDateService {
 			if(wkDateRepository.createWholeYearData(twYear)){
 				rtnMap.put("result", "TRUE");
 				rtnMap.put("msg", "民國" + twYear + "資料已產生!");
-				userlog_bo.addLog("A", "成功，民國" + twYear + "資料已產生!", pkmap, pkmap);
 			}else{
 				rtnMap.put("result", "FALSE");
 				rtnMap.put("msg", "資料產生失敗!");
 				logmap.putAll(rtnMap);
-				userlog_bo.writeFailLog("A", logmap, null, null, pkmap);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
 			rtnMap.put("result", "FALSE");
 			rtnMap.put("msg", "資料產生時發生錯誤!");
 			logmap.putAll(rtnMap);
-			userlog_bo.writeFailLog("A", logmap, null, null, pkmap);
 		}
 		return rtnMap;
 	}
@@ -439,30 +434,5 @@ public class WkDateService {
 		}
 	}
 
-	public WkDateRepository getWk_date_Dao() {
-		return wkDateRepository;
-	}
-
-	public void setWk_date_Dao(WkDateRepository wk_date_Dao) {
-		this.wkDateRepository = wk_date_Dao;
-	}
-	public EachSysStatusTabRepository getEachsysstatustab_Dao() {
-		return eachsysstatustab_Dao;
-	}
-	public void setEachsysstatustab_Dao(EachSysStatusTabRepository eachsysstatustab_Dao) {
-		this.eachsysstatustab_Dao = eachsysstatustab_Dao;
-	}
-//	public SocketClient getSocketClient() {
-//		return socketClient;
-//	}
-//	public void setSocketClient(SocketClient socketClient) {
-//		this.socketClient = socketClient;
-//	}
-	public EachUserLogService getUserlog_bo() {
-		return userlog_bo;
-	}
-	public void setUserlog_bo(EachUserLogService userlog_bo) {
-		this.userlog_bo = userlog_bo;
-	}
 	
 }

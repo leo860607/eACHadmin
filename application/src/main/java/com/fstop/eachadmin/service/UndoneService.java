@@ -54,8 +54,8 @@ public class UndoneService {
 	@Autowired
 	private BusinessTypeRepository businessTypeRepository;
 
-	@Autowired
-	private OnPendingTabRepository OnPendingTabR;
+//	@Autowired
+//	private OnPendingTabRepository OnPendingTabR;
 
 	@Autowired
 	private BankGroupRepository bankGroupRepository;
@@ -65,9 +65,7 @@ public class UndoneService {
 	
 	@Autowired
 	private OnblocktabService onblocktabService;
-	
-	@Autowired
-	private UndoneService undoneService;
+
 
 	// 操作行------------------------------------------------------
 	public List<Map<String, String>> getOpbkList() {
@@ -368,7 +366,8 @@ public class UndoneService {
 		try {
 			// 先檢查onpendingtab中是否有該筆資料存在
 			ONPENDINGTAB_PK id = new ONPENDINGTAB_PK(txdate, stan);
-			Optional<ONPENDINGTAB> po = OnPendingTabR.findById(id);
+//			Optional<ONPENDINGTAB> po = OnPendingTabR.findById(id);
+			Optional<ONPENDINGTAB> po = null;
 			if (po == null) {
 				rtnMap.put("result", "FALSE");// outtput
 				rtnMap.put("msg", "失敗，資料尚未轉移，PK={STAN:" + stan + ",TXDATE:" + txdate + "}");// outtput
@@ -449,7 +448,8 @@ public class UndoneService {
 		try {
 			// 先檢查onpendingtab中是否有該筆資料存在
 			ONPENDINGTAB_PK id = new ONPENDINGTAB_PK(txdate, stan);
-			Optional<ONPENDINGTAB> po = OnPendingTabR.findById(id);
+//			Optional<ONPENDINGTAB> po = OnPendingTabR.findById(id);
+			Optional<ONPENDINGTAB> po = null;
 			if (po != null) {
 				rtnMap.put("result", "FALSE");// outtput
 				rtnMap.put("msg", "失敗，資料已轉移，PK={STAN:" + stan + ",TXDATE:" + txdate + "}");// outtput
@@ -528,7 +528,8 @@ public class UndoneService {
 		try {
 			// 先檢查onpendingtab中是否有該筆資料存在
 			ONPENDINGTAB_PK id = new ONPENDINGTAB_PK(txdate, stan);
-			Optional<ONPENDINGTAB> po = OnPendingTabR.findById(id);
+//			Optional<ONPENDINGTAB> po = OnPendingTabR.findById(id);
+			Optional<ONPENDINGTAB> po = null;
 			if (po == null) {
 				rtnMap.put("result", "FALSE");
 				rtnMap.put("msg", "失敗，資料尚未轉移，PK={STAN:" + stan + ",TXDATE:" + txdate + "}");
@@ -570,7 +571,8 @@ public class UndoneService {
 
 				// 過10秒後再查詢，檢查是否已沖正完畢
 				Thread.sleep(5 * 1000);
-				po = OnPendingTabR.findById(id);
+//				Optional<ONPENDINGTAB> po = OnPendingTabR.findById(id);
+				po = null;
 				if (po != null) {
 					if (po.get().getACHFLAG().equals("*")) {
 						rtnMap.put("result", "TRUE");
