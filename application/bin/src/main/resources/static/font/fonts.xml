@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontFamilies>
+    <fontFamily name="標楷">
+        <normal>static/font/KAIU.TTF</normal>
+        <bold>static/font/KAIU.TTF</bold>
+        <italic>static/font/KAIU.TTF</italic>
+        <boldItalic>static/font/KAIU.TTF</boldItalic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'標楷體', Arial, Helvetica, Serif</export>
+            <export key="net.sf.jasperreports.xhtml">'標楷體', Arial, Helvetica, Serif</export>
+        </exportFonts>
+    </fontFamily>
+</fontFamilies>
