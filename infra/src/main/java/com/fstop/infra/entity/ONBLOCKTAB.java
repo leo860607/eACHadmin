@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity(name= "ONBLOCKTAB")
-@Table(name="MASTER_ONBLOCKTAB")
+@Table(name="ONBLOCKTAB")
 @Getter
 @Setter
 public class ONBLOCKTAB implements Serializable{

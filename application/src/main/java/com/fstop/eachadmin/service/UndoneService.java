@@ -343,6 +343,7 @@ public class UndoneService {
 
 	// details----請求傳送未完成交易結果(1406)------------------------------------------------------
 	@SuppressWarnings({ "unchecked", "unused" })
+//	@org.springframework.beans.factory.annotation.Autowired(required=true)
 	public UndoneSendRs send_1406(UndoneSendRq param) {
 		/*
 		 * 查詢未完成交易處理結果 <?xml version="1.0" encoding="UTF-8" standalone="yes"?> <msg>
@@ -422,6 +423,7 @@ public class UndoneService {
 
 	// details----請求傳送確認訊息(1400)------------------------------------------------------
 	@SuppressWarnings("unchecked")
+//	@org.springframework.beans.factory.annotation.Autowired(required=true)
 	public UndoneSendRs send_1400(UndoneSendRq param) {
 		/*
 		 * 請求傳送確認訊息 <?xml version="1.0" encoding="UTF-8" standalone="yes"?> <msg>

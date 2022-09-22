@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity(name = "ONPENDINGTAB")
-@Table(name = "MASTER_ONPENDINGTAB")
+//@Table(name = "MASTER_ONPENDINGTAB")
+@Table(name = "ONPENDINGTAB")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,7 +23,9 @@ public class ONPENDINGTAB implements Serializable {
 	/**
 	 * 
 	 */
+	
 	private static final long serialVersionUID = 7521516122770873553L;
+	@EmbeddedId
 	private ONPENDINGTAB_PK id;
 	private String PCODE;
 	private String CLEARINGCODE;
