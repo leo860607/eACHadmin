@@ -10,7 +10,6 @@ import com.fstop.eachadmin.dto.TxErrDetailRq;
 import com.fstop.eachadmin.dto.TxErrDetailRs;
 import com.fstop.eachadmin.dto.TxErrRq;
 import com.fstop.eachadmin.dto.TxErrRs;
-import com.fstop.eachadmin.service.TxErrDetailService;
 import com.fstop.eachadmin.service.TxErrService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,9 +22,6 @@ public class TxErrController {
 
 	@Autowired
 	private TxErrService txErrService;
-	
-	@Autowired
-	private TxErrDetailService txErrDetailService;
 
 	@Operation(summary = "查詢 API", description = "查詢按鈕")
 	@PostMapping(value = "/search")
@@ -36,7 +32,7 @@ public class TxErrController {
 	@Operation(summary = "檢視明細 API", description = "檢視明細")
 	@PostMapping(value = "/detail")
 	public TxErrDetailRs detil(@RequestBody TxErrDetailRq param) {
-		return txErrDetailService.showDetail(param);
+		return txErrService.showDetail(param);
 	}
 	
 }
