@@ -31,19 +31,4 @@ public class TxErrRs<VW_ONBLOCKTAB> {
 	@JsonProperty("ROWS")
 	private List<VW_ONBLOCKTAB> rows;
 
-	@Getter
-	@Setter
-	public class TxErrPageRs {
-		private String ERR_TYPE;
-		private String TXDATE;
-		private String TXDT;
-		private String STAN;
-		private String SENDERBANKID;
-		private String OUTBANKID;
-		private String INBANKID;
-		private String SENDERID;
-		private String PCODE;
-		private String TXAMT;
-	}
-
 }
