@@ -1,9 +1,11 @@
 package com.fstop.eachadmin.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fstop.eachadmin.dto.TxErrDetailRq;
@@ -25,7 +27,7 @@ public class TxErrController {
 
 	@Operation(summary = "查詢 API", description = "查詢按鈕")
 	@PostMapping(value = "/search")
-	public TxErrRs getPageSearch(@RequestBody TxErrRq param) {
+	public Page getPageSearch(@RequestBody TxErrRq param) {
 		return txErrService.pageSearch(param) ;
 	}
 	
