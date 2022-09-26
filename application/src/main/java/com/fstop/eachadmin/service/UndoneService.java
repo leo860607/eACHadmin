@@ -58,8 +58,8 @@ public class UndoneService {
 	@Autowired
 	private BusinessTypeRepository businessTypeRepository;
 
-//	@Autowired
-//	private OnPendingTabRepository OnPendingTabR;
+	@Autowired
+	private BankGroupRepository bankGroupRepository;
 
 
 
@@ -768,5 +768,27 @@ public class UndoneService {
 
 		return detailRs;
 
+	}
+//-------------------明細所需資料-------------------------------------------------
+	public List<BANK_GROUP> search(String bgbkId){
+		List<BANK_GROUP> list = null ;
+		if(StrUtils.isEmpty(bgbkId)){
+//			list = bank_group_Dao.getAll();
+			list = bankGroupRepository.getAllData();
+		}else{
+//			list = new ArrayList<BANK_GROUP>();
+//			BANK_GROUP po = bank_group_Dao.get(bgbkId);
+//			if(po != null){
+//				list.add(po);
+//			}
+			list = bankGroupRepository.getDataByBgbkId(bgbkId);
+		}
+		System.out.println("list>>"+list);
+		list = list == null? null : list.size() == 0? null:list;
+		
+		//測試
+		//bank_group_Dao.creatWK();
+		
+		return list;
 	}
 }
