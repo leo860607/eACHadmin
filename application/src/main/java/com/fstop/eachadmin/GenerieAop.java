@@ -74,8 +74,8 @@ public Map com_Dif_Val(Map<String,String> newmap , Map<String,String> oldmap){
 	public EACH_USERLOG getUSERLOG(String op_type , String uri){
 		EACH_USERLOG userlog_po = null;
 		EACH_FUNC_LIST func_list_po = null;
-		func_list_po = getUsed_Func(op_type , uri);
-		userlog_po = getEACH_USERLOG(op_type);
+//		func_list_po = getUsed_Func(op_type , uri);
+//		userlog_po = getEACH_USERLOG(op_type);
 //		System.out.println("func_list_po>>"+func_list_po+", userlog_po>>"+userlog_po);
 		if(func_list_po != null ){
 			userlog_po.setFUNC_ID(func_list_po.getFUNC_ID());
