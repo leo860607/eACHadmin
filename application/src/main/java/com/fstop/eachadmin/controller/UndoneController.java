@@ -31,9 +31,6 @@ public class UndoneController {
 	@Autowired
 	private UndoneService undoneService;
 
-	@Autowired
-	private UndoneDetailService undoneDetailService;
-
 	// 操作行
 	@Operation(summary = "操作行 API", description = "操作行下拉選單資料")
 	@GetMapping(value = "/opbkList")
@@ -54,11 +51,12 @@ public class UndoneController {
 	public PageSearchRs<UNDONE_TXDATA> pageSearch(@RequestBody PageSearchRq param) {
 		return undoneService.pageSearch(param);
 	}
+
 	// 明細
 	@Operation(summary = "明細API", description = "明細表單產出")
 	@PostMapping(value = "/detail")
 	public DetailRs detail(@RequestBody DetailRq param) {
-		return undoneDetailService.showDetail(param);
+		return undoneService.showDetail(param);
 	}
 
 	// 請求傳送未完成交易結果(1406)
@@ -76,7 +74,7 @@ public class UndoneController {
 	public UndoneSendRs send_1400(@RequestBody UndoneSendRq param) {
 		return undoneService.send_1400(param);
 	}
-	
+
 	// 票交所代為處理未完成交易(send)
 	@Operation(summary = "票交所代為處理未完成交易(send)", description = "API功能說明")
 	@PostMapping(value = "/send_data")
