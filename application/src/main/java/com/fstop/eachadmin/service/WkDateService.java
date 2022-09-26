@@ -436,6 +436,8 @@ public class WkDateService {
 			return false;
 		}
 	}
-
+	public EachSysStatusTabRepository getEachsysstatustab_Dao() {
+		return eachSysStatusTabRepository;
+	}
 	
 }
