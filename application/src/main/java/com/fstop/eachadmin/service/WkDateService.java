@@ -40,7 +40,7 @@ public class WkDateService {
 	@Autowired
 	private WkDateRepository wkDateRepository;
 	@Autowired
-	private EachSysStatusTabRepository eachsysstatustab_Dao;
+	private EachSysStatusTabRepository eachSysStatusTabRepository;
 
 	
 	/**
@@ -239,7 +239,7 @@ public class WkDateService {
 		Map pkmap = new HashMap();
 		Map oldmap = new HashMap();
 		try{
-			WK_DATE_CALENDAR tmp = wkDateRepository.get(po.getTXN_DATE());
+			WK_DATE_CALENDAR tmp = wkDateRepository.get();
 			
 			pkmap.put("TXN_DATE", po.getTXN_DATE());
 			if(tmp == null){
@@ -248,7 +248,8 @@ public class WkDateService {
 				return rtnMap;
 			}
 			oldmap = BeanUtils.describe(tmp);
-			List<EACHSYSSTATUSTAB> eachSys = eachsysstatustab_Dao.getBusinessDate();
+			
+			List<EACHSYSSTATUSTAB> eachSys = eachSysStatusTabRepository.getThisBusinessDate();
 			if(eachSys == null || eachSys.size() <= 0){
 				rtnMap.put("result", "FALSE");
 				rtnMap.put("msg", "系統資料錯誤");
@@ -279,14 +280,14 @@ public class WkDateService {
 						return rtnMap;
 					}else{
 //						wk_date_Dao.save(po);
-						wkDateRepository.saveII(po, oldmap, pkmap);
+//						wkDateRepository.saveII(po, oldmap, pkmap);
 						rtnMap.put("result", "TRUE");
 						rtnMap.put("msg", "儲存成功");
 					}
 				}
 			}else{
 //				wk_date_Dao.save(po);
-				wkDateRepository.saveII(po, oldmap, pkmap);
+//				wkDateRepository.saveII(po, oldmap, pkmap);
 				rtnMap.put("result", "TRUE");
 				rtnMap.put("msg", "儲存成功");
 			}
@@ -298,6 +299,8 @@ public class WkDateService {
 		return rtnMap;
 	}
 	
+	
+
 	/**
 	 * 重新打包回傳的List<WK_DATE_CALENDAR>
 	 * 格式為：{"010301":[~ 1月各日期資料 ~],"010301":[~ 2月各日期資料 ~],...}
@@ -339,7 +342,7 @@ public class WkDateService {
 			if(list != null && list.size() != 0){
 				rtnMap.put("result", "FALSE");
 				rtnMap.put("msg", "該年份已有資料，不可重複產生!");
-				wkDateRepository.saveFail_PK(null, pkmap, "年份錯誤，請輸入民國年!");
+//				wkDateRepository.saveFail_PK(null, pkmap, "年份錯誤，請輸入民國年!");
 				return rtnMap;
 			}
 			if(wkDateRepository.createWholeYearData(twYear)){
@@ -359,9 +362,9 @@ public class WkDateService {
 		return rtnMap;
 	}
 	
-//	public Map<String, String> send(WK_DATE_CALENDAR po){
-//		Map<String, String> rtnMap = null;
-//		try{
+	public Map<String, String> send(WK_DATE_CALENDAR po){
+		Map<String, String> rtnMap = null;
+		try{
 //			Header msgHeader = new Header();
 //			msgHeader.setSystemHeader("eACH01");
 //			msgHeader.setMsgType("0100");
@@ -380,11 +383,11 @@ public class WkDateService {
 //			String telegram = MessageConverter.marshalling(msg);
 //			rtnMap = socketClient.send(telegram);
 //			rtnMap.put("STAN", msgHeader.getStan());
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}
-//		return rtnMap;
-//	}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return rtnMap;
+	}
 	
 	//傳入修改前的營業日，欲修改的日期, 是否為營業日
 	public boolean checkBusinessDate(String bDate, String tDate, String isTxnDate){
@@ -403,7 +406,7 @@ public class WkDateService {
 		
 		List<EACHSYSSTATUSTAB> list = null;
 		while(timeoutCount != 0 && !isChanged){
-			list = eachsysstatustab_Dao.getNextBusinessDate();
+			list = eachSysStatusTabRepository.getNextBusinessDate();
 			if(list != null && list.size() > 0){
 				isChanged = compareDate.equals(list.get(0).getNEXTDATE());
 				System.out.println("@@@ (" + timeoutCount + ") " + bDate + " is changed to " + compareDate + "? " + isChanged + "( " + list.get(0).getNEXTDATE() + " )");
