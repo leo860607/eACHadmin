@@ -1,5 +1,6 @@
 package com.fstop.eachadmin.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +27,11 @@ import com.fstop.eachadmin.repository.BusinessTypeRepository;
 import com.fstop.eachadmin.repository.CommonSpringRepository;
 //import com.fstop.eachadmin.repository.OnPendingTabRepository;
 import com.fstop.fcore.util.Page;
+import com.fstop.infra.entity.BANK_BRANCH;
 import com.fstop.infra.entity.BANK_GROUP;
 import com.fstop.infra.entity.BANK_OPBK;
 import com.fstop.infra.entity.BUSINESS_TYPE;
-
+import com.fstop.infra.entity.ONBLOCKTAB;
 import com.fstop.eachadmin.dto.UndoneSendRq;
 import com.fstop.eachadmin.dto.UndoneSendRs;
 
@@ -55,11 +58,10 @@ public class UndoneService {
 	@Autowired
 	private BusinessTypeRepository businessTypeRepository;
 
-//	@Autowired
-//	private OnPendingTabRepository OnPendingTabR;
-
 	@Autowired
 	private BankGroupRepository bankGroupRepository;
+
+
 
 	@Autowired
 	private EachSysStatusTabService eachSysStatusTabService;
@@ -77,13 +79,13 @@ public class UndoneService {
 		Map<String, String> bean = null;
 
 		for (BANK_OPBK po : list) {
-			
+
 			String k1 = "BankName";
 			String v1 = (String) po.getOPBK_NAME();
-			
+
 			String k2 = "BankId";
 			String v2 = (String) po.getOPBK_ID();
-			
+
 			bean = new HashMap<String, String>();
 			bean.put(k1, v1);
 			bean.put(k2, v2);
@@ -103,13 +105,13 @@ public class UndoneService {
 		Map<String, String> bean = null;
 
 		for (BUSINESS_TYPE po : list) {
-			
+
 			String k1 = "BusinessTypeName";
 			String v1 = (String) po.getBUSINESS_TYPE_NAME();
-			
+
 			String k2 = "BusinessTypeID";
 			String v2 = (String) po.getBUSINESS_TYPE_ID();
-			
+
 			bean = new HashMap<String, String>();
 			bean.put(k1, v1);
 			bean.put(k2, v2);
@@ -607,6 +609,7 @@ public class UndoneService {
 
 	// 查詢明細------------------------------------------------------
 	public DetailRs showDetail(DetailRq param) {
+		DetailRs detailRs = new DetailRs();
 
 		String txDate = param.getTXDATE();
 		String stan = param.getSTAN();
@@ -664,17 +667,12 @@ public class UndoneService {
 				detailDataMap.put("TXN_TYPE", "級距");
 				break;
 			}
-			detailDataMap.put("NEWSENDERFEE_NW",
-					detailDataMap.get("NEWSENDERFEE") != null ? detailDataMap.get("NEWSENDERFEE") : "0");
-			detailDataMap.put("NEWINFEE_NW",
-					detailDataMap.get("NEWINFEE") != null ? detailDataMap.get("NEWINFEE") : "0");
-			detailDataMap.put("NEWOUTFEE_NW",
-					detailDataMap.get("NEWOUTFEE") != null ? detailDataMap.get("NEWOUTFEE") : "0");
-			detailDataMap.put("NEWWOFEE_NW",
-					detailDataMap.get("NEWWOFEE") != null ? detailDataMap.get("NEWWOFEE") : "0");
-			detailDataMap.put("NEWEACHFEE_NW",
-					detailDataMap.get("NEWEACHFEE") != null ? detailDataMap.get("NEWEACHFEE") : "0");
-			detailDataMap.put("NEWFEE_NW", detailDataMap.get("NEWFEE") != null ? detailDataMap.get("NEWFEE") : "0");
+//			detailDataMap.put("NEWSENDERFEE_NW",detailDataMap.get("NEWSENDERFEE") != null ? detailDataMap.get("NEWSENDERFEE") : "0");
+//			detailDataMap.put("NEWINFEE_NW",detailDataMap.get("NEWINFEE") != null ? detailDataMap.get("NEWINFEE") : "0");
+//			detailDataMap.put("NEWOUTFEE_NW",detailDataMap.get("NEWOUTFEE") != null ? detailDataMap.get("NEWOUTFEE") : "0");
+//			detailDataMap.put("NEWWOFEE_NW",detailDataMap.get("NEWWOFEE") != null ? detailDataMap.get("NEWWOFEE") : "0");
+//			detailDataMap.put("NEWEACHFEE_NW",detailDataMap.get("NEWEACHFEE") != null ? detailDataMap.get("NEWEACHFEE") : "0");
+//			detailDataMap.put("NEWFEE_NW", detailDataMap.get("NEWFEE") != null ? detailDataMap.get("NEWFEE") : "0");
 
 			// 如果FEE_TYPE為空 且結果為成功或未完成 新版手續call sp
 		} else if (StrUtils.isEmpty((String) detailDataMap.get("FEE_TYPE"))
@@ -712,9 +710,16 @@ public class UndoneService {
 			detailDataMap.put("NEWFEE_NW", detailDataMap.get("NEWFEE") != null ? detailDataMap.get("NEWFEE") : "0");
 
 		}
+		
 
-		DetailRs detailRs = new DetailRs();
 		detailRs.setDetailData(detailDataMap);
+
+		String businessDate = eachSysStatusTabService.getBusinessDate();
+
+		detailRs.setOpbkIdList(getOpbkList());
+		detailRs.setBsTypeList(getBsTypeIdList());
+		detailRs.setSTART_DATE(businessDate);
+		detailRs.setEND_DATE(businessDate);
 		ObjectMapper mapper = new ObjectMapper();
 		UndoneSendRs result = mapper.convertValue(detailDataMap, UndoneSendRs.class);
 
@@ -765,5 +770,27 @@ public class UndoneService {
 
 		return detailRs;
 
+	}
+//-------------------明細所需資料-------------------------------------------------
+	public List<BANK_GROUP> search(String bgbkId){
+		List<BANK_GROUP> list = null ;
+		if(StrUtils.isEmpty(bgbkId)){
+//			list = bank_group_Dao.getAll();
+			list = bankGroupRepository.getAllData();
+		}else{
+//			list = new ArrayList<BANK_GROUP>();
+//			BANK_GROUP po = bank_group_Dao.get(bgbkId);
+//			if(po != null){
+//				list.add(po);
+//			}
+			list = bankGroupRepository.getDataByBgbkId(bgbkId);
+		}
+		System.out.println("list>>"+list);
+		list = list == null? null : list.size() == 0? null:list;
+		
+		//測試
+		//bank_group_Dao.creatWK();
+		
+		return list;
 	}
 }

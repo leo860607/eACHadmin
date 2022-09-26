@@ -23,14 +23,14 @@ import com.fstop.eachadmin.dto.UndoneSendRs;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "測試用")
+@Tag(name = "未完成交易查詢(Test)")
 @RestController
 @RequestMapping("api/demo/search")
 public class UndoneController {
 
 	@Autowired
 	private UndoneService undoneService;
-
+	
 	@Autowired
 	private UndoneDetailService undoneDetailService;
 
@@ -49,13 +49,14 @@ public class UndoneController {
 	}
 
 	// 查詢
-	@Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
+	@Operation(summary = "查詢表單API", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
 	@PostMapping(value = "/pageSearch")
 	public PageSearchRs<UNDONE_TXDATA> pageSearch(@RequestBody PageSearchRq param) {
 		return undoneService.pageSearch(param);
 	}
+
 	// 明細
-	@Operation(summary = "明細", description = "明細表單產出")
+	@Operation(summary = "明細API", description = "明細表單產出")
 	@PostMapping(value = "/detail")
 	public DetailRs detail(@RequestBody DetailRq param) {
 		return undoneDetailService.showDetail(param);
@@ -76,7 +77,7 @@ public class UndoneController {
 	public UndoneSendRs send_1400(@RequestBody UndoneSendRq param) {
 		return undoneService.send_1400(param);
 	}
-	
+
 	// 票交所代為處理未完成交易(send)
 	@Operation(summary = "票交所代為處理未完成交易(send)", description = "API功能說明")
 	@PostMapping(value = "/send_data")
