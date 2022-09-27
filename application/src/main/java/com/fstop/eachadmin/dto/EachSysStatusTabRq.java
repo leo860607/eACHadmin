@@ -1,6 +1,6 @@
 package com.fstop.eachadmin.dto;
 
-import java.util.Map;
+
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public abstract class EachSysStatusTabRq implements Map<String, String> {
+public  class EachSysStatusTabRq  {
 
 	@Schema(description = "")
 	@JsonProperty("activeDate")

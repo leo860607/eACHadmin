@@ -1,18 +1,19 @@
 package com.fstop.eachadmin.dto;
 
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Data
 @Getter
 @Setter
-public  class PageSearchRq  {
+@AllArgsConstructor
+@NoArgsConstructor
+public class PageSearchRq {
 	@Schema(description = "交易日期")
 	@JsonProperty("filter_bat")
 	private String filter_bat;
@@ -39,15 +40,15 @@ public  class PageSearchRq  {
 	private String opbkId;
 
 	@JsonProperty("pageNo")
-	private int pageNo;
+	private Integer pageNo;
 
 	@JsonProperty("pageSize")
-	private int pageSize;
+	private Integer pageSize;
 
 	@JsonProperty("ResultCode")
 	private String ResultCode;
 
-	@JsonProperty("Page")
+	@JsonProperty("Row")
 	private String Row;
 
 	@JsonProperty("Page")

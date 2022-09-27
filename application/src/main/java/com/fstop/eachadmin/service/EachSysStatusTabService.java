@@ -28,7 +28,7 @@ public class EachSysStatusTabService {
 	private WkDateService WkDateService;
 	
 	public EachSysStatusTabRs<EACHSYSSTATUSTAB> checkBizDate(EachSysStatusTabRq params){
-		String activeDate = StrUtils.isNotEmpty(params.get("activeDate")) ?params.get("activeDate") : "";
+		String activeDate = StrUtils.isNotEmpty(params.getActiveDate()) ?params.getActiveDate() : "";
 		String bizDate = "";
 		Map<String,String> retmap = new HashMap<String,String>();
 		if(StrUtils.isEmpty(activeDate)){
@@ -61,8 +61,8 @@ public class EachSysStatusTabService {
 	 * @return true or false
 	 */
 	public EachSysStatusTabRs<EACHSYSSTATUSTAB> checkBizDate2(EachSysStatusTabRq params){
-		String activeDate = StrUtils.isNotEmpty(params.get("activeDate")) ?params.get("activeDate") : "";
-		String compareWay = StrUtils.isNotEmpty(params.get("compareWay")) ?params.get("compareWay") : "";
+		String activeDate = StrUtils.isNotEmpty(params.getActiveDate()) ?params.getActiveDate() : "";
+		String compareWay = StrUtils.isNotEmpty(params.getCompareWay()) ?params.getCompareWay() : "";
 		System.out.println("activeDate : "+activeDate);
 		System.out.println("compareWay : "+compareWay);
 		String bizDate = "";
@@ -141,8 +141,8 @@ public class EachSysStatusTabService {
 	 * @return true or false
 	 */
 	public EachSysStatusTabRs<EACHSYSSTATUSTAB> checkBizDate3(EachSysStatusTabRq params){
-		String activeDate = StrUtils.isNotEmpty(params.get("activeDate")) ?params.get("activeDate") : "";
-		String compareWay = StrUtils.isNotEmpty(params.get("compareWay")) ?params.get("compareWay") : "";
+		String activeDate = StrUtils.isNotEmpty(params.getActiveDate()) ?params.getActiveDate() : "";
+		String compareWay = StrUtils.isNotEmpty(params.getCompareWay()) ?params.getCompareWay() : "";
 		System.out.println("activeDate : "+activeDate);
 		System.out.println("compareWay : "+compareWay);
 		String bizDate = "";
