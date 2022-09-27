@@ -22,6 +22,7 @@ import com.fstop.infra.entity.UNDONE_TXDATA;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+//import io.swagger.v3.oas.annotations.parameters.*;
 
 @Tag(name = "未完成交易查詢")
 @RestController
@@ -61,20 +62,24 @@ public class OnblockNotTradResController {
 		return NTRDetailS.showDetail(param);
 	}
 
-	// return json
-	// controller
+	// 請求傳送未完成交易結果(send_1406)
 	@Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
 	@PostMapping(value = "/send_1406data")
 	public UndoneSendRs send_1406(@RequestBody UndoneSendRq param) {
 		return UndoneS.send_1406(param);
 	}
 
-	// return json
-	// controller
+	// 請求傳送確認訊息(send_1400)
 	@Operation(summary = "請求傳送確認訊息(1400)", description = "API功能說明")
 	@PostMapping(value = "/send_1400data")
 	public UndoneSendRs send_1400(@RequestBody UndoneSendRq param) {
 		return UndoneS.send_1400(param);
+	}
+	// 票交所代為處理未完成交易(send)
+	@Operation(summary = "票交所代為處理未完成交易(send)", description = "API功能說明")
+	@PostMapping(value = "/send_data")
+	public UndoneSendRs send(@RequestBody UndoneSendRq param) {
+		return UndoneS.send(param);
 	}
 
 }

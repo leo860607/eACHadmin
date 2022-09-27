@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +30,9 @@ import com.fstop.infra.entity.ONPENDINGTAB_PK;
 import com.fstop.infra.entity.ONBLOCKTAB_NOTTRAD_RESF;
 
 import util.messageConverter;
-import util.BeanUtils;
+
 import util.DateTimeUtils;
-import util.JSONUtils;
+
 import util.StrUtils;
 import util.socketPackage;
 import util.zDateHandler;
@@ -177,7 +178,7 @@ public class OnblockNotTradResService {
 				
 			}else if(ac_key.equals("edit")){
 				try {
-					BeanUtils.populate(param, JSONUtils.json2map(param.getEdit_params()));
+					BeanUtils.populate(param, null );// TODO  JSONUtils.json2map(param.getEdit_params()));
 				} catch (IllegalAccessException e2) {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();

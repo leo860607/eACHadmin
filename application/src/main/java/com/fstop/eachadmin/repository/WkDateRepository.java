@@ -237,4 +237,14 @@ public class WkDateRepository {
 		log.debug("### " + msg);
 
 	}
+
+
+
+	public WK_DATE_CALENDAR get() {
+		WK_DATE_CALENDAR x = new WK_DATE_CALENDAR();
+		x.getTXN_DATE();
+		return x;
+	}
+
+
 }

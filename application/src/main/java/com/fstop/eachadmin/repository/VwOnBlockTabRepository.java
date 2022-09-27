@@ -9,6 +9,9 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fstop.fcore.util.AutoAddScalar;
+import com.fstop.fcore.util.Page;
+
 @Repository
 public class VwOnBlockTabRepository {
 	@Autowired
@@ -51,5 +54,29 @@ public class VwOnBlockTabRepository {
 		list = jdbcTemplate.query(dataSumSQL, new BeanPropertyRowMapper(targetClass));
 		return list;
 
+	}
+	public Page getDataIII(int pageNo, int pageSize, String countQuerySql, String sql, String[] cols, Class targetClass){
+		int totalCount = countDataIII(countQuerySql);
+		int startIndex = Page.getStartOfPage(pageNo, pageSize) + 1;
+		List<Map> list = null;
+		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Map.class));
+
+		return new Page(startIndex - 1, totalCount, pageSize, list);
+	}
+	public int countDataIII(String countQuerySql){
+		int count = 0;
+		List<Map> list = null;
+		list = jdbcTemplate.query(countQuerySql, new BeanPropertyRowMapper(List.class));
+
+		List countList = list.subList(count, count);
+		if(countList != null && countList.size() > 0){
+			count = (Integer)countList.get(0);
+		}
+		return count; 
+		/*
+		SQLQuery query =  getCurrentSession().createSQLQuery(countQuerySql);
+		List countList = query.list();
+		return countList.size();
+		*/
 	}
 }

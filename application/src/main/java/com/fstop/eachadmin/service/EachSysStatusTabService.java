@@ -17,13 +17,13 @@ import com.fstop.infra.entity.EACHSYSSTATUSTAB;
 import com.fstop.infra.entity.UNDONE_TXDATA;
 
 import util.DateTimeUtils;
-import util.JSONUtils;
+
 import util.StrUtils;
 import util.zDateHandler;
 @Service
 public class EachSysStatusTabService {
 	@Autowired
-	private EachSysStatusTabRepository eachsysstatustab_Dao;
+	private EachSysStatusTabRepository eachSysStatusTabRepository;
 	@Autowired
 	private WkDateService WkDateService;
 	
@@ -252,7 +252,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String businessDate = "";
 		try{
-			list = eachsysstatustab_Dao.getThisBusinessDate();
+			list = eachSysStatusTabRepository.getThisBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 				businessDate = DateTimeUtils.convertDate(businessDate, "yyyyMMdd", "yyyyMMdd");
@@ -271,7 +271,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String businessDate = "";
 		try{
-			list = eachsysstatustab_Dao.getThisBusinessDate();
+			list = eachSysStatusTabRepository.getThisBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 			}
@@ -290,7 +290,7 @@ public class EachSysStatusTabService {
 		boolean isTxnDate = false;
 		try{
 			isTxnDate = WkDateService.isTxnDate();
-			list = eachsysstatustab_Dao.getRptBusinessDate(isTxnDate, isTxnDate);
+			list = eachSysStatusTabRepository.getRptBusinessDate(isTxnDate, isTxnDate);
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 				businessDate = DateTimeUtils.convertDate(businessDate, "yyyyMMdd", "yyyyMMdd");
@@ -310,7 +310,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String businessDate = "";
 		try{
-			list = eachsysstatustab_Dao.getNextBusinessDate();
+			list = eachSysStatusTabRepository.getNextBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getNEXTDATE();
 				businessDate = DateTimeUtils.convertDate(businessDate, "yyyyMMdd", "yyyyMMdd");
@@ -330,7 +330,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String businessDate = "";
 		try{
-			list = eachsysstatustab_Dao.getThisBusinessDate();
+			list = eachSysStatusTabRepository.getThisBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getTHISDATE();
 				businessDate = DateTimeUtils.convertDate(businessDate, "yyyyMMdd", "yyyyMMdd");
@@ -350,7 +350,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String businessDate = "";
 		try{
-			list = eachsysstatustab_Dao.getNextBusinessDate();
+			list = eachSysStatusTabRepository.getNextBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getTHISDATE();
 				businessDate = DateTimeUtils.convertDate(mode, businessDate, "yyyyMMdd", "yyyyMMdd");
@@ -370,7 +370,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String clrPhase = "";
 		try{
-			list = eachsysstatustab_Dao.getNextBusinessDate();
+			list = eachSysStatusTabRepository.getNextBusinessDate();
 			if(list != null && list.size() > 0){
 				clrPhase = list.get(0).getCLEARINGPHASE();
 			}
@@ -384,7 +384,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		Map data = new HashMap();
 		try{
-			list = eachsysstatustab_Dao.getNextBusinessDate();
+			list = eachSysStatusTabRepository.getNextBusinessDate();
 			if(list != null && list.size() > 0){
 				data = BeanUtils.describe(list.get(0));
 			}
@@ -395,11 +395,11 @@ public class EachSysStatusTabService {
 	}
 	
 	public EachSysStatusTabRepository getEachsysstatustab_Dao() {
-		return eachsysstatustab_Dao;
+		return eachSysStatusTabRepository;
 	}
 
 	public void setEachsysstatustab_Dao(EachSysStatusTabRepository eachsysstatustab_Dao) {
-		this.eachsysstatustab_Dao = eachsysstatustab_Dao;
+		this.eachSysStatusTabRepository = eachsysstatustab_Dao;
 	}
 	public WkDateService getWkDateService() {
 		return WkDateService;

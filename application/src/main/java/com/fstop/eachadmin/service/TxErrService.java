@@ -7,12 +7,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fstop.eachadmin.dto.TxErrRq;
 import com.fstop.eachadmin.dto.TxErrRs;
+import com.fstop.eachadmin.dto.TxErrRs.TxErrRsList;
 import com.fstop.eachadmin.repository.OnBlockTabRepository;
+import com.fstop.eachadmin.repository.PageQueryRepository;
 import com.fstop.eachadmin.repository.VwOnBlockTabRepository;
 import com.fstop.infra.entity.TX_ERR;
 import com.fstop.infra.entity.VW_ONBLOCKTAB;
@@ -20,7 +25,7 @@ import com.fstop.fcore.util.*;
 
 import com.fstop.eachadmin.dto.TxErrDetailRq;
 import com.fstop.eachadmin.dto.TxErrDetailRs;
-import com.fstop.fcore.util.StrUtils;
+
 import util.DateTimeUtils;
 
 @Service
@@ -33,15 +38,17 @@ public class TxErrService {
 	private EachSysStatusTabService eachsysstatustab_bo;
 	@Autowired
 	private OnblocktabService onblocktab_bo;
+	@Autowired
+	private PageQueryRepository<TX_ERR> pageR;
 
-	public TxErrRs pageSearch(TxErrRq param) {
+	public Page pageSearch(TxErrRq param ,Page... page) {
 		String pageNo = StrUtils.isEmpty(param.getPage()) ? "0" : param.getPage();
 //		String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
 //		TODO
 		Map rtnMap = new HashMap();
 
 		List<TX_ERR> list = null;
-		Page page = null;
+		Page nextpage = null;
 		try {
 			list = new ArrayList<TX_ERR>();
 			String condition = getConditionList(param).get(0);
@@ -108,27 +115,15 @@ public class TxErrService {
 			sql.append("    WHERE ERR_TYPE IS NOT NULL ");
 			// System.out.println("### SQL >> " + sql);
 
-			// 假的countQuery
-			String dummyQuery = "SELECT 1 AS NUM FROM SYSIBM.SYSDUMMY1";
+			PageRequest pageable = PageRequest.of(Integer.parseInt(pageNo), 5);
+			nextpage = pageR.getPageData(pageable,countAndSumQuery.toString(), sql.toString(), TxErrRsList.class);
 
-			String cols[] = { "ERR_TYPE", "TXDATE", "TXDT", "STAN", "SENDERBANKID", "OUTBANKID", "INBANKID", "SENDERID",
-					"PCODE", "TXAMT" };
-//			page = onblocktab_Dao.getDataIII(Integer.valueOf(pageNo), Integer.valueOf(pageSize), dummyQuery, sql.toString(), cols, TX_ERR.class);
-
-			// TODO
-			if (countAndSumList != null) {
-				page.setTotalCount(Long.parseLong(countAndSumList.get(0).getNUM()));
-			}
-			list = (List<TX_ERR>) page.getResult();
-			list = list != null && list.size() == 0 ? null : list;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		ObjectMapper mapper = new ObjectMapper();
-		TxErrRs result = mapper.convertValue(rtnMap, TxErrRs.class);
-		return result;
+		
+		return nextpage;
 	}
 
 	public List<String> getConditionList(TxErrRq param) {
