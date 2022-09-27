@@ -159,9 +159,7 @@ public class WkDateRepository {
 
 		List<Map> wkList = null;
 		try {
-			wkList = jdbcTemplate.query(sql.toString(),
-
-					new BeanPropertyRowMapper(WK_DATE_CALENDAR.class));
+			wkList = jdbcTemplate.query(sql.toString(),new BeanPropertyRowMapper(WK_DATE_CALENDAR.class));
 
 		} catch (org.hibernate.HibernateException e) {
 			e.printStackTrace();

@@ -142,4 +142,14 @@ public class EachUserRepository{
 		}
 		return list;
 	}
+	
+	// 原為HibernateEntity裡的，先放這邊 220927
+//	protected Class<T> entityClass;
+//	protected Class<T> getEntityClass() {
+//		return entityClass;
+//	}
+//	public List<T> getAll() {
+//		return getAll(getEntityClass());
+//	}
+	
 }
