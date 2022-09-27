@@ -61,6 +61,18 @@ public class DetailRq {
 	@JsonProperty("OSTAN")
     private String OSTAN;//交易追踨序號
 	
+	private String EXTENDFEE;
+	private String FEE_TYPE;
+	private String NEWEXTENDFEE;
+	private String TXN_TYPE;
+	private String NEWSENDERFEE_NW;
+	private String NEWINFEE_NW;
+	private String NEWOUTFEE_NW;
+	private String NEWWOFEE_NW;
+	private String NEWEACHFEE_NW;
+	private String NEWFEE_NW;
+	private String USER_COMPANY;
+	
 	
 	// 未完成交易結果查詢
 	@Schema(description = "交易日期/時間")

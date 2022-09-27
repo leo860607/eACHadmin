@@ -30,7 +30,6 @@ public class UndoneController {
 
 	@Autowired
 	private UndoneService undoneService;
-	
 
 	// 操作行
 	@Operation(summary = "操作行 API", description = "操作行下拉選單資料")
@@ -67,8 +66,6 @@ public class UndoneController {
 		return undoneService.send_1406(param);
 	}
 
-	// return json
-	// controller
 	// 請求傳送確認訊息(1400)
 	@Operation(summary = "請求傳送確認訊息(1400)", description = "API功能說明")
 	@PostMapping(value = "/send_1400data")
