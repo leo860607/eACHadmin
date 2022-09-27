@@ -114,4 +114,14 @@ public class OnBlockTabRepository {
 		return count;
 	}
 
+	public List dataSum(String dataSumSQL, String[] dataSumCols, Class targetClass) {
+//		SQLQuery query = getCurrentSession().createSQLQuery(dataSumSQL);
+//		AutoAddScalar addscalar = new AutoAddScalar();
+//		addscalar.addScalar(query, targetClass, dataSumCols);
+//		query.setResultTransformer(Transformers.aliasToBean(targetClass));
+//		return query.list();	
+		List list = new ArrayList();
+		list = jdbcTemplate.query(dataSumSQL, new BeanPropertyRowMapper(targetClass));
+		return list;
+	}
 }
