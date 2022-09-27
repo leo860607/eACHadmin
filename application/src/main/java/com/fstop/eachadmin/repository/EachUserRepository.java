@@ -15,10 +15,11 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fstop.fcore.util.AutoAddScalar;
 import com.fstop.infra.entity.EACH_USER;
 import com.fstop.infra.entity.EACH_USERLOG;
 import com.fstop.infra.entity.EACH_USER_PK;
-import util.AutoAddScalar;
+
 import util.zDateHandler;
 @Repository
 public class EachUserRepository{

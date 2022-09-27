@@ -4,7 +4,7 @@ import java.util.Map;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
-import util.SpringAppCtxHelper;
+
 @Service
 @Slf4j
 
@@ -20,18 +20,20 @@ public class FieldsMapService implements BeanNameAware{
 	
 	public static Object getArg(String name)
 	{
-		FieldsMapService b = SpringAppCtxHelper.getBean(beanName);
-		return b.getArgs().get(name);
+		return name;
+//		FieldsMapService b = SpringAppCtxHelper.getBean(beanName);
+//		return b.getArgs().get(name);
 	}
 
 	public static String getStringArg(String name)
 	{
-		FieldsMapService b = SpringAppCtxHelper.getBean(beanName);
-		if (b == null)
-		{
-			System.out.println("Arguments is null");
-		}
-		return (String) b.getArgs().get(name);
+		return name;
+//		FieldsMapService b = SpringAppCtxHelper.getBean(beanName);
+//		if (b == null)
+//		{
+//			System.out.println("Arguments is null");
+//		}
+//		return (String) b.getArgs().get(name);
 	}
 	
 	public Map<String, Object> getArgs() {

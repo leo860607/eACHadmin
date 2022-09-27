@@ -1,5 +1,6 @@
 package com.fstop.eachadmin.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +25,9 @@ import com.fstop.eachadmin.dto.PageSearchRs;
 import com.fstop.eachadmin.repository.BankGroupRepository;
 import com.fstop.eachadmin.repository.BusinessTypeRepository;
 import com.fstop.eachadmin.repository.CommonSpringRepository;
-//import com.fstop.eachadmin.repository.OnPendingTabRepository;
+import com.fstop.eachadmin.repository.VwOnBlockTabRepository;
 import com.fstop.fcore.util.Page;
+
 import com.fstop.infra.entity.BANK_GROUP;
 import com.fstop.infra.entity.BANK_OPBK;
 import com.fstop.infra.entity.BUSINESS_TYPE;
@@ -55,9 +58,6 @@ public class UndoneService {
 	@Autowired
 	private BusinessTypeRepository businessTypeRepository;
 
-//	@Autowired
-//	private OnPendingTabRepository OnPendingTabR;
-
 	@Autowired
 	private BankGroupRepository bankGroupRepository;
 
@@ -67,7 +67,10 @@ public class UndoneService {
 	@Autowired
 	private OnblocktabService onblocktabService;
 
-	// 操作行------------------------------------------------------
+	@Autowired
+	private VwOnBlockTabRepository vwOnBlockTabRepository;
+
+// 操作行------------------------------------------------------
 	public List<Map<String, String>> getOpbkList() {
 
 		String sql = "SELECT COALESCE( OP.OPBK_ID,'' ) AS OPBK_ID , COALESCE( BG.BGBK_NAME ,'' ) AS OPBK_NAME FROM ( SELECT DISTINCT OPBK_ID FROM EACHUSER.BANK_OPBK ) AS OP JOIN ( SELECT BGBK_ID, BGBK_NAME FROM BANK_GROUP WHERE BGBK_ATTR <> '6' ) AS BG ON OP.OPBK_ID = BG.BGBK_ID ORDER BY OP.OPBK_ID";
@@ -77,13 +80,13 @@ public class UndoneService {
 		Map<String, String> bean = null;
 
 		for (BANK_OPBK po : list) {
-			
+
 			String k1 = "BankName";
 			String v1 = (String) po.getOPBK_NAME();
-			
+
 			String k2 = "BankId";
 			String v2 = (String) po.getOPBK_ID();
-			
+
 			bean = new HashMap<String, String>();
 			bean.put(k1, v1);
 			bean.put(k2, v2);
@@ -93,7 +96,7 @@ public class UndoneService {
 		return beanList;
 	}
 
-	// 業務行------------------------------------------------------
+// 業務行------------------------------------------------------
 	public List<Map<String, String>> getBsTypeIdList() {
 
 		String sql = "SELECT * FROM BUSINESS_TYPE ORDER BY BUSINESS_TYPE_ID";
@@ -103,13 +106,13 @@ public class UndoneService {
 		Map<String, String> bean = null;
 
 		for (BUSINESS_TYPE po : list) {
-			
+
 			String k1 = "BusinessTypeName";
 			String v1 = (String) po.getBUSINESS_TYPE_NAME();
-			
+
 			String k2 = "BusinessTypeID";
 			String v2 = (String) po.getBUSINESS_TYPE_ID();
-			
+
 			bean = new HashMap<String, String>();
 			bean.put(k1, v1);
 			bean.put(k2, v2);
@@ -119,7 +122,7 @@ public class UndoneService {
 		return beanList;
 	}
 
-	// 表單查詢產出------------------------------------------------------
+// 表單查詢產出------------------------------------------------------
 	public PageSearchRs<UNDONE_TXDATA> pageSearch(PageSearchRq param) {
 		List<String> conditions_1 = new ArrayList<String>();
 		List<String> conditions_2 = new ArrayList<String>();
@@ -217,12 +220,12 @@ public class UndoneService {
 			StringBuffer sumSQL = new StringBuffer();
 			StringBuffer sql = new StringBuffer();
 			if (StrUtils.isNotEmpty(param.getSidx())) {
-//				if("TXDT".equalsIgnoreCase(param.get("sidx"))){
-//					orderSQL = " ORDER BY NEWTXDT "+param.get("sord");
-//				}
-//				if("TXAMT".equalsIgnoreCase(param.get("sidx"))){
-//					orderSQL = " ORDER BY NEWTXAMT "+param.get("sord");
-//				}
+				if ("TXDT".equalsIgnoreCase(param.getSidx())) {
+					orderSQL = " ORDER BY NEWTXDT " + param.getSord();
+				}
+				if ("TXAMT".equalsIgnoreCase(param.getSidx())) {
+					orderSQL = " ORDER BY NEWTXAMT " + param.getSord();
+				}
 				if ("RESULTCODE".equalsIgnoreCase(param.getSidx())) {
 					orderSQL = " ORDER BY NEWRESULT " + param.getSord();
 				}
@@ -294,16 +297,18 @@ public class UndoneService {
 			// 先算出總計的欄位值，放到rtnMap裡面，到頁面再放到下面的總計Grid裡面
 			System.out.println("sumSQL=" + sumSQL);
 			List dataSumList = commonSpringRepository.list(sumSQL.toString(), null);
-//			跟資料庫相關的先註解掉 20220914
+			// 跟資料庫相關的先註解掉 20220914
 			rtnMap.put("dataSumList", dataSumList);
 
-//			String cols[] = {"PCODE","NEWTXDT","TXDATE","STAN","SENDERBANKID","OUTBANKID","INBANKID","OUTACCTNO","INACCTNO","NEWTXAMT","TXID","SENDERID"};
+			// String cols[] =
+			// {"PCODE","NEWTXDT","TXDATE","STAN","SENDERBANKID","OUTBANKID","INBANKID","OUTACCTNO","INACCTNO","NEWTXAMT","TXID","SENDERID"};
 			String cols[] = { "PCODE", "TXDT", "TXDATE", "STAN", "SENDERBANKID", "OUTBANKID", "INBANKID", "OUTACCTNO",
 					"INACCTNO", "TXAMT", "TXID", "SENDERID" };
 			System.out.println("cntSQL==>" + cntSQL.toString().toUpperCase());
 			System.out.println("sql==>" + sql.toString().toUpperCase());
-//			page = vw_onblocktab_Dao.getDataIII(pageNo, pageSize, cntSQL.toString(), sql.toString(), cols, UNDONE_TXDATA.class);
-// 因為還沒有寫資料庫的串法,所以把跟資料庫相關的Dao都先註解,只留方法 20220914
+			page = vwOnBlockTabRepository.getDataIII(pageNo, pageSize, cntSQL.toString(), sql.toString(), cols,
+					UNDONE_TXDATA.class);
+			// 因為還沒有寫資料庫的串法,所以把跟資料庫相關的Dao都先註解,只留方法 20220914
 			list = (List<UNDONE_TXDATA>) page.getResult();
 			System.out.println("UNDONE_TXDATA.list>>" + list);
 			list = list != null && list.size() == 0 ? null : list;
@@ -339,8 +344,9 @@ public class UndoneService {
 		return conStr;
 	}
 
-	// details----請求傳送未完成交易結果(1406)------------------------------------------------------
+// 請求傳送未完成交易結果(1406)------------------------------------------------------
 	@SuppressWarnings({ "unchecked", "unused" })
+
 	public UndoneSendRs send_1406(UndoneSendRq param) {
 		/*
 		 * 查詢未完成交易處理結果 <?xml version="1.0" encoding="UTF-8" standalone="yes"?> <msg>
@@ -392,11 +398,11 @@ public class UndoneService {
 				Body body = new Body();
 				body.setOSTAN(stan);// bsformdto
 				body.setOTxDate(txdate);// otxdate11//txdate bsformdto
-//				body.setResultCode(resultCode);
+				// body.setResultCode(resultCode);
 				msg.setBody(body);// 11
 				String telegram = messageConverter.marshalling(msg);
 				// TODO
-//				rtnMap = socketClient.send(telegram);//socket先註解
+				// rtnMap = socketClient.send(telegram);//socket先註解
 			}
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
@@ -411,15 +417,16 @@ public class UndoneService {
 		// TODO
 		// object mapper把JS轉RS型別
 
-//		json = JSONUtils.map2json(rtnMap);//json先不搬
-//		return json;
+		// json = JSONUtils.map2json(rtnMap);//json先不搬
+		// return json;
 		ObjectMapper mapper = new ObjectMapper();
 		UndoneSendRs result = mapper.convertValue(rtnMap, UndoneSendRs.class);
 		return result;
 	}
 
-	// details----請求傳送確認訊息(1400)------------------------------------------------------
+// 請求傳送確認訊息(1400)------------------------------------------------------
 	@SuppressWarnings("unchecked")
+
 	public UndoneSendRs send_1400(UndoneSendRq param) {
 		/*
 		 * 請求傳送確認訊息 <?xml version="1.0" encoding="UTF-8" standalone="yes"?> <msg>
@@ -494,7 +501,7 @@ public class UndoneService {
 		return response;
 	}
 
-	// details----票交所代為處理未完成交易(send)------------------------------------------------------
+//票交所代為處理未完成交易(send)------------------------------------------------------
 	@SuppressWarnings("unchecked")
 	public UndoneSendRs send(UndoneSendRq param) {
 		/*
@@ -603,15 +610,16 @@ public class UndoneService {
 		return result;
 	}
 
-	// 查詢明細------------------------------------------------------
+//查詢明細---------------------------------------------------------------------------
 	public DetailRs showDetail(DetailRq param) {
+		DetailRs detailRs = new DetailRs();
 
 		String txDate = param.getTXDATE();
 		String stan = param.getSTAN();
 
 		Map detailDataMap = onblocktabService.showDetail(txDate, stan);
 		String bizdate = eachSysStatusTabService.getBusinessDateII();
-//-----------------------------------------------------------------------------------------------				
+
 		// 20220321新增FOR EXTENDFEE 位數轉換
 		if (detailDataMap.get("EXTENDFEE") != null) {
 			BigDecimal orgNewExtendFee = (BigDecimal) detailDataMap.get("EXTENDFEE");
@@ -662,17 +670,12 @@ public class UndoneService {
 				detailDataMap.put("TXN_TYPE", "級距");
 				break;
 			}
-			detailDataMap.put("NEWSENDERFEE_NW",
-					detailDataMap.get("NEWSENDERFEE") != null ? detailDataMap.get("NEWSENDERFEE") : "0");
-			detailDataMap.put("NEWINFEE_NW",
-					detailDataMap.get("NEWINFEE") != null ? detailDataMap.get("NEWINFEE") : "0");
-			detailDataMap.put("NEWOUTFEE_NW",
-					detailDataMap.get("NEWOUTFEE") != null ? detailDataMap.get("NEWOUTFEE") : "0");
-			detailDataMap.put("NEWWOFEE_NW",
-					detailDataMap.get("NEWWOFEE") != null ? detailDataMap.get("NEWWOFEE") : "0");
-			detailDataMap.put("NEWEACHFEE_NW",
-					detailDataMap.get("NEWEACHFEE") != null ? detailDataMap.get("NEWEACHFEE") : "0");
-			detailDataMap.put("NEWFEE_NW", detailDataMap.get("NEWFEE") != null ? detailDataMap.get("NEWFEE") : "0");
+//			detailDataMap.put("NEWSENDERFEE_NW",detailDataMap.get("NEWSENDERFEE") != null ? detailDataMap.get("NEWSENDERFEE") : "0");
+//			detailDataMap.put("NEWINFEE_NW",detailDataMap.get("NEWINFEE") != null ? detailDataMap.get("NEWINFEE") : "0");
+//			detailDataMap.put("NEWOUTFEE_NW",detailDataMap.get("NEWOUTFEE") != null ? detailDataMap.get("NEWOUTFEE") : "0");
+//			detailDataMap.put("NEWWOFEE_NW",detailDataMap.get("NEWWOFEE") != null ? detailDataMap.get("NEWWOFEE") : "0");
+//			detailDataMap.put("NEWEACHFEE_NW",detailDataMap.get("NEWEACHFEE") != null ? detailDataMap.get("NEWEACHFEE") : "0");
+//			detailDataMap.put("NEWFEE_NW", detailDataMap.get("NEWFEE") != null ? detailDataMap.get("NEWFEE") : "0");
 
 			// 如果FEE_TYPE為空 且結果為成功或未完成 新版手續call sp
 		} else if (StrUtils.isEmpty((String) detailDataMap.get("FEE_TYPE"))
@@ -697,71 +700,89 @@ public class UndoneService {
 					(String) detailDataMap.get("SENDERID"), (String) detailDataMap.get("SENDERBANKID_NAME"),
 					(String) detailDataMap.get("NEWTXAMT"));
 			detailDataMap.put("TXN_TYPE", newFeeDtailMap.get("TXN_TYPE"));
-			detailDataMap.put("NEWSENDERFEE_NW",
-					detailDataMap.get("NEWSENDERFEE") != null ? detailDataMap.get("NEWSENDERFEE") : "0");
-			detailDataMap.put("NEWINFEE_NW",
-					detailDataMap.get("NEWINFEE") != null ? detailDataMap.get("NEWINFEE") : "0");
-			detailDataMap.put("NEWOUTFEE_NW",
-					detailDataMap.get("NEWOUTFEE") != null ? detailDataMap.get("NEWOUTFEE") : "0");
-			detailDataMap.put("NEWWOFEE_NW",
-					detailDataMap.get("NEWWOFEE") != null ? detailDataMap.get("NEWWOFEE") : "0");
-			detailDataMap.put("NEWEACHFEE_NW",
-					detailDataMap.get("NEWEACHFEE") != null ? detailDataMap.get("NEWEACHFEE") : "0");
+			detailDataMap.put("NEWSENDERFEE_NW",detailDataMap.get("NEWSENDERFEE") != null ? detailDataMap.get("NEWSENDERFEE") : "0");
+			detailDataMap.put("NEWINFEE_NW",detailDataMap.get("NEWINFEE") != null ? detailDataMap.get("NEWINFEE") : "0");
+			detailDataMap.put("NEWOUTFEE_NW",detailDataMap.get("NEWOUTFEE") != null ? detailDataMap.get("NEWOUTFEE") : "0");
+			detailDataMap.put("NEWWOFEE_NW",detailDataMap.get("NEWWOFEE") != null ? detailDataMap.get("NEWWOFEE") : "0");
+			detailDataMap.put("NEWEACHFEE_NW",detailDataMap.get("NEWEACHFEE") != null ? detailDataMap.get("NEWEACHFEE") : "0");
 			detailDataMap.put("NEWFEE_NW", detailDataMap.get("NEWFEE") != null ? detailDataMap.get("NEWFEE") : "0");
 
 		}
 
-		DetailRs detailRs = new DetailRs();
 		detailRs.setDetailData(detailDataMap);
+
+		String businessDate = eachSysStatusTabService.getBusinessDate();
+
+		detailRs.setSTART_DATE(businessDate);
+		detailRs.setEND_DATE(businessDate);
 		ObjectMapper mapper = new ObjectMapper();
 		UndoneSendRs result = mapper.convertValue(detailDataMap, UndoneSendRs.class);
 
-//-----------------------------------------------------------------------------------------------			
-//		try {
-//			BeanUtils.copyProperties(param, param);
-//		} catch (IllegalAccessException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (InvocationTargetException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		detailRs.setIsUndone("Y");
-//
-//		System.out.println("FILTER_BAT>>" + param.getFILTER_BAT());
+		try {
+			BeanUtils.copyProperties(param, param);
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		detailRs.setIsUndone("Y");
 
-//		// 操作行代號清單
-////		undone_txdata_form.setOpbkIdList(undone_txdata_bo.getOpbkIdList());
-//		detailRs.setOpbkIdList(undoneService.getOpbkList());
-//		// 業務類別清單
-//		detailRs.setBsTypeList(undoneService.getBsTypeIdList());
-//
-//		String businessDate = eachSysStatusTabService.getBusinessDate();
-//		detailRs.setSTART_DATE(businessDate);
-//		detailRs.setEND_DATE(businessDate);
-//
-//		Map userData = null;
-//		try {
-//			userData = BeanUtils.describe(detailRs.getUserData());
-//		} catch (IllegalAccessException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (InvocationTargetException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (NoSuchMethodException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		// 銀行端預設帶入操作行
-//		if (((String) userData.get("USER_TYPE")).equals("B")) {
-////			20150407 edit by hugo 只會有操作行故只能抓總行檔 抓分行檔 997會查無資料
-////			BANK_BRANCH po = bank_branch_bo.searchByBrbkId((String)userData.get("USER_COMPANY")).get(0);
-////			undone_txdata_form.setOPBK_ID(bank_group_bo.search(po.getId().getBGBK_ID()).get(0).getOPBK_ID());
-//			detailRs.setOPBK_ID(undoneService.search((String) userData.get("USER_COMPANY")).get(0).getOPBK_ID());
-//		}
+		System.out.println("FILTER_BAT>>" + param.getFILTER_BAT());
+
+		// 操作行代號清單
+		// undone_txdata_form.setOpbkIdList(undone_txdata_bo.getOpbkIdList());
+		detailRs.setOpbkIdList(getOpbkList());
+		// 業務類別清單
+		detailRs.setBsTypeList(getBsTypeIdList());
+
+		Map userData = null;
+		try {
+			userData = BeanUtils.describe(detailRs.getUserData());
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// 銀行端預設帶入操作行
+		if (((String) userData.get("USER_TYPE")).equals("B")) {
+			// 20150407 edit by hugo 只會有操作行故只能抓總行檔 抓分行檔 997會查無資料
+			// BANK_BRANCH po =
+			// bank_branch_bo.searchByBrbkId((String)userData.get("USER_COMPANY")).get(0);
+			// undone_txdata_form.setOPBK_ID(bank_group_bo.search(po.getId().getBGBK_ID()).get(0).getOPBK_ID());
+			detailRs.setOPBK_ID(search((String) userData.get("USER_COMPANY")).get(0).getOPBK_ID());
+		}
 
 		return detailRs;
 
+	}
+
+//-------------------明細所需資料-------------------------------------------------
+	public List<BANK_GROUP> search(String bgbkId) {
+		List<BANK_GROUP> list = null;
+		if (StrUtils.isEmpty(bgbkId)) {
+			//list = bank_group_Dao.getAll();
+			list = bankGroupRepository.getAllData();
+		} else {
+			//list = new ArrayList<BANK_GROUP>();
+			//BANK_GROUP po = bank_group_Dao.get(bgbkId);
+			//if(po != null){
+			//list.add(po);
+			//}
+			list = bankGroupRepository.getDataByBgbkId(bgbkId);
+		}
+		System.out.println("list>>" + list);
+		list = list == null ? null : list.size() == 0 ? null : list;
+
+		// 測試
+		// bank_group_Dao.creatWK();
+
+		return list;
 	}
 }
