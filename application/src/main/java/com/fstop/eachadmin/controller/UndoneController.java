@@ -31,8 +31,6 @@ public class UndoneController {
 	@Autowired
 	private UndoneService undoneService;
 	
-	@Autowired
-	private UndoneDetailService undoneDetailService;
 
 	// 操作行
 	@Operation(summary = "操作行 API", description = "操作行下拉選單資料")
@@ -59,7 +57,7 @@ public class UndoneController {
 	@Operation(summary = "明細API", description = "明細表單產出")
 	@PostMapping(value = "/detail")
 	public DetailRs detail(@RequestBody DetailRq param) {
-		return undoneDetailService.showDetail(param);
+		return undoneService.showDetail(param);
 	}
 
 	// 請求傳送未完成交易結果(1406)
