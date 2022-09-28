@@ -29,7 +29,7 @@ public class PageQueryRepository<T> {
 	 * @param outputClass output的Class
 	 * @return
 	 */
-	public Page getPageData(Pageable page,String countQuerySql,String sql, Class outputClass) {
+	public Page getPageData(Pageable page,String countQuerySql,String sql,String[] cols ,Class outputClass) {
 		int totalCount = countToatalPageSize(countQuerySql);
 		List<T> datalist = jdbcTemplate.query(
 				sql + " LIMIT " + page.getPageSize() + " OFFSET " + page.getOffset(),

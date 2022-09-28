@@ -61,17 +61,17 @@ public class UserlogTchController {
 		return EachUserlogS.getFuncListByRoleType();
 	}
 	
-//	//查詢按鈕
-//	@Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
-// 	@PostMapping(value = "/pageSearch")
-// 	public PageSearchRs<UNDONE_TXDATA> pageSearch(@RequestBody PageSearchRq param) {
-//		return UndoneS.pageSearch(param);
-//	}
-//	
-//	//檢視明細按鈕
-// 	@Operation(summary = "檢視明細 API", description = "檢視明細按鈕，點選後明細表單頁面顯示")
-//	@PostMapping(value = "/detail")
-//	public ObtkNtrRs detail(@RequestBody ObtkNtrRq param) {
-//		return NTRDetailS.showDetail(param);
-//	}
+	//查詢按鈕
+	@Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
+ 	@PostMapping(value = "/pageSearch")
+ 	public PageSearchRs<UNDONE_TXDATA> pageSearch(@RequestBody PageSearchRq param) {
+		return UndoneS.pageSearch(param);
+	}
+	
+	//檢視明細按鈕
+ 	@Operation(summary = "檢視明細 API", description = "檢視明細按鈕，點選後明細表單頁面顯示")
+	@PostMapping(value = "/detail")
+	public ObtkNtrRs detail(@RequestBody ObtkNtrRq param) {
+		return NTRDetailS.showDetail(param);
+	}
 }

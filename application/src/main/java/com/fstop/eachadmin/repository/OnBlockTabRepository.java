@@ -124,4 +124,6 @@ public class OnBlockTabRepository {
 		list = jdbcTemplate.query(dataSumSQL, new BeanPropertyRowMapper(targetClass));
 		return list;
 	}
+	
+	
 }
