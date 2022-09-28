@@ -1,6 +1,11 @@
 package com.fstop.eachadmin.repository;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Repository;
+
+import com.fstop.infra.entity.EACH_FUNC_LIST;
 
 @Repository
 public class EachFuncListRepository {
@@ -18,6 +23,8 @@ public class EachFuncListRepository {
 		sql.append(" ON A.ROLE_ID = B.ROLE_ID " );
 		sql.append(" WHERE A.FUNC_ID = :func_id AND B.ROLE_TYPE IN (:inVals) " );
 		try{
+			//TOASK: getCurrentSession()在原檔案就已是missing type
+			//TOASK: SQLQUERY 替換
 			SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
 			query.setParameter("func_id", func_id);
 			query.setParameterList("inVals", inVals);
@@ -48,12 +55,13 @@ public class EachFuncListRepository {
 		sql.append(" LEFT JOIN  EACH_ROLE_FUNC B ON A.FUNC_ID = B.FUNC_ID  " );
 		sql.append(" WHERE A.FUNC_TYPE ='2' AND A.FUNC_URL = :func_url AND B.ROLE_ID = :role_id  " );
 		try{
+			//TOASK: 看VwOnBlockTabRepository將SQLQuery註解，這邊是否同樣做法?
 			SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
 			query.setParameter("func_url", func_url);
 			query.setParameter("role_id", role_id);
 			query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 			list = query.list();
-		}catch(HibernateException e){
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		
@@ -76,12 +84,13 @@ public class EachFuncListRepository {
 		sql.append(" LEFT JOIN  EACH_ROLE_FUNC B ON A.FUNC_ID = B.FUNC_ID  " );
 		sql.append(" WHERE A.FUNC_TYPE ='2' AND A.FUNC_ID = :fcid AND B.ROLE_ID = :role_id  " );
 		try{
+			//TOASK: SQLQUERY
 			SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
 			query.setParameter("fcid", fcid);
 			query.setParameter("role_id", role_id);
 			query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 			list = query.list();
-		}catch(HibernateException e){
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		
@@ -138,7 +147,7 @@ public class EachFuncListRepository {
 			query.addEntity(EACH_FUNC_LIST.class);
 			//query.setResultTransformer(Transformers.aliasToBean(EACH_FUNC_LIST.class));
 			list = query.list();
-		}catch(HibernateException e){
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return list;
