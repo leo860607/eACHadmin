@@ -200,7 +200,7 @@ public class UndoneService {
 		}
 
 		int pageNo = StrUtils.isEmpty(param.getPage()) ? 0 : Integer.valueOf(param.getPage());
-		int pageSize = StrUtils.isEmpty(param.getRow()) ? Integer.valueOf(param.getRow()// TODOArguments.getStringArg("PAGE.SIZE")
+		int pageSize = StrUtils.isEmpty(param.getRow()) ? Integer.valueOf(param.getPageSize()// TODOArguments.getStringArg("PAGE.SIZE")
 		) : Integer.valueOf(param.getRow());
 
 		Map<String, Object> rtnMap = new HashMap<String, Object>();

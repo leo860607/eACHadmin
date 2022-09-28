@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,19 +14,23 @@ import lombok.Setter;
 @Setter
 public class PageSearchRs<UNDONE_TXDATA> {
 
-	@JsonProperty("dataSumList")
+	@JsonProperty("DATASUMLIST")
 	private List<UNDONE_TXDATA> dataSumList;
 
-	@JsonProperty("total")
+	@Schema(description = "")
+	@JsonProperty("TOTAL")
 	private Integer total;
 
-	@JsonProperty("page")
-	private String page;
+	@Schema(description = "")
+	@JsonProperty("PAGE")
+	private Integer page;
 
-	@JsonProperty("records")
+	@Schema(description = "")
+	@JsonProperty("RECORDS")
 	private Integer records;
 
-	@JsonProperty("rows")
+	@Schema(description = "")
+	@JsonProperty("ROWS")
 	private List<UNDONE_TXDATA> rows;
 	
 	
