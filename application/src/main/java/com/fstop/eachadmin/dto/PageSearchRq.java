@@ -60,4 +60,24 @@ public class PageSearchRq {
 	@JsonProperty("sidx")
 	private String sidx;
 
+	@JsonProperty("opt_date")
+	private String opt_date;
+	@JsonProperty("opt_date_2")
+	private String opt_date_2;
+	@JsonProperty("user_company")
+	private String user_company;
+	@JsonProperty("sUser_id")
+	private String sUser_id;
+	@JsonProperty("func_id")
+	private String func_id;
+	@JsonProperty("user_type")
+	private String user_type;
+	@JsonProperty("role_type")
+	private String role_type;
+	@JsonProperty("sql")
+	private String sql;
+	@JsonProperty("countSql")
+	private String countSql;
+	
+	
 }

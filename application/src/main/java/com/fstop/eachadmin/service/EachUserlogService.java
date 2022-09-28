@@ -1,6 +1,7 @@
 package com.fstop.eachadmin.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -8,12 +9,19 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fstop.eachadmin.dto.PageSearchRq;
+import com.fstop.eachadmin.dto.PageSearchRs;
 import com.fstop.eachadmin.repository.EachFuncListRepository;
 import com.fstop.eachadmin.repository.EachUserRepository;
+import com.fstop.fcore.util.Page;
 import com.fstop.fcore.util.StrUtils;
 import com.fstop.infra.entity.EACH_FUNC_LIST;
 import com.fstop.infra.entity.EACH_USER;
+import com.fstop.infra.entity.EACH_USERLOG;
 import com.fstop.infra.entity.EACH_USER_PK;
+import com.fstop.infra.entity.UNDONE_TXDATA;
+
+import util.DateTimeUtils;
 
 @Service
 public class EachUserlogService {
@@ -25,6 +33,7 @@ public class EachUserlogService {
 	private EachFuncListRepository eachFuncListRepository;
 
 	//用戶代號--------------------------------------------------------------------------------
+	
 	public List<Map<String, String>> getUserIdListByComId(String comId){
 		List<EACH_USER> userIdList = null;
 		List<Map<String, String>> list = null;
@@ -254,10 +263,166 @@ public class EachUserlogService {
 		return subList;
 	}
 	
-	//查詢按鈕---------------------------------------------------------------------------------
+	public Map getLoginItem_userTypB(Map menuItem , Map subItem){
+		List<Map> subList_N = new LinkedList<Map>();
+		menuItem = new HashMap();
+		subItem = new HashMap();
+		
+		subItem.put("label", "登入作業");
+		subItem.put("value", "eACH9999");
+		subList_N.add(subItem);
+		
+		subItem = new HashMap();
+		subItem.put("label", "登出作業");
+		subItem.put("value", "eACH9998");
+		subList_N.add(subItem);
+		
+		menuItem.put("登入登出作業", subList_N);
+		
+		return menuItem;
+	}
 	
+	//查詢按鈕---------------------------------------------------------------------------------
+	//分頁版本
+		public PageSearchRs<UNDONE_TXDATA> pageSearch(PageSearchRq param){
+//			String opt_date = StrUtils.isNotEmpty(param.get("TXTIME_1"))?param.get("TXTIME_1"):"";
+//			String opt_date2 = StrUtils.isNotEmpty(param.get("TXTIME_2"))?param.get("TXTIME_2"):"";
+//			String user_company = StrUtils.isNotEmpty(param.get("USER_COMPANY")) && param.get("USER_COMPANY").trim().equals("all") ?"":param.get("USER_COMPANY");
+//			String sUser_id = StrUtils.isNotEmpty(param.get("USERID")) && param.get("USERID").trim().equals("all") ?"":param.get("USERID");
+//			String func_id = StrUtils.isNotEmpty(param.get("FUNC_ID")) && param.get("FUNC_ID").trim().equals("all") ?"":param.get("FUNC_ID");
+//			String user_type = StrUtils.isNotEmpty(param.get("USER_TYPE")) ?param.get("USER_TYPE"):"";
+//			//String pageNo = StrUtils.isEmpty(param.get("pageNo")) ?"0":param.get("pageNo");
+//			String pageNo = StrUtils.isEmpty(param.get("page")) ?"0":param.get("page");
+//			//改從參數拿取
+//			String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
+//			//判斷群組類型
+//			String role_type = StrUtils.isNotEmpty(param.get("ROLE_TYPE"))?param.get("ROLE_TYPE"):"";
+			
+			String opt_date = StrUtils.isNotEmpty(param.getOpt_date())?param.getOpt_date():"";
+			String opt_date2 = StrUtils.isNotEmpty(param.getOpt_date_2())?param.getOpt_date_2():"";
+			String user_company = StrUtils.isNotEmpty(param.getUser_company()) && param.getUser_company().trim().equals("all") ?"":param.getUser_company();
+			String sUser_id = StrUtils.isNotEmpty(param.getSUser_id()) && param.getSUser_id().trim().equals("all") ?"":param.getSUser_id();
+			String func_id = StrUtils.isNotEmpty(param.getFunc_id()) && param.getFunc_id().trim().equals("all") ?"":param.getFunc_id();
+			String user_type = StrUtils.isNotEmpty(param.getUser_type()) ?param.getUser_type():"";
+			//String pageNo = StrUtils.isEmpty(param.get("pageNo")) ?"0":param.get("pageNo");
+			String pageNo = StrUtils.isEmpty(param.getPage()) ?"0":param.getPage();
+			//改從參數拿取
+			String pageSize = StrUtils.isEmpty(param.getRow()) ?Arguments.getStringArg("PAGE.SIZE"):param.getRow();
+			//判斷群組類型
+			String role_type = StrUtils.isNotEmpty(param.getRole_type())?param.getRole_type():"";
+			
+			Map rtnMap = new HashMap();
+			List<EACH_USERLOG> list = null;
+			Page page = null;
+			try {
+				list = new ArrayList<EACH_USERLOG>();
+				StringBuffer orderbysql = new StringBuffer();
+				List<String> strList = new LinkedList<String>();
+				Map<String,String> map = new HashMap<String,String>();
+				map.put("TXTIME_1", DateTimeUtils.convertDate(opt_date.trim(), "yyyyMMdd", "yyyy-MM-dd"));
+				map.put("TXTIME_2", DateTimeUtils.convertDate(opt_date2.trim(), "yyyyMMdd", "yyyy-MM-dd"));
+				map.put("USER_COMPANY", user_company.trim());
+				map.put("USERID", sUser_id.trim());
+				map.put("FUNC_ID", func_id.trim());
+				map.put("USER_TYPE", user_type.trim());
+				map.put("ROLE_TYPE", role_type.trim());
+				System.out.println("user_type>>"+user_type);
+				System.out.println("strList>>"+strList);
+				System.out.println("role_type>>"+role_type);
+//				if(StrUtils.isNotEmpty(param.get("sidx"))){
+//					orderbysql.append(" ORDER BY "+param.get("sidx")+" "+param.get("sord"));
+					orderbysql.append( getOrderBySql(param.get("sidx"), param.get("sord")));
+//				}
+				Map condition_Map =  getConditionData(map);
+				String sql = getSql(condition_Map.get("sqlPath").toString(), orderbysql.toString(), user_type);
+				String countSql = getCountSql(condition_Map.get("sqlPath").toString(), user_type);
+				System.out.println("sql.toString()==>"+sql.toString());
+				page = userLog_Dao.pagedSQLQuery(sql, countSql, Integer.valueOf(pageNo), Integer.valueOf(pageSize), (List<String>) condition_Map.get("values") , EACH_USERLOG.class );
+//				page = userLog_Dao.pagedQuery(sql.toString(),Integer.valueOf(pageNo), Integer.valueOf(pageSize), strList.toArray());
+				list = (List<EACH_USERLOG>) page.getResult();
+//				list = (List<EACH_USERLOG>) userLog_Dao.getAllDataByParm(Integer.valueOf(pageNo),Integer.valueOf(pageSize));
+				System.out.println("EACH_USERLOG.list>>"+list);
+				list = list!=null&& list.size() ==0 ?null:list;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if(page == null){
+				rtnMap.put("total", "0");
+				rtnMap.put("page", "0");
+				rtnMap.put("records", "0");
+				rtnMap.put("rows", new ArrayList());
+			}else{
+				rtnMap.put("total", page.getTotalPageCount());
+				rtnMap.put("page", String.valueOf(page.getCurrentPageNo()));
+				rtnMap.put("records", page.getTotalCount());
+				rtnMap.put("rows", list);
+			}
+			//TODO:
+			String json = JSONUtils.map2json(rtnMap) ;
+			return json;
+		}
 	
 	
 	//檢視明細按鈕-------------------------------------------------------------------------------
-	
+		public List<Map<String, String>>showDetail() {
+			// TODO Auto-generated method stub
+				Each_Userlog_Form userlog_form = (Each_Userlog_Form) form ;
+				String target = StrUtils.isEmpty(userlog_form.getTarget())?"":userlog_form.getTarget();
+				String ac_key = StrUtils.isEmpty(userlog_form.getAc_key())?"":userlog_form.getAc_key();
+				System.out.println("ADMUSERLOG_Action is start >> " + ac_key);
+				Login_Form login_form = (Login_Form) WebServletUtils.getRequest().getSession().getAttribute("login_form");
+				String fc_type = WebServletUtils.getRequest().getParameter("USER_TYPE");
+				if(!ac_key.equals("back")){
+					userlog_form.setFc_type(fc_type);
+				}
+				System.out.println("fc_type>>>"+fc_type);
+				if(StrUtils.isNotEmpty(ac_key)){
+					if(ac_key.equals("search")){
+					}else if(ac_key.equals("update")){
+					}else if(ac_key.equals("back")){
+						BeanUtils.populate(userlog_form, JSONUtils.json2map(userlog_form.getSerchStrs()));
+//									Map<String ,String> tmpMap = JSONUtils.json2map(userlog_form.getSerchStrs());
+//									System.out.println("USER_TYPE_1>>"+(tmpMap.get("action").split("=")[1].replace("&", "")));
+//									System.out.println("USER_TYPE_2>>"+login_form.getUserData().getUSER_TYPE());
+//									System.out.println("target>>"+target);
+//									userlog_form.setUSER_TYPE((tmpMap.get("action").split("=")[1].replace("&", "")));
+						System.out.println("userlog_form.getFc_type>>"+userlog_form.getFc_type());
+						if(userlog_form.getFc_type().equals("A")){
+							userlog_form.setUSER_TYPE((login_form.getUserData().getUSER_TYPE()));
+							userlog_form.setUserIdList(userlog_bo.getUserIdListByComId(""));
+							userlog_form.setUserCompanyList(userlog_bo.getUserCompanyList());
+							userlog_form.setFuncList(userlog_bo.getFuncList());
+						}else if(userlog_form.getFc_type().equals("B")) {
+							System.out.println("Fc_type ="+userlog_form.getFc_type()+" ,ROLE_TYPE ="+userlog_form.getROLE_TYPE()+" ,USER_COMPANY ="+userlog_form.getUSER_COMPANY());
+							userlog_form.setUSER_TYPE("B");
+							
+							if(userlog_form.getROLE_TYPE().equals("B")){
+								setDropdownList4back(userlog_form , login_form);
+							}else{
+								setDropdownList4back2(userlog_form , login_form);
+							}
+							
+						}
+					}else if(ac_key.equals("add")){
+					}else if(ac_key.equals("edit")){
+						BeanUtils.populate(userlog_form, JSONUtils.json2map(userlog_form.getEdit_params()));
+						System.out.println("pk>>"+userlog_form.getSERNO()+","+ userlog_form.getUSERID()+" , "+ userlog_form.getUSER_COMPANY());
+						BeanUtils.copyProperties(userlog_form, userlog_bo.getDetail(userlog_form.getSERNO(), userlog_form.getUSERID(), userlog_form.getUSER_COMPANY()));
+					}else if(ac_key.equals("save")){
+					}else if(ac_key.equals("delete")){
+					}
+				}else{
+					userlog_form.setUSER_COMPANY(login_form.getUserData().getUSER_COMPANY());
+					setDropdownList(userlog_form , login_form);
+				}
+				
+				if(StrUtils.isEmpty(target)){
+					target = "search";
+				}
+				
+				System.out.println("forward to >> " + target);
+				return (mapping.findForward(target));
+			}
 }

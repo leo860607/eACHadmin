@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fstop.eachadmin.dto.EachUserlogRq;
+import com.fstop.eachadmin.dto.EachUserlogRs;
 import com.fstop.eachadmin.dto.ObtkNtrRq;
 import com.fstop.eachadmin.dto.ObtkNtrRs;
 import com.fstop.eachadmin.dto.PageSearchRq;
 import com.fstop.eachadmin.dto.PageSearchRs;
-import com.fstop.eachadmin.service.BankGroupService;
 import com.fstop.eachadmin.service.EachUserlogService;
 import com.fstop.infra.entity.UNDONE_TXDATA;
 
@@ -29,8 +30,6 @@ public class UserlogTchController {
 	@Autowired
 	private EachUserlogService EachUserlogS;
 	
-	@Autowired
-	private BankGroupService BankGroupS;
 	
 	//用戶代號
 	@Operation(summary = "用戶代號 API", description = "用戶代號下拉選單資料")
@@ -65,13 +64,22 @@ public class UserlogTchController {
 	@Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
  	@PostMapping(value = "/pageSearch")
  	public PageSearchRs<UNDONE_TXDATA> pageSearch(@RequestBody PageSearchRq param) {
+<<<<<<< HEAD
 		return UndoneS.pageSearch(param);
+=======
+		return EachUserlogS.pageSearch(param);
+>>>>>>> c96f3046330ebee3f3c24d8908f92e23e53f902b
 	}
 	
 	//檢視明細按鈕
  	@Operation(summary = "檢視明細 API", description = "檢視明細按鈕，點選後明細表單頁面顯示")
 	@PostMapping(value = "/detail")
+<<<<<<< HEAD
 	public ObtkNtrRs detail(@RequestBody ObtkNtrRq param) {
 		return NTRDetailS.showDetail(param);
+=======
+	public List<Map<String, String>>detail() {
+		return EachUserlogS.showDetail();
+>>>>>>> c96f3046330ebee3f3c24d8908f92e23e53f902b
 	}
 }
