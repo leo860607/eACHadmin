@@ -1,6 +1,7 @@
 package com.fstop.eachadmin.service;
 
 import java.util.HashMap;
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Service;
 import com.fstop.eachadmin.repository.OnBlockTabRepository;
 import com.fstop.eachadmin.repository.VwOnBlockTabRepository;
 import com.fstop.fcore.util.StrUtils;
+
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Service
 public class OnblocktabService {
 	@Autowired
@@ -116,7 +120,7 @@ public Map showDetail(String txdate,String stan){
 				condition += " A.STAN='"+stan+"'";
 			}
 			sql.append(condition);
-			System.out.println("sql===>"+sql.toString());
+			log.debug("sql===>"+sql.toString());
 			po = vwOnBlockTabRepository.getDetail(sql.toString(),txdate,stan);
 		}catch(Exception e){
 			e.printStackTrace();

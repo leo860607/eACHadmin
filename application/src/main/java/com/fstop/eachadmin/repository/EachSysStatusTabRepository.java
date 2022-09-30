@@ -181,7 +181,7 @@ public class EachSysStatusTabRepository{
         try{
            	
         	list = jdbcTemplate.query(
-        			" FROM tw.org.twntch.po.EACHSYSSTATUSTAB",
+        			" SELECT * FROM EACHSYSSTATUSTAB",
         			new BeanPropertyRowMapper(EACHSYSSTATUSTAB.class));
           
         }catch(org.hibernate.HibernateException e){
@@ -199,7 +199,7 @@ public class EachSysStatusTabRepository{
         try{
         
         	list = jdbcTemplate.query(
-        			" FROM tw.org.twntch.po.EACHSYSSTATUSTAB",
+        			"SELECT * FROM EACHSYSSTATUSTAB",
         			new BeanPropertyRowMapper(EACHSYSSTATUSTAB.class));
       
         }catch(org.hibernate.HibernateException e){

@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Data
+
 @Getter
 @Setter
 public class PageSearchRs<UNDONE_TXDATA> {
@@ -24,6 +24,8 @@ public class PageSearchRs<UNDONE_TXDATA> {
 	@Schema(description = "")
 	@JsonProperty("PAGE")
 	private Integer page;
+	
+	
 
 	@Schema(description = "")
 	@JsonProperty("RECORDS")
@@ -48,6 +50,13 @@ public class PageSearchRs<UNDONE_TXDATA> {
 	private String USER_TYPE;
 	@JsonProperty("ROLE_TYPE")
 	private String ROLE_TYPE;
+	private String TOTAL;
+	private String ROWS;
+	private String DATASUMLIST;
+	
+	
+	
+	
 	
 
 }

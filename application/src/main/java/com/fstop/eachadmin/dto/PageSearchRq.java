@@ -39,11 +39,11 @@ public class PageSearchRq {
 	@JsonProperty("opbkId")
 	private String opbkId;
 
-	@JsonProperty("pageNo")
-	private Integer pageNo;
+//	@JsonProperty("pageNo")
+//	private Integer pageNo;
 
-	@JsonProperty("pageSize")
-	private Integer pageSize;
+//	@JsonProperty("pageSize")
+//	private Integer pageSize;
 
 	@JsonProperty("ResultCode")
 	private String ResultCode;
