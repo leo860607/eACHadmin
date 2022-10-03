@@ -6,26 +6,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fstop.eachadmin.dto.TxErrRq;
-import com.fstop.eachadmin.dto.TxErrRs;
-import com.fstop.eachadmin.dto.TxErrRs.TxErrRsList;
-import com.fstop.eachadmin.repository.OnBlockTabRepository;
-import com.fstop.eachadmin.repository.PageQueryRepository;
-import com.fstop.eachadmin.repository.VwOnBlockTabRepository;
-import com.fstop.infra.entity.TX_ERR;
-import com.fstop.infra.entity.VW_ONBLOCKTAB;
-import com.fstop.fcore.util.*;
 
 import com.fstop.eachadmin.dto.TxErrDetailRq;
 import com.fstop.eachadmin.dto.TxErrDetailRs;
+import com.fstop.eachadmin.dto.TxErrRq;
+import com.fstop.eachadmin.dto.TxErrRs;
+import com.fstop.eachadmin.repository.OnBlockTabRepository;
+import com.fstop.eachadmin.repository.PageQueryRepository;
+import com.fstop.eachadmin.repository.VwOnBlockTabRepository;
+import com.fstop.fcore.util.StrUtils;
+import com.fstop.infra.entity.TX_ERR;
+import com.fstop.infra.entity.TX_ERR_ONBLOCKTAB;
+import com.fstop.infra.entity.VW_ONBLOCKTAB;
 
 import util.DateTimeUtils;
 
@@ -101,8 +97,8 @@ public class TxErrService {
 			countAndSumQuery.append("FROM TEMP_2 ");
 			countAndSumQuery.append("WHERE ERR_TYPE IS NOT NULL ");
 			String countAndSumCols[] = { "NUM", "TXAMT" };
-			List<VW_ONBLOCKTAB> countAndSumList = vw_onblocktab_Dao.dataSum(countAndSumQuery.toString(),
-					countAndSumCols, VW_ONBLOCKTAB.class);
+			List<TX_ERR_ONBLOCKTAB> countAndSumList = vw_onblocktab_Dao.dataSum(countAndSumQuery.toString(),
+					countAndSumCols, TX_ERR_ONBLOCKTAB.class);
 			rtnMap.put("dataSumList", countAndSumList);
 
 			StringBuffer sql = new StringBuffer();
