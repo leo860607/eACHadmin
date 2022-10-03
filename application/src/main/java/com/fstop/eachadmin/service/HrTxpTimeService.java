@@ -33,15 +33,6 @@ public class HrTxpTimeService {
 	 * @return
 	 */
 	public List<Map<String, String>> getPcodeList(){
-//		List<EACH_TXN_CODE> list = each_txn_code_Dao.getTranCode();
-//		List<LabelValueBean> beanList = new LinkedList<LabelValueBean>();
-//		LabelValueBean bean = null;
-//		for(EACH_TXN_CODE po : list){
-//			bean = new LabelValueBean(po.getEACH_TXN_ID() + " - " + po.getEACH_TXN_NAME(), po.getEACH_TXN_ID());  //TODO
-//			beanList.add(bean);
-//		}
-//		System.out.println("beanList>>"+beanList);
-//		return beanList;
 		List<EACH_TXN_CODE> list = each_txn_code_Dao.getTranCode();
 		
 		List<Map<String, String>> beanList = new LinkedList<Map<String, String>>();

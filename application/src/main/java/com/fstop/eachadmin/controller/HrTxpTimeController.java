@@ -46,7 +46,7 @@ public class HrTxpTimeController {
 		}
 		
 	//總行代號
-		@Operation(summary = "總行代號 API", description = "總行代號下拉選單資料")
+		@Operation(summary = "總行代號 API", description = "總行代號下拉選單資料" )
 		@PostMapping(value = "/BankGroup")
 		public BankGroupRs BgbkIdList(@RequestBody BankGroupRq param) {
 			return BankGroupS.getByOpbkId_Single_Date(param);

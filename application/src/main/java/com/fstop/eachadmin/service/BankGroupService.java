@@ -21,27 +21,35 @@ public class BankGroupService {
 	@Autowired
 	private BankOpbkService bank_opbk_bo;
 	public BankGroupRs getByOpbkId_Single_Date(BankGroupRq params){
+		String paramName;
+		String paramValue;
 		List<BANK_OPBK> list  = null;
 		Map rtnMap = new HashMap();
-		String OPBK_ID = StrUtils.isNotEmpty(params.getOPBK_ID()) ? params.getOPBK_ID() : "";
-//		if (StrUtils.isNotEmpty(params.getOPBK_ID())){
-//			OPBK_ID = paramValue;
-//		}
-		String s_bizdate = StrUtils.isNotEmpty(params.getS_bizdate()) ? params.getS_bizdate() : "";
-//		if (StrUtils.isNotEmpty(paramValue)){
-//			s_bizdate = paramValue;
-//		}else{
-//			rtnMap.put("result", "FALSE");
-//			rtnMap.put("msg", "營業日期不可空白");
-//			result = JSONUtils.map2json(rtnMap);
-//			return result;
-//		}
+		String OPBK_ID = "";
+		//paramName = "OPBK_ID";
+		paramValue = params.getOPBK_ID();
+		if (StrUtils.isNotEmpty(paramValue)){
+			OPBK_ID = paramValue;
+		}
+		String s_bizdate = "";
+		paramName = "s_bizdate";
+		paramValue = params.getS_bizdate();
+		if (StrUtils.isNotEmpty(paramValue)){
+			s_bizdate = paramValue;
+		}else{
+			rtnMap.put("result", "FALSE");
+			rtnMap.put("msg", "營業日期不可空白");
+			ObjectMapper mapper = new ObjectMapper();
+			BankGroupRs result = mapper.convertValue(rtnMap, BankGroupRs.class);
+			System.out.println(result);
+			return result;
+		}
 		rtnMap = zDateHandler.verify_BizDate(DateTimeUtils.convertDate(1, s_bizdate, "yyyyMMdd", "yyyyMMdd"));
 		if(rtnMap.get("result").equals("FALSE")){
-//			result = JSONUtils.map2json(rtnMap);
-//			ObjectMapper mapper = new ObjectMapper();
-//			UndoneSendRs result = mapper.convertValue(rtnMap, UndoneSendRs.class);
-//			return result;
+			ObjectMapper mapper = new ObjectMapper();
+			BankGroupRs result = mapper.convertValue(rtnMap, BankGroupRs.class);
+			System.out.println(result);
+			return result;
 		}
 		list  = bank_opbk_bo.getCurBgbkList(OPBK_ID, s_bizdate);
 			
@@ -57,6 +65,5 @@ public class BankGroupService {
 		BankGroupRs result = mapper.convertValue(rtnMap, BankGroupRs.class);
 		System.out.println(result);
 		return result;
-	}
-	
+	}	
 }

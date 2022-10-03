@@ -116,7 +116,7 @@ public class TxErrService {
 			// System.out.println("### SQL >> " + sql);
 
 			PageRequest pageable = PageRequest.of(Integer.parseInt(pageNo), 5);
-			nextpage = pageR.getPageData(pageable,countAndSumQuery.toString(), sql.toString(), TxErrRsList.class);
+//			nextpage = pageR.getPageData(pageable,countAndSumQuery.toString(), sql.toString(), TxErrRsList.class);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
