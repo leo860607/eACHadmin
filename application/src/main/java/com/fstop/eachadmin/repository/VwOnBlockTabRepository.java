@@ -11,30 +11,33 @@ import org.springframework.stereotype.Repository;
 
 import com.fstop.fcore.util.AutoAddScalar;
 import com.fstop.fcore.util.Page;
+import com.fstop.infra.entity.UNDONE_TXDATA;
+import com.fstop.infra.entity.VW_ONBLOCKTAB;
+import com.fstop.infra.entity.WK_DATE_CALENDAR;
 
 @Repository
 public class VwOnBlockTabRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	// 檢視明細
-	public Map getDetail(String sql, Map<String, String> params) {
-		List<Map> list = null;
-		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Map.class));
-
-		if (list != null && list.size() > 0) {
-			return list.get(0);
-		}
-		return null;
-	}
-
-	// 檢視明細
-	public List<Map> getData(String sql, Map<String, String> params) {
-		List<Map> list = null;
-		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Map.class));
-
-		return list;
-	}
+//	// 檢視明細
+//	public Map getDetail(String sql, Map<String, String> params) {
+//		List<Map> list = null;
+//		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Map.class));
+//
+//		if (list != null && list.size() > 0) {
+//			return list.get(0);
+//		}
+//		return null;
+//	}
+//
+//	// 檢視明細
+//	public List<Map> getData(String sql, Map<String, String> params) {
+//		List<Map> list = null;
+//		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Map.class));
+//
+//		return list;
+//	}
 
 	// 檢視明細
 	public Map getDetail(String condition, String txdate, String stan) {
@@ -65,17 +68,18 @@ public class VwOnBlockTabRepository {
 	public Page getDataIII(int pageNo, int pageSize, String countQuerySql, String sql, String[] cols,
 			Class targetClass) {
 		int totalCount = countDataIII(countQuerySql);
-		int startIndex = Page.getStartOfPage(pageNo, pageSize) + 1;
+		int startIndex = 0;
+//		= Page.getStartOfPage(pageNo, pageSize) + 1;
 		List<Map> list = null;
-		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Map.class));
+		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(UNDONE_TXDATA.class));
 
-		return new Page(startIndex - 1, totalCount, pageSize, list);
+		return new Page(startIndex , totalCount, pageSize, list);
 	}
 
 	public int countDataIII(String countQuerySql) {
 		int count = 0;
 		List<Map> list = null;
-		list = jdbcTemplate.query(countQuerySql, new BeanPropertyRowMapper(List.class));
+		list = jdbcTemplate.query(countQuerySql,new BeanPropertyRowMapper(UNDONE_TXDATA.class) );
 
 		List countList = list.subList(count, count);
 		if (countList != null && countList.size() > 0) {
