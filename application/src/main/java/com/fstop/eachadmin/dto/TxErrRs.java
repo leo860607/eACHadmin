@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,6 +34,7 @@ public class TxErrRs<VW_ONBLOCKTAB> {
 
 	@Getter
 	@Setter
+	@AllArgsConstructor
 	public class TxErrRsList {
 		private String ERR_TYPE;
 		private String TXDATE;

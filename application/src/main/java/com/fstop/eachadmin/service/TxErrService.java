@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -112,12 +113,11 @@ public class TxErrService {
 			}
 			sql.append(") AS ROWNUMBER, C.* ");
 			sql.append("    FROM TEMP_2 AS C ");
-			sql.append("    WHERE ERR_TYPE IS NOT NULL ");
+			sql.append("    WHERE ERR_TYPE IS NOT NULL ) ");
 			// System.out.println("### SQL >> " + sql);
 
 			PageRequest pageable = PageRequest.of(Integer.parseInt(pageNo), 5);
 			nextpage = pageR.getPageData(pageable,countAndSumQuery.toString(), sql.toString(), TxErrRsList.class);
-
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -275,33 +275,7 @@ public class TxErrService {
 		return conStr;
 	}
 
-	public OnBlockTabRepository getonblocktab_Dao() {
-		return onblocktab_Dao;
-	}
 
-	public void setOnblocktab_Dao(OnBlockTabRepository onblocktab_Dao) {
-		this.onblocktab_Dao = onblocktab_Dao;
-	}
-
-	public VwOnBlockTabRepository getVw_onblocktab_Dao() {
-		return vw_onblocktab_Dao;
-	}
-
-	public OnBlockTabRepository getOnblocktab_Dao() {
-		return onblocktab_Dao;
-	}
-
-	public void setOnBlockTabRepository(OnBlockTabRepository onblocktab_Dao) {
-		this.onblocktab_Dao = onblocktab_Dao;
-	}
-
-	public VwOnBlockTabRepository getvw_onblocktab_Dao() {
-		return vw_onblocktab_Dao;
-	}
-
-	public void setVw_onblocktab_Dao(VwOnBlockTabRepository vw_onblocktab_Dao) {
-		this.vw_onblocktab_Dao = vw_onblocktab_Dao;
-	}
 
 //檢視明細
 	public TxErrDetailRs showDetail(TxErrDetailRq param) {
