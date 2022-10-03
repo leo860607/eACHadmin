@@ -10,21 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fstop.eachadmin.dto.TxErrRq;
-import com.fstop.eachadmin.dto.TxErrRs;
-import com.fstop.eachadmin.dto.TxErrRs.TxErrRsList;
-import com.fstop.eachadmin.repository.OnBlockTabRepository;
-import com.fstop.eachadmin.repository.PageQueryRepository;
-import com.fstop.eachadmin.repository.VwOnBlockTabRepository;
-import com.fstop.infra.entity.TX_ERR;
-import com.fstop.infra.entity.VW_ONBLOCKTAB;
-import com.fstop.fcore.util.*;
 
 import com.fstop.eachadmin.dto.TxErrDetailRq;
 import com.fstop.eachadmin.dto.TxErrDetailRs;
+import com.fstop.eachadmin.dto.TxErrRq;
+import com.fstop.eachadmin.dto.TxErrRs;
+import com.fstop.eachadmin.repository.OnBlockTabRepository;
+import com.fstop.eachadmin.repository.PageQueryRepository;
+import com.fstop.eachadmin.repository.VwOnBlockTabRepository;
+import com.fstop.fcore.util.StrUtils;
+import com.fstop.infra.entity.TX_ERR;
+import com.fstop.infra.entity.TX_ERR_ONBLOCKTAB;
+import com.fstop.infra.entity.VW_ONBLOCKTAB;
 
 import util.DateTimeUtils;
 
@@ -41,7 +38,7 @@ public class TxErrService {
 	@Autowired
 	private PageQueryRepository<TX_ERR> pageR;
 
-	public Page pageSearch(TxErrRq param ,Page... page) {
+	public TxErrRs pageSearch(TxErrRq param ,Page... page) {
 		String pageNo = StrUtils.isEmpty(param.getPage()) ? "0" : param.getPage();
 //		String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
 //		TODO
@@ -49,6 +46,7 @@ public class TxErrService {
 
 		List<TX_ERR> list = null;
 		Page nextpage = null;
+		TxErrRs result=null;
 		try {
 			list = new ArrayList<TX_ERR>();
 			String condition = getConditionList(param).get(0);
@@ -99,8 +97,8 @@ public class TxErrService {
 			countAndSumQuery.append("FROM TEMP_2 ");
 			countAndSumQuery.append("WHERE ERR_TYPE IS NOT NULL ");
 			String countAndSumCols[] = { "NUM", "TXAMT" };
-			List<VW_ONBLOCKTAB> countAndSumList = vw_onblocktab_Dao.dataSum(countAndSumQuery.toString(),
-					countAndSumCols, VW_ONBLOCKTAB.class);
+			List<TX_ERR_ONBLOCKTAB> countAndSumList = vw_onblocktab_Dao.dataSum(countAndSumQuery.toString(),
+					countAndSumCols, TX_ERR_ONBLOCKTAB.class);
 			rtnMap.put("dataSumList", countAndSumList);
 
 			StringBuffer sql = new StringBuffer();
@@ -112,18 +110,23 @@ public class TxErrService {
 			}
 			sql.append(") AS ROWNUMBER, C.* ");
 			sql.append("    FROM TEMP_2 AS C ");
-			sql.append("    WHERE ERR_TYPE IS NOT NULL ");
+			sql.append("    WHERE ERR_TYPE IS NOT NULL ) ");
 			// System.out.println("### SQL >> " + sql);
 
 			PageRequest pageable = PageRequest.of(Integer.parseInt(pageNo), 5);
+<<<<<<< HEAD
 //			nextpage = pageR.getPageData(pageable,countAndSumQuery.toString(), sql.toString(), TxErrRsList.class);
 
+=======
+			nextpage = pageR.getPageData(pageable,countAndSumQuery.toString(), sql.toString(), TX_ERR.class);
+			result=new TxErrRs(countAndSumList, nextpage.getTotalPages(),Integer.toString(nextpage.getPageable().getPageNumber()), nextpage.getTotalElements(), nextpage.getContent());
+>>>>>>> 210876fab20432d511e6a0f58882761baca2f4b8
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return nextpage;
+		return result;
 	}
 
 	public List<String> getConditionList(TxErrRq param) {
@@ -275,33 +278,7 @@ public class TxErrService {
 		return conStr;
 	}
 
-	public OnBlockTabRepository getonblocktab_Dao() {
-		return onblocktab_Dao;
-	}
 
-	public void setOnblocktab_Dao(OnBlockTabRepository onblocktab_Dao) {
-		this.onblocktab_Dao = onblocktab_Dao;
-	}
-
-	public VwOnBlockTabRepository getVw_onblocktab_Dao() {
-		return vw_onblocktab_Dao;
-	}
-
-	public OnBlockTabRepository getOnblocktab_Dao() {
-		return onblocktab_Dao;
-	}
-
-	public void setOnBlockTabRepository(OnBlockTabRepository onblocktab_Dao) {
-		this.onblocktab_Dao = onblocktab_Dao;
-	}
-
-	public VwOnBlockTabRepository getvw_onblocktab_Dao() {
-		return vw_onblocktab_Dao;
-	}
-
-	public void setVw_onblocktab_Dao(VwOnBlockTabRepository vw_onblocktab_Dao) {
-		this.vw_onblocktab_Dao = vw_onblocktab_Dao;
-	}
 
 //檢視明細
 	public TxErrDetailRs showDetail(TxErrDetailRq param) {

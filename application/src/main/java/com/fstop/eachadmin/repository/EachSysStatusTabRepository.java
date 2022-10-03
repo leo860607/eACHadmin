@@ -179,7 +179,7 @@ public class EachSysStatusTabRepository{
         try{
            	
         	list = jdbcTemplate.query(
-        			" FROM tw.org.twntch.po.EACHSYSSTATUSTAB",
+        			" SELECT * FROM EACHSYSSTATUSTAB",
         			new BeanPropertyRowMapper(EACHSYSSTATUSTAB.class));
           
         }catch(org.hibernate.HibernateException e){
@@ -191,13 +191,13 @@ public class EachSysStatusTabRepository{
      * 取得上一營業日
      * @return
      */
-    public List<EACHSYSSTATUSTAB> getThisBusinessDate(){
+    public List<EACHSYSSTATUSTAB> getBusinessDate(){
         List<EACHSYSSTATUSTAB> list = null;
       
         try{
         
         	list = jdbcTemplate.query(
-        			" FROM tw.org.twntch.po.EACHSYSSTATUSTAB",
+        			"SELECT * FROM EACHSYSSTATUSTAB",
         			new BeanPropertyRowMapper(EACHSYSSTATUSTAB.class));
       
         }catch(org.hibernate.HibernateException e){

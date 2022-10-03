@@ -64,18 +64,36 @@
 //	@Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
 // 	@PostMapping(value = "/pageSearch")
 // 	public PageSearchRs<UNDONE_TXDATA> pageSearch(@RequestBody PageSearchRq param) {
+<<<<<<< HEAD
 //		return UndoneS.pageSearch(param);
 //		return EachUserlogS.pageSearch(param);
+=======
+//<<<<<<< HEAD
+//		return UndoneS.pageSearch(param);
+//=======
+//		return EachUserlogS.pageSearch(param);
+//>>>>>>> c96f3046330ebee3f3c24d8908f92e23e53f902b
+>>>>>>> 210876fab20432d511e6a0f58882761baca2f4b8
 //	}
 //	
 //	//檢視明細按鈕
 // 	@Operation(summary = "檢視明細 API", description = "檢視明細按鈕，點選後明細表單頁面顯示")
 //	@PostMapping(value = "/detail")
+<<<<<<< HEAD
 //
 //	public ObtkNtrRs detail(@RequestBody ObtkNtrRq param) {
 //		return NTRDetailS.showDetail(param);
 //
 //	public List<Map<String, String>>detail() {
 //		return EachUserlogS.showDetail();
+=======
+//<<<<<<< HEAD
+//	public ObtkNtrRs detail(@RequestBody ObtkNtrRq param) {
+//		return NTRDetailS.showDetail(param);
+//=======
+//	public List<Map<String, String>>detail() {
+//		return EachUserlogS.showDetail();
+//>>>>>>> c96f3046330ebee3f3c24d8908f92e23e53f902b
+>>>>>>> 210876fab20432d511e6a0f58882761baca2f4b8
 //	}
 //}

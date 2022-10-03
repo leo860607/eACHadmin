@@ -225,7 +225,7 @@ public class EachSysStatusTabService {
 		int tmp  = -1;
 		System.out.println("activeDate>>"+activeDate);
 		try{
-			list = WkDateService.getEachsysstatustab_Dao().getThisBusinessDate();
+			list = WkDateService.getEachsysstatustab_Dao().getBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 				tmp = zDateHandler.compareDiffDate( activeDate, businessDate , "yyyyMMdd");
@@ -252,7 +252,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String businessDate = "";
 		try{
-			list = eachSysStatusTabRepository.getThisBusinessDate();
+			list = eachSysStatusTabRepository.getBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 				businessDate = DateTimeUtils.convertDate(businessDate, "yyyyMMdd", "yyyyMMdd");
@@ -271,7 +271,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String businessDate = "";
 		try{
-			list = eachSysStatusTabRepository.getThisBusinessDate();
+			list = eachSysStatusTabRepository.getBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 			}
@@ -330,7 +330,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String businessDate = "";
 		try{
-			list = eachSysStatusTabRepository.getThisBusinessDate();
+			list = eachSysStatusTabRepository.getBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getTHISDATE();
 				businessDate = DateTimeUtils.convertDate(businessDate, "yyyyMMdd", "yyyyMMdd");

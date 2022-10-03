@@ -3,17 +3,22 @@ package com.fstop.eachadmin.dto;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fstop.infra.entity.TX_ERR_ONBLOCKTAB;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class TxErrRs<VW_ONBLOCKTAB> {
+@AllArgsConstructor
+public class TxErrRs {
 
 	@JsonProperty("DATASUMLIST")
-	private List<VW_ONBLOCKTAB> dataSumList;
+	private List<TX_ERR_ONBLOCKTAB> dataSumList;
 
 	@Schema(description = "")
 	@JsonProperty("TOTAL")
@@ -25,14 +30,17 @@ public class TxErrRs<VW_ONBLOCKTAB> {
 
 	@Schema(description = "")
 	@JsonProperty("RECORDS")
-	private Integer records;
+	private Long records;
 
 	@Schema(description = "")
 	@JsonProperty("ROWS")
-	private List<VW_ONBLOCKTAB> rows;
+	private List<TxErrRsList> rows;
 
 	@Getter
 	@Setter
+	@AllArgsConstructor
+	@NoArgsConstructor
+	@Data
 	public class TxErrRsList {
 		private String ERR_TYPE;
 		private String TXDATE;
