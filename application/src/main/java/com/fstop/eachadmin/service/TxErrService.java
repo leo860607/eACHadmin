@@ -42,7 +42,7 @@ public class TxErrService {
 	@Autowired
 	private PageQueryRepository<TX_ERR> pageR;
 
-	public Page pageSearch(TxErrRq param ,Page... page) {
+	public TxErrRs pageSearch(TxErrRq param ,Page... page) {
 		String pageNo = StrUtils.isEmpty(param.getPage()) ? "0" : param.getPage();
 //		String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
 //		TODO
@@ -50,6 +50,7 @@ public class TxErrService {
 
 		List<TX_ERR> list = null;
 		Page nextpage = null;
+		TxErrRs result=null;
 		try {
 			list = new ArrayList<TX_ERR>();
 			String condition = getConditionList(param).get(0);
@@ -117,13 +118,14 @@ public class TxErrService {
 			// System.out.println("### SQL >> " + sql);
 
 			PageRequest pageable = PageRequest.of(Integer.parseInt(pageNo), 5);
-			nextpage = pageR.getPageData(pageable,countAndSumQuery.toString(), sql.toString(), TxErrRsList.class);
+			nextpage = pageR.getPageData(pageable,countAndSumQuery.toString(), sql.toString(), TX_ERR.class);
+			result=new TxErrRs(countAndSumList, nextpage.getTotalPages(),Integer.toString(nextpage.getPageable().getPageNumber()), nextpage.getTotalElements(), nextpage.getContent());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return nextpage;
+		return result;
 	}
 
 	public List<String> getConditionList(TxErrRq param) {

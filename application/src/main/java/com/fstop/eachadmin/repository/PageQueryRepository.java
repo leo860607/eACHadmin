@@ -35,7 +35,7 @@ public class PageQueryRepository<T> {
 	public Page getPageData(Pageable page,String countQuerySql,String sql,Class outputClass) {
 		int totalCount = countToatalPageSize(countQuerySql);
 		List<T> datalist = jdbcTemplate.query(
-				sql + " LIMIT " + page.getPageSize() + " OFFSET " + (page.getPageNumber()-1)*page.getPageSize(),
+				sql + " LIMIT " + page.getPageSize() + " OFFSET " + (page.getPageNumber())*page.getPageSize(),
 				new BeanPropertyRowMapper(outputClass));
 		return new PageImpl<T>(datalist, page, totalCount);
 	}
