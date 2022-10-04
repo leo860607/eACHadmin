@@ -114,13 +114,13 @@ public class TxErrService {
 			// System.out.println("### SQL >> " + sql);
 
 			PageRequest pageable = PageRequest.of(Integer.parseInt(pageNo), 5);
-<<<<<<< HEAD
+//<<<<<<< HEAD
 //			nextpage = pageR.getPageData(pageable,countAndSumQuery.toString(), sql.toString(), TxErrRsList.class);
 
-=======
+//=======
 			nextpage = pageR.getPageData(pageable,countAndSumQuery.toString(), sql.toString(), TX_ERR.class);
 			result=new TxErrRs(countAndSumList, nextpage.getTotalPages(),Integer.toString(nextpage.getPageable().getPageNumber()), nextpage.getTotalElements(), nextpage.getContent());
->>>>>>> 210876fab20432d511e6a0f58882761baca2f4b8
+//>>>>>>> 210876fab20432d511e6a0f58882761baca2f4b8
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -152,8 +152,8 @@ public class TxErrService {
 	}
 
 	// 檢視明細
-	public Map searchByPk(String txdate, String stan) {
-		Map po = null;
+	public VW_ONBLOCKTAB searchByPk(String txdate, String stan) {
+		VW_ONBLOCKTAB po = null;
 		Map rtnMap = new HashMap();
 		String condition = "";
 		try {
@@ -284,116 +284,119 @@ public class TxErrService {
 	public TxErrDetailRs showDetail(TxErrDetailRq param) {
 
 		TxErrDetailRs txerrDetailRs = new TxErrDetailRs();
-		String ac_key = StrUtils.isEmpty(param.getAc_key()) ? "" : param.getAc_key();
-		String target = StrUtils.isEmpty(param.getTarget()) ? "search" : param.getTarget();
-		param.setTarget(target);
+		Map TxerrDetailRs = new HashMap();
+//		String ac_key = StrUtils.isEmpty(param.getAc_key()) ? "" : param.getAc_key();
+//		String target = StrUtils.isEmpty(param.getTarget()) ? "search" : param.getTarget();
+//		param.setTarget(target);
 		String txdate = param.getTXDATE();
 		String stan = param.getSTAN();
 
-		if (ac_key.equalsIgnoreCase("edit")) {
-			Map detailDataMap = searchByPk(txdate, stan);
+//		if (ac_key.equalsIgnoreCase("edit")) {
+			VW_ONBLOCKTAB detailDataMap = searchByPk(txdate, stan);
 			String bizdate = eachsysstatustab_bo.getBusinessDateII();
 
 			// 20220321新增FOR EXTENDFEE 位數轉換
-			if (detailDataMap.get("EXTENDFEE") != null) {
-				BigDecimal orgNewExtendFee = (BigDecimal) detailDataMap.get("EXTENDFEE");
+			if (detailDataMap.getEXTENDFEE() != null) {
+				BigDecimal orgNewExtendFee =  detailDataMap.getEXTENDFEE();
 				// 去逗號除100 1,000 > 1000/100 = 10
 				String strOrgNewExtendFee = orgNewExtendFee.toString();
 				double realNewExtendFee = Double.parseDouble(strOrgNewExtendFee.replace(",", "")) / 100;
-				detailDataMap.put("NEWEXTENDFEE", String.valueOf(realNewExtendFee));
+				TxerrDetailRs.put("NEWEXTENDFEE", String.valueOf(realNewExtendFee));
 			} else {
 				// 如果是null 顯示空字串
-				detailDataMap.put("NEWEXTENDFEE", "");
+				TxerrDetailRs.put("NEWEXTENDFEE", "");
 			}
 
 			// 如果FEE_TYPE有值 且結果為成功或未完成 新版手續直接取後面欄位
-			if (StrUtils.isNotEmpty((String) detailDataMap.get("FEE_TYPE"))
-					&& ("成功".equals((String) detailDataMap.get("RESP"))
-							|| "未完成".equals((String) detailDataMap.get("RESP")))) {
-				switch ((String) detailDataMap.get("FEE_TYPE")) {
+			if (StrUtils.isNotEmpty((String) detailDataMap.getFEE_TYPE())
+					&& ("成功".equals((String) detailDataMap.getRESP())
+							|| "未完成".equals((String) detailDataMap.getRESP()))) {
+				switch ((String) detailDataMap.getFEE_TYPE()) {
 				case "A":
-					detailDataMap.put("TXN_TYPE", "固定");
+					TxerrDetailRs.put("TXN_TYPE", "固定");
 					break;
 				case "B":
-					detailDataMap.put("TXN_TYPE", "外加");
+					TxerrDetailRs.put("TXN_TYPE", "外加");
 					break;
 				case "C":
-					detailDataMap.put("TXN_TYPE", "百分比");
+					TxerrDetailRs.put("TXN_TYPE", "百分比");
 					break;
 				case "D":
-					detailDataMap.put("TXN_TYPE", "級距");
+					TxerrDetailRs.put("TXN_TYPE", "級距");
 					break;
 				}
 
 				// 如果FEE_TYPE有值 且結果為失敗或處理中 新版手續跟舊的一樣
-			} else if (StrUtils.isNotEmpty((String) detailDataMap.get("FEE_TYPE"))
-					&& ("失敗".equals((String) detailDataMap.get("RESP"))
-							|| "處理中".equals((String) detailDataMap.get("RESP")))) {
-				switch ((String) detailDataMap.get("FEE_TYPE")) {
+			} else if (StrUtils.isNotEmpty((String) detailDataMap.getFEE_TYPE())
+					&& ("失敗".equals((String) detailDataMap.getRESP())
+							|| "處理中".equals((String) detailDataMap.getRESP()))) {
+				switch ((String) detailDataMap.getFEE_TYPE()) {
 				case "A":
-					detailDataMap.put("TXN_TYPE", "固定");
+					TxerrDetailRs.put("TXN_TYPE", "固定");
 					break;
 				case "B":
-					detailDataMap.put("TXN_TYPE", "外加");
+					TxerrDetailRs.put("TXN_TYPE", "外加");
 					break;
 				case "C":
-					detailDataMap.put("TXN_TYPE", "百分比");
+					TxerrDetailRs.put("TXN_TYPE", "百分比");
 					break;
 				case "D":
-					detailDataMap.put("TXN_TYPE", "級距");
+					TxerrDetailRs.put("TXN_TYPE", "級距");
 					break;
 				}
 
-				detailDataMap.put("NEWSENDERFEE_NW",
-						detailDataMap.get("NEWSENDERFEE") != null ? detailDataMap.get("NEWSENDERFEE") : "0");
-				detailDataMap.put("NEWINFEE_NW",
-						detailDataMap.get("NEWINFEE") != null ? detailDataMap.get("NEWINFEE") : "0");
-				detailDataMap.put("NEWOUTFEE_NW",
-						detailDataMap.get("NEWOUTFEE") != null ? detailDataMap.get("NEWOUTFEE") : "0");
-				detailDataMap.put("NEWWOFEE_NW",
-						detailDataMap.get("NEWWOFEE") != null ? detailDataMap.get("NEWWOFEE") : "0");
-				detailDataMap.put("NEWEACHFEE_NW",
-						detailDataMap.get("NEWEACHFEE") != null ? detailDataMap.get("NEWEACHFEE") : "0");
-				detailDataMap.put("NEWFEE_NW", detailDataMap.get("NEWFEE") != null ? detailDataMap.get("NEWFEE") : "0");
+				TxerrDetailRs.put("NEWSENDERFEE_NW",
+						detailDataMap.getNEWSENDERFEE() != null ? detailDataMap.getNEWSENDERFEE() : "0");
+				TxerrDetailRs.put("NEWINFEE_NW",
+						detailDataMap.getNEWINFEE() != null ? detailDataMap.getNEWINFEE() : "0");
+				TxerrDetailRs.put("NEWOUTFEE_NW",
+						detailDataMap.getNEWOUTFEE()  != null ? detailDataMap.getNEWOUTFEE() : "0");
+				TxerrDetailRs.put("NEWWOFEE_NW",
+						detailDataMap.getNEWWOFEE() != null ? detailDataMap.getNEWWOFEE() : "0");
+				TxerrDetailRs.put("NEWEACHFEE_NW",
+						detailDataMap.getNEWEACHFEE() != null ? detailDataMap.getNEWEACHFEE() : "0");
+				TxerrDetailRs.put("NEWFEE_NW", detailDataMap.getNEWFEE()  != null ? detailDataMap.getNEWFEE() : "0");
 
 				// 如果FEE_TYPE為空 且結果為成功或未完成 新版手續call sp
-			} else if (StrUtils.isEmpty((String) detailDataMap.get("FEE_TYPE"))
-					&& ("成功".equals((String) detailDataMap.get("RESP"))
-							|| "未完成".equals((String) detailDataMap.get("RESP")))) {
-				Map newFeeDtailMap = onblocktab_bo.getNewFeeDetail(bizdate, (String) detailDataMap.get("TXN_NAME"),
-						(String) detailDataMap.get("SENDERID"), (String) detailDataMap.get("SENDERBANKID_NAME"),
-						(String) detailDataMap.get("NEWTXAMT"));
-				detailDataMap.put("TXN_TYPE", newFeeDtailMap.get("TXN_TYPE"));
-				detailDataMap.put("NEWSENDERFEE_NW", newFeeDtailMap.get("NEWSENDERFEE_NW"));
-				detailDataMap.put("NEWINFEE_NW", newFeeDtailMap.get("NEWINFEE_NW"));
-				detailDataMap.put("NEWOUTFEE_NW", newFeeDtailMap.get("NEWOUTFEE_NW"));
-				detailDataMap.put("NEWWOFEE_NW", newFeeDtailMap.get("NEWWOFEE_NW"));
-				detailDataMap.put("NEWEACHFEE_NW", newFeeDtailMap.get("NEWEACHFEE_NW"));
-				detailDataMap.put("NEWFEE_NW", newFeeDtailMap.get("NEWFEE_NW"));
+			} else if (StrUtils.isEmpty((String) detailDataMap.getFEE_TYPE())
+					&& ("成功".equals((String) detailDataMap.getRESP())
+							|| "未完成".equals((String) detailDataMap.getRESP()))) {
+				Map newFeeDtailMap = onblocktab_bo.getNewFeeDetail(bizdate, (String) detailDataMap.getTXN_NAME(),
+						(String) detailDataMap.getSENDERID(), (String) detailDataMap.getSENDERBANKID_NAME(),
+						(String) detailDataMap.getNEWTXAMT());
+				TxerrDetailRs.put("TXN_TYPE", newFeeDtailMap.get("TXN_TYPE"));
+				TxerrDetailRs.put("NEWSENDERFEE_NW", newFeeDtailMap.get("NEWSENDERFEE_NW"));
+				TxerrDetailRs.put("NEWINFEE_NW", newFeeDtailMap.get("NEWINFEE_NW"));
+				TxerrDetailRs.put("NEWOUTFEE_NW", newFeeDtailMap.get("NEWOUTFEE_NW"));
+				TxerrDetailRs.put("NEWWOFEE_NW", newFeeDtailMap.get("NEWWOFEE_NW"));
+				TxerrDetailRs.put("NEWEACHFEE_NW", newFeeDtailMap.get("NEWEACHFEE_NW"));
+				TxerrDetailRs.put("NEWFEE_NW", newFeeDtailMap.get("NEWFEE_NW"));
 
 				// 如果FEE_TYPE為空 且結果為失敗或處理中 新版手續跟舊的一樣
-			} else if (StrUtils.isEmpty((String) detailDataMap.get("FEE_TYPE"))
-					&& ("失敗".equals((String) detailDataMap.get("RESP"))
-							|| "處理中".equals((String) detailDataMap.get("RESP")))) {
-				Map newFeeDtailMap = onblocktab_bo.getNewFeeDetail(bizdate, (String) detailDataMap.get("TXN_NAME"),
-						(String) detailDataMap.get("SENDERID"), (String) detailDataMap.get("SENDERBANKID_NAME"),
-						(String) detailDataMap.get("NEWTXAMT"));
-				detailDataMap.put("TXN_TYPE", newFeeDtailMap.get("TXN_TYPE"));
-				detailDataMap.put("NEWSENDERFEE_NW",
-						detailDataMap.get("NEWSENDERFEE") != null ? detailDataMap.get("NEWSENDERFEE") : "0");
-				detailDataMap.put("NEWINFEE_NW",
-						detailDataMap.get("NEWINFEE") != null ? detailDataMap.get("NEWINFEE") : "0");
-				detailDataMap.put("NEWOUTFEE_NW",
-						detailDataMap.get("NEWOUTFEE") != null ? detailDataMap.get("NEWOUTFEE") : "0");
-				detailDataMap.put("NEWWOFEE_NW",
-						detailDataMap.get("NEWWOFEE") != null ? detailDataMap.get("NEWWOFEE") : "0");
-				detailDataMap.put("NEWEACHFEE_NW",
-						detailDataMap.get("NEWEACHFEE") != null ? detailDataMap.get("NEWEACHFEE") : "0");
-				detailDataMap.put("NEWFEE_NW", detailDataMap.get("NEWFEE") != null ? detailDataMap.get("NEWFEE") : "0");
+			} else if (StrUtils.isEmpty((String) detailDataMap.getFEE_TYPE())
+					&& ("失敗".equals((String) detailDataMap.getRESP())
+							|| "處理中".equals((String) detailDataMap.getRESP()))) {
+				Map newFeeDtailMap = onblocktab_bo.getNewFeeDetail(bizdate, (String) detailDataMap.getTXN_NAME(),
+						(String) detailDataMap.getSENDERID(), (String) detailDataMap.getSENDERBANKID_NAME(),
+						(String) detailDataMap.getNEWTXAMT());
+				TxerrDetailRs.put("TXN_TYPE", detailDataMap.getTXN_TYPE());
+			TxerrDetailRs.put("NEWSENDERFEE_NW",
+						detailDataMap.getNEWSENDERFEE() != null ? detailDataMap.getNEWSENDERFEE() : "0");
+			TxerrDetailRs.put("NEWINFEE_NW",
+						detailDataMap.getNEWINFEE() != null ? detailDataMap.getNEWINFEE() : "0");
+			TxerrDetailRs.put("NEWOUTFEE_NW",
+						detailDataMap.getNEWOUTFEE() != null ? detailDataMap.getNEWOUTFEE() : "0");
+			TxerrDetailRs.put("NEWWOFEE_NW",
+						detailDataMap.getNEWWOFEE() != null ? detailDataMap.getNEWWOFEE() : "0");
+			TxerrDetailRs.put("NEWEACHFEE_NW",
+						detailDataMap.getNEWEACHFEE() != null ? detailDataMap.getNEWEACHFEE() : "0");
+			TxerrDetailRs.put("NEWFEE_NW", detailDataMap.getNEWFEE() != null ? detailDataMap.getNEWFEE() : "0");
 
 			}
-			txerrDetailRs.setDetailData(detailDataMap);
-		}
+			txerrDetailRs.setDetailMapData(detailDataMap);
+			txerrDetailRs.setDetailData(TxerrDetailRs);
+			
+//		}
 		return txerrDetailRs;
 	}
 }
