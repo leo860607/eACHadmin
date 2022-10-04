@@ -152,4 +152,23 @@ public class EachUserRepository{
 //		return getAll(getEntityClass());
 //	}
 	
+	
+	//原hibernateGenericDao的方法
+	public Map mapremove(Map map){
+		if(map !=null){
+			map.remove("hibernateLazyInitializer");
+			map.remove("class");
+			map.remove("handler");
+			map.remove("multipartRequestHandler");
+			map.remove("pagesize");
+			map.remove("result");
+			map.remove("servletWrapper");
+			map.remove("scaseary");
+			map.remove("target");
+			map.remove("msg");
+			map.remove("ac_key");
+		}
+		
+		return map;
+	}
 }

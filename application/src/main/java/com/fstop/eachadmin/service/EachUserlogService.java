@@ -19,10 +19,13 @@ import com.fstop.infra.entity.EACH_FUNC_LIST;
 import com.fstop.infra.entity.EACH_USER;
 import com.fstop.infra.entity.EACH_USERLOG;
 import com.fstop.infra.entity.EACH_USER_PK;
+import com.fstop.infra.entity.LOGIN_FORM;
 import com.fstop.infra.entity.UNDONE_TXDATA;
 
+import lombok.extern.slf4j.Slf4j;
 import util.DateTimeUtils;
 
+@Slf4j
 @Service
 public class EachUserlogService {
 	
@@ -31,74 +34,77 @@ public class EachUserlogService {
 	
 	@Autowired
 	private EachFuncListRepository eachFuncListRepository;
+	
+	@Autowired
+	private LOGIN_FORM loginForm;
 
 	//用戶代號--------------------------------------------------------------------------------
 	
-	public List<Map<String, String>> getUserIdListByComId(String comId){
-		List<EACH_USER> userIdList = null;
-		List<Map<String, String>> list = null;
-		try{
-			if(StrUtils.isNotEmpty(comId)){
-				userIdList = eachUserRepository.getDataByComId(comId);
-			}else{
-				//TOASK: HibernateEntity裡的如何正確使用?
-				userIdList = eachUserRepository.getAll();
-			}
-			System.out.println("userIdList"+userIdList);
-			if(userIdList != null && userIdList.size() > 0){
-				list = new ArrayList<Map<String, String>>();
-				for(int i = 0; i < userIdList.size(); i++){
-					list.add(new Map<String, String>(userIdList.get(i).getUSER_ID(), userIdList.get(i).getUSER_ID()));
-				}
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		list = list == null? null : list.size() == 0? null : list;
-		System.out.println("list>>" + list);
-		return list;
-	}
-	
-	////用戶所屬單位-------------------------------------------------------------------------------------------
-	//找出所有USER_COMPANY清單
-	public List<Map<String, String>> getUserCompanyList(){
-		List<EACH_USER_PK> usercompanyList = null;
-		List<Map<String, String>> list = null;
-		try{
-			usercompanyList = eachUserRepository.getUserCompanyList();
-			if(usercompanyList != null && usercompanyList.size() > 0){
-				list = new ArrayList<Map<String, String>>();
-				for(int i = 0; i < usercompanyList.size(); i++){
-					list.add(new Map<String, String>(usercompanyList.get(i).getUSER_COMPANY(), usercompanyList.get(i).getUSER_COMPANY()));
-				}
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		list = list == null? null : list.size() == 0? null : list;
-		System.out.println("list>>" + list);
-		return list;
-	}	
-	
-	//根據user_type找出關聯的USER_COMPANY清單
-	public List<Map<String, String>> getUserCompanyList(String user_type){
-		List<EACH_USER_PK> usercompanyList = null;
-		List<Map<String, String>> list = null;
-		try{
-			usercompanyList = eachUserRepository.getUserCompanyList(user_type);
-			if(usercompanyList != null && usercompanyList.size() > 0){
-				list = new ArrayList<Map<String, String>>();
-				for(int i = 0; i < usercompanyList.size(); i++){
-					list.add(new Map<String, String>(usercompanyList.get(i).getUSER_COMPANY(), usercompanyList.get(i).getUSER_COMPANY()));
-				}
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		list = list == null? null : list.size() == 0? null : list;
-		System.out.println("list>>" + list);
-		return list;
-	}	
+//	public List<Map<String, String>> getUserIdListByComId(String comId){
+//		List<EACH_USER> userIdList = null;
+//		List<Map<String, String>> list = null;
+//		try{
+//			if(StrUtils.isNotEmpty(comId)){
+//				userIdList = eachUserRepository.getDataByComId(comId);
+//			}else{
+//				//TOASK: HibernateEntity裡的如何正確使用?
+//				userIdList = eachUserRepository.getAll();
+//			}
+//			System.out.println("userIdList"+userIdList);
+//			if(userIdList != null && userIdList.size() > 0){
+//				list = new ArrayList<Map<String, String>>();
+//				for(int i = 0; i < userIdList.size(); i++){
+//					list.add(new Map<String, String>(userIdList.get(i).getUSER_ID(), userIdList.get(i).getUSER_ID()));
+//				}
+//			}
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		list = list == null? null : list.size() == 0? null : list;
+//		System.out.println("list>>" + list);
+//		return list;
+//	}
+//	
+//	////用戶所屬單位-------------------------------------------------------------------------------------------
+//	//找出所有USER_COMPANY清單
+//	public List<Map<String, String>> getUserCompanyList(){
+//		List<EACH_USER_PK> usercompanyList = null;
+//		List<Map<String, String>> list = null;
+//		try{
+//			usercompanyList = eachUserRepository.getUserCompanyList();
+//			if(usercompanyList != null && usercompanyList.size() > 0){
+//				list = new ArrayList<Map<String, String>>();
+//				for(int i = 0; i < usercompanyList.size(); i++){
+//					list.add(new Map<String, String>(usercompanyList.get(i).getUSER_COMPANY(), usercompanyList.get(i).getUSER_COMPANY()));
+//				}
+//			}
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		list = list == null? null : list.size() == 0? null : list;
+//		System.out.println("list>>" + list);
+//		return list;
+//	}	
+//	
+//	//根據user_type找出關聯的USER_COMPANY清單
+//	public List<Map<String, String>> getUserCompanyList(String user_type){
+//		List<EACH_USER_PK> usercompanyList = null;
+//		List<Map<String, String>> list = null;
+//		try{
+//			usercompanyList = eachUserRepository.getUserCompanyList(user_type);
+//			if(usercompanyList != null && usercompanyList.size() > 0){
+//				list = new ArrayList<Map<String, String>>();
+//				for(int i = 0; i < usercompanyList.size(); i++){
+//					list.add(new Map<String, String>(usercompanyList.get(i).getUSER_COMPANY(), usercompanyList.get(i).getUSER_COMPANY()));
+//				}
+//			}
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		list = list == null? null : list.size() == 0? null : list;
+//		System.out.println("list>>" + list);
+//		return list;
+//	}	
 	//功能名稱---------------------------------------------------------------------------------
 	//找出所有功能清單
 //		public List getFuncList(){
@@ -281,148 +287,287 @@ public class EachUserlogService {
 		
 		return menuItem;
 	}
-	
-	//查詢按鈕---------------------------------------------------------------------------------
-	//分頁版本
-		public PageSearchRs<UNDONE_TXDATA> pageSearch(PageSearchRq param){
-//			String opt_date = StrUtils.isNotEmpty(param.get("TXTIME_1"))?param.get("TXTIME_1"):"";
-//			String opt_date2 = StrUtils.isNotEmpty(param.get("TXTIME_2"))?param.get("TXTIME_2"):"";
-//			String user_company = StrUtils.isNotEmpty(param.get("USER_COMPANY")) && param.get("USER_COMPANY").trim().equals("all") ?"":param.get("USER_COMPANY");
-//			String sUser_id = StrUtils.isNotEmpty(param.get("USERID")) && param.get("USERID").trim().equals("all") ?"":param.get("USERID");
-//			String func_id = StrUtils.isNotEmpty(param.get("FUNC_ID")) && param.get("FUNC_ID").trim().equals("all") ?"":param.get("FUNC_ID");
-//			String user_type = StrUtils.isNotEmpty(param.get("USER_TYPE")) ?param.get("USER_TYPE"):"";
+//	
+//	//查詢按鈕---------------------------------------------------------------------------------
+//	//分頁版本
+//		public PageSearchRs<UNDONE_TXDATA> pageSearch(PageSearchRq param){
+////			String opt_date = StrUtils.isNotEmpty(param.get("TXTIME_1"))?param.get("TXTIME_1"):"";
+////			String opt_date2 = StrUtils.isNotEmpty(param.get("TXTIME_2"))?param.get("TXTIME_2"):"";
+////			String user_company = StrUtils.isNotEmpty(param.get("USER_COMPANY")) && param.get("USER_COMPANY").trim().equals("all") ?"":param.get("USER_COMPANY");
+////			String sUser_id = StrUtils.isNotEmpty(param.get("USERID")) && param.get("USERID").trim().equals("all") ?"":param.get("USERID");
+////			String func_id = StrUtils.isNotEmpty(param.get("FUNC_ID")) && param.get("FUNC_ID").trim().equals("all") ?"":param.get("FUNC_ID");
+////			String user_type = StrUtils.isNotEmpty(param.get("USER_TYPE")) ?param.get("USER_TYPE"):"";
+////			//String pageNo = StrUtils.isEmpty(param.get("pageNo")) ?"0":param.get("pageNo");
+////			String pageNo = StrUtils.isEmpty(param.get("page")) ?"0":param.get("page");
+////			//改從參數拿取
+////			String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
+////			//判斷群組類型
+////			String role_type = StrUtils.isNotEmpty(param.get("ROLE_TYPE"))?param.get("ROLE_TYPE"):"";
+//			
+//			String opt_date = StrUtils.isNotEmpty(param.getOpt_date())?param.getOpt_date():"";
+//			String opt_date2 = StrUtils.isNotEmpty(param.getOpt_date_2())?param.getOpt_date_2():"";
+//			String user_company = StrUtils.isNotEmpty(param.getUser_company()) && param.getUser_company().trim().equals("all") ?"":param.getUser_company();
+//			String sUser_id = StrUtils.isNotEmpty(param.getSUser_id()) && param.getSUser_id().trim().equals("all") ?"":param.getSUser_id();
+//			String func_id = StrUtils.isNotEmpty(param.getFunc_id()) && param.getFunc_id().trim().equals("all") ?"":param.getFunc_id();
+//			String user_type = StrUtils.isNotEmpty(param.getUser_type()) ?param.getUser_type():"";
 //			//String pageNo = StrUtils.isEmpty(param.get("pageNo")) ?"0":param.get("pageNo");
-//			String pageNo = StrUtils.isEmpty(param.get("page")) ?"0":param.get("page");
+//			String pageNo = StrUtils.isEmpty(param.getPage()) ?"0":param.getPage();
 //			//改從參數拿取
-//			String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
+//			String pageSize = StrUtils.isEmpty(param.getRow()) ?Arguments.getStringArg("PAGE.SIZE"):param.getRow();
 //			//判斷群組類型
-//			String role_type = StrUtils.isNotEmpty(param.get("ROLE_TYPE"))?param.get("ROLE_TYPE"):"";
-			
-			String opt_date = StrUtils.isNotEmpty(param.getOpt_date())?param.getOpt_date():"";
-			String opt_date2 = StrUtils.isNotEmpty(param.getOpt_date_2())?param.getOpt_date_2():"";
-			String user_company = StrUtils.isNotEmpty(param.getUser_company()) && param.getUser_company().trim().equals("all") ?"":param.getUser_company();
-			String sUser_id = StrUtils.isNotEmpty(param.getSUser_id()) && param.getSUser_id().trim().equals("all") ?"":param.getSUser_id();
-			String func_id = StrUtils.isNotEmpty(param.getFunc_id()) && param.getFunc_id().trim().equals("all") ?"":param.getFunc_id();
-			String user_type = StrUtils.isNotEmpty(param.getUser_type()) ?param.getUser_type():"";
-			//String pageNo = StrUtils.isEmpty(param.get("pageNo")) ?"0":param.get("pageNo");
-			String pageNo = StrUtils.isEmpty(param.getPage()) ?"0":param.getPage();
-			//改從參數拿取
-			String pageSize = StrUtils.isEmpty(param.getRow()) ?Arguments.getStringArg("PAGE.SIZE"):param.getRow();
-			//判斷群組類型
-			String role_type = StrUtils.isNotEmpty(param.getRole_type())?param.getRole_type():"";
-			
-			Map rtnMap = new HashMap();
-			List<EACH_USERLOG> list = null;
-			Page page = null;
-			try {
-				list = new ArrayList<EACH_USERLOG>();
-				StringBuffer orderbysql = new StringBuffer();
-				List<String> strList = new LinkedList<String>();
-				Map<String,String> map = new HashMap<String,String>();
-				map.put("TXTIME_1", DateTimeUtils.convertDate(opt_date.trim(), "yyyyMMdd", "yyyy-MM-dd"));
-				map.put("TXTIME_2", DateTimeUtils.convertDate(opt_date2.trim(), "yyyyMMdd", "yyyy-MM-dd"));
-				map.put("USER_COMPANY", user_company.trim());
-				map.put("USERID", sUser_id.trim());
-				map.put("FUNC_ID", func_id.trim());
-				map.put("USER_TYPE", user_type.trim());
-				map.put("ROLE_TYPE", role_type.trim());
-				System.out.println("user_type>>"+user_type);
-				System.out.println("strList>>"+strList);
-				System.out.println("role_type>>"+role_type);
-//				if(StrUtils.isNotEmpty(param.get("sidx"))){
-//					orderbysql.append(" ORDER BY "+param.get("sidx")+" "+param.get("sord"));
-					orderbysql.append( getOrderBySql(param.get("sidx"), param.get("sord")));
+//			String role_type = StrUtils.isNotEmpty(param.getRole_type())?param.getRole_type():"";
+//			
+//			Map rtnMap = new HashMap();
+//			List<EACH_USERLOG> list = null;
+//			Page page = null;
+//			try {
+//				list = new ArrayList<EACH_USERLOG>();
+//				StringBuffer orderbysql = new StringBuffer();
+//				List<String> strList = new LinkedList<String>();
+//				Map<String,String> map = new HashMap<String,String>();
+//				map.put("TXTIME_1", DateTimeUtils.convertDate(opt_date.trim(), "yyyyMMdd", "yyyy-MM-dd"));
+//				map.put("TXTIME_2", DateTimeUtils.convertDate(opt_date2.trim(), "yyyyMMdd", "yyyy-MM-dd"));
+//				map.put("USER_COMPANY", user_company.trim());
+//				map.put("USERID", sUser_id.trim());
+//				map.put("FUNC_ID", func_id.trim());
+//				map.put("USER_TYPE", user_type.trim());
+//				map.put("ROLE_TYPE", role_type.trim());
+//				System.out.println("user_type>>"+user_type);
+//				System.out.println("strList>>"+strList);
+//				System.out.println("role_type>>"+role_type);
+////				if(StrUtils.isNotEmpty(param.get("sidx"))){
+////					orderbysql.append(" ORDER BY "+param.get("sidx")+" "+param.get("sord"));
+//					orderbysql.append( getOrderBySql(param.get("sidx"), param.get("sord")));
+////				}
+//				Map condition_Map =  getConditionData(map);
+//				String sql = getSql(condition_Map.get("sqlPath").toString(), orderbysql.toString(), user_type);
+//				String countSql = getCountSql(condition_Map.get("sqlPath").toString(), user_type);
+//				System.out.println("sql.toString()==>"+sql.toString());
+//				page = userLog_Dao.pagedSQLQuery(sql, countSql, Integer.valueOf(pageNo), Integer.valueOf(pageSize), (List<String>) condition_Map.get("values") , EACH_USERLOG.class );
+////				page = userLog_Dao.pagedQuery(sql.toString(),Integer.valueOf(pageNo), Integer.valueOf(pageSize), strList.toArray());
+//				list = (List<EACH_USERLOG>) page.getResult();
+////				list = (List<EACH_USERLOG>) userLog_Dao.getAllDataByParm(Integer.valueOf(pageNo),Integer.valueOf(pageSize));
+//				System.out.println("EACH_USERLOG.list>>"+list);
+//				list = list!=null&& list.size() ==0 ?null:list;
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//			if(page == null){
+//				rtnMap.put("total", "0");
+//				rtnMap.put("page", "0");
+//				rtnMap.put("records", "0");
+//				rtnMap.put("rows", new ArrayList());
+//			}else{
+//				rtnMap.put("total", page.getTotalPageCount());
+//				rtnMap.put("page", String.valueOf(page.getCurrentPageNo()));
+//				rtnMap.put("records", page.getTotalCount());
+//				rtnMap.put("rows", list);
+//			}
+//			//TODO:
+//			String json = JSONUtils.map2json(rtnMap) ;
+//			return json;
+//		}
+//	
+//	
+//	//檢視明細按鈕-------------------------------------------------------------------------------
+//		public List<Map<String, String>>showDetail() {
+//			// TODO Auto-generated method stub
+//				Each_Userlog_Form userlog_form = (Each_Userlog_Form) form ;
+//				String target = StrUtils.isEmpty(userlog_form.getTarget())?"":userlog_form.getTarget();
+//				String ac_key = StrUtils.isEmpty(userlog_form.getAc_key())?"":userlog_form.getAc_key();
+//				System.out.println("ADMUSERLOG_Action is start >> " + ac_key);
+//				Login_Form login_form = (Login_Form) WebServletUtils.getRequest().getSession().getAttribute("login_form");
+//				String fc_type = WebServletUtils.getRequest().getParameter("USER_TYPE");
+//				if(!ac_key.equals("back")){
+//					userlog_form.setFc_type(fc_type);
 //				}
-				Map condition_Map =  getConditionData(map);
-				String sql = getSql(condition_Map.get("sqlPath").toString(), orderbysql.toString(), user_type);
-				String countSql = getCountSql(condition_Map.get("sqlPath").toString(), user_type);
-				System.out.println("sql.toString()==>"+sql.toString());
-				page = userLog_Dao.pagedSQLQuery(sql, countSql, Integer.valueOf(pageNo), Integer.valueOf(pageSize), (List<String>) condition_Map.get("values") , EACH_USERLOG.class );
-//				page = userLog_Dao.pagedQuery(sql.toString(),Integer.valueOf(pageNo), Integer.valueOf(pageSize), strList.toArray());
-				list = (List<EACH_USERLOG>) page.getResult();
-//				list = (List<EACH_USERLOG>) userLog_Dao.getAllDataByParm(Integer.valueOf(pageNo),Integer.valueOf(pageSize));
-				System.out.println("EACH_USERLOG.list>>"+list);
-				list = list!=null&& list.size() ==0 ?null:list;
+//				System.out.println("fc_type>>>"+fc_type);
+//				if(StrUtils.isNotEmpty(ac_key)){
+//					if(ac_key.equals("search")){
+//					}else if(ac_key.equals("update")){
+//					}else if(ac_key.equals("back")){
+//						BeanUtils.populate(userlog_form, JSONUtils.json2map(userlog_form.getSerchStrs()));
+////									Map<String ,String> tmpMap = JSONUtils.json2map(userlog_form.getSerchStrs());
+////									System.out.println("USER_TYPE_1>>"+(tmpMap.get("action").split("=")[1].replace("&", "")));
+////									System.out.println("USER_TYPE_2>>"+login_form.getUserData().getUSER_TYPE());
+////									System.out.println("target>>"+target);
+////									userlog_form.setUSER_TYPE((tmpMap.get("action").split("=")[1].replace("&", "")));
+//						System.out.println("userlog_form.getFc_type>>"+userlog_form.getFc_type());
+//						if(userlog_form.getFc_type().equals("A")){
+//							userlog_form.setUSER_TYPE((login_form.getUserData().getUSER_TYPE()));
+//							userlog_form.setUserIdList(userlog_bo.getUserIdListByComId(""));
+//							userlog_form.setUserCompanyList(userlog_bo.getUserCompanyList());
+//							userlog_form.setFuncList(userlog_bo.getFuncList());
+//						}else if(userlog_form.getFc_type().equals("B")) {
+//							System.out.println("Fc_type ="+userlog_form.getFc_type()+" ,ROLE_TYPE ="+userlog_form.getROLE_TYPE()+" ,USER_COMPANY ="+userlog_form.getUSER_COMPANY());
+//							userlog_form.setUSER_TYPE("B");
+//							
+//							if(userlog_form.getROLE_TYPE().equals("B")){
+//								setDropdownList4back(userlog_form , login_form);
+//							}else{
+//								setDropdownList4back2(userlog_form , login_form);
+//							}
+//							
+//						}
+//					}else if(ac_key.equals("add")){
+//					}else if(ac_key.equals("edit")){
+//						BeanUtils.populate(userlog_form, JSONUtils.json2map(userlog_form.getEdit_params()));
+//						System.out.println("pk>>"+userlog_form.getSERNO()+","+ userlog_form.getUSERID()+" , "+ userlog_form.getUSER_COMPANY());
+//						BeanUtils.copyProperties(userlog_form, userlog_bo.getDetail(userlog_form.getSERNO(), userlog_form.getUSERID(), userlog_form.getUSER_COMPANY()));
+//					}else if(ac_key.equals("save")){
+//					}else if(ac_key.equals("delete")){
+//					}
+//				}else{
+//					userlog_form.setUSER_COMPANY(login_form.getUserData().getUSER_COMPANY());
+//					setDropdownList(userlog_form , login_form);
+//				}
+//				
+//				if(StrUtils.isEmpty(target)){
+//					target = "search";
+//				}
+//				
+//				System.out.println("forward to >> " + target);
+//				return (mapping.findForward(target));
+//			}
+	
+	
+	/**
+	 * op_type 
+	 * @param op_type A:新增 B:修改 C:查詢 D:刪除 E:報表列印 F:檔案下載 G:送出 H:重送 I:登入 J:登出 K:檔案上傳
+	 * @param oldmap 異動前的資料
+	 * @param newmap 異動後的資料
+	 * @param pkmap  如型態為C、E、F、k 查詢條件可以使用此參數，但一定要有 action:""
+	 * @return
+	 */
+	public void writeLog(String op_type  , Map oldmap , Map newmap , Map pkmap){
+		String adexcode = "";
+		String str = "成功";
+		String s_is_record = "";
+		int key = 0;
+		try {
+			if(StrUtils.isEmpty(op_type)){
+				log.debug(" writeLog op_type is null  do nothing");
+				return;
+			}
+			LOGIN_FORM login_form = (LOGIN_FORM) WebServletUtils.getRequest().getSession().getAttribute("login_form");
+//			s_is_record = login_form.getUserData().getS_is_record();
+			s_is_record = login_form.getUserData().getS_is_record();
+//			op_type =查詢 且該功能設定查詢不紀錄
+			if(op_type.equals("C") && !s_is_record.equals("Y")){
+				log.debug(" op_type is C(search)  && s_is_record != Y so no log");
+				return;
+			}
+//			oldmap = each_user_Dao.mapremove(oldmap);
+			oldmap = eachUserRepository.mapremove(oldmap);
+//			newmap = each_user_Dao.mapremove(newmap);
+			newmap = eachUserRepository.mapremove(newmap);
+//			pkmap = each_user_Dao.mapremove(pkmap);
+			pkmap = eachUserRepository.mapremove(pkmap);
+			Map<String,String> mapTypes = SpringAppCtxHelper.getBean("opt_type");
+			log.debug(" writeLog.mapTypes>>"+mapTypes);
+			adexcode = mapTypes.get(op_type);
+			if(op_type.equals("A") || op_type.equals("K") || op_type.equals("0")){
+				adexcode =  adexcode+str;
+				addLog(op_type, adexcode, newmap, pkmap);
+				return;
+			}
+			if(op_type.equals("B")){
+				adexcode = adexcode+"-儲存"+str;
+				updateLog(op_type, adexcode, oldmap, newmap, pkmap);
+				return;
+			}
+			if(op_type.equals("C") || op_type.equals("E") || op_type.equals("F") || op_type.equals("L") || op_type.equals("U")){
+				adexcode = adexcode+str;
+				searchLog(op_type, adexcode, null, pkmap);
+				return;
+			}
+			
+			if(op_type.equals("D")){
+				adexcode = adexcode+str;
+				deleteLog(op_type, adexcode, oldmap, pkmap);
+				return;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	
+	/**
+	 * 
+	 * @param op_type
+	 * @param msgMap
+	 * @param oldmap
+	 * @param newmap
+	 * @param pkmap
+	 */
+	public void writeFailLog(String op_type,Map msgMap , Map oldmap , Map newmap , Map pkmap){
+		String adexcode = "";
+		String str = "失敗，";
+		try {
+			if(StrUtils.isEmpty(op_type)){
+				log.debug(" writeLog op_type is null  do nothing");
+				return;
+			}
+			oldmap = each_user_Dao.mapremove(oldmap);
+			newmap = each_user_Dao.mapremove(newmap);
+			pkmap = each_user_Dao.mapremove(pkmap);
+			Map<String,String> mapTypes = SpringAppCtxHelper.getBean("opt_type");
+			log.debug(" writeFailLog.mapTypes>>"+mapTypes);
+			adexcode = mapTypes.get(op_type);
+			if(op_type.equals("A")){
+				adexcode =  str + msgMap.get("msg").toString();
+			}
+			if(op_type.equals("B")){
+				adexcode =  str + msgMap.get("msg").toString();
+			}
+			if(op_type.equals("C") || op_type.equals("E") || op_type.equals("F") || op_type.equals("K") || op_type.equals("U")){
+				adexcode = str + msgMap.get("msg").toString();
+			}
+			if(op_type.equals("D")){
+				adexcode = str + msgMap.get("msg").toString();
+			}
+			
+			geFailLog(op_type, adexcode, oldmap, newmap, pkmap);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		public void addLog(String op_type  , String adexcode, Map newmap , Map pkmap ){
+			try {
+				log.debug(" addLog.newmap >>"+newmap);
+				log.debug(" addLog.op_type >>"+op_type);
+				EACH_USERLOG userlog_po = getUSERLOG(op_type , "");
+				if(newmap != null ){
+					userlog_po.setAFCHCON(String.valueOf(restMapKey2CH(newmap)));
+				}
+				userlog_po.setADEXCODE(adexcode);
+				userLog_Dao.aop_save(userlog_po);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				log.debug(" addLog.Exception>>"+e);
 			}
-			
-			if(page == null){
-				rtnMap.put("total", "0");
-				rtnMap.put("page", "0");
-				rtnMap.put("records", "0");
-				rtnMap.put("rows", new ArrayList());
-			}else{
-				rtnMap.put("total", page.getTotalPageCount());
-				rtnMap.put("page", String.valueOf(page.getCurrentPageNo()));
-				rtnMap.put("records", page.getTotalCount());
-				rtnMap.put("rows", list);
-			}
-			//TODO:
-			String json = JSONUtils.map2json(rtnMap) ;
-			return json;
 		}
 	
-	
-	//檢視明細按鈕-------------------------------------------------------------------------------
-		public List<Map<String, String>>showDetail() {
-			// TODO Auto-generated method stub
-				Each_Userlog_Form userlog_form = (Each_Userlog_Form) form ;
-				String target = StrUtils.isEmpty(userlog_form.getTarget())?"":userlog_form.getTarget();
-				String ac_key = StrUtils.isEmpty(userlog_form.getAc_key())?"":userlog_form.getAc_key();
-				System.out.println("ADMUSERLOG_Action is start >> " + ac_key);
-				Login_Form login_form = (Login_Form) WebServletUtils.getRequest().getSession().getAttribute("login_form");
-				String fc_type = WebServletUtils.getRequest().getParameter("USER_TYPE");
-				if(!ac_key.equals("back")){
-					userlog_form.setFc_type(fc_type);
-				}
-				System.out.println("fc_type>>>"+fc_type);
-				if(StrUtils.isNotEmpty(ac_key)){
-					if(ac_key.equals("search")){
-					}else if(ac_key.equals("update")){
-					}else if(ac_key.equals("back")){
-						BeanUtils.populate(userlog_form, JSONUtils.json2map(userlog_form.getSerchStrs()));
-//									Map<String ,String> tmpMap = JSONUtils.json2map(userlog_form.getSerchStrs());
-//									System.out.println("USER_TYPE_1>>"+(tmpMap.get("action").split("=")[1].replace("&", "")));
-//									System.out.println("USER_TYPE_2>>"+login_form.getUserData().getUSER_TYPE());
-//									System.out.println("target>>"+target);
-//									userlog_form.setUSER_TYPE((tmpMap.get("action").split("=")[1].replace("&", "")));
-						System.out.println("userlog_form.getFc_type>>"+userlog_form.getFc_type());
-						if(userlog_form.getFc_type().equals("A")){
-							userlog_form.setUSER_TYPE((login_form.getUserData().getUSER_TYPE()));
-							userlog_form.setUserIdList(userlog_bo.getUserIdListByComId(""));
-							userlog_form.setUserCompanyList(userlog_bo.getUserCompanyList());
-							userlog_form.setFuncList(userlog_bo.getFuncList());
-						}else if(userlog_form.getFc_type().equals("B")) {
-							System.out.println("Fc_type ="+userlog_form.getFc_type()+" ,ROLE_TYPE ="+userlog_form.getROLE_TYPE()+" ,USER_COMPANY ="+userlog_form.getUSER_COMPANY());
-							userlog_form.setUSER_TYPE("B");
-							
-							if(userlog_form.getROLE_TYPE().equals("B")){
-								setDropdownList4back(userlog_form , login_form);
-							}else{
-								setDropdownList4back2(userlog_form , login_form);
-							}
-							
-						}
-					}else if(ac_key.equals("add")){
-					}else if(ac_key.equals("edit")){
-						BeanUtils.populate(userlog_form, JSONUtils.json2map(userlog_form.getEdit_params()));
-						System.out.println("pk>>"+userlog_form.getSERNO()+","+ userlog_form.getUSERID()+" , "+ userlog_form.getUSER_COMPANY());
-						BeanUtils.copyProperties(userlog_form, userlog_bo.getDetail(userlog_form.getSERNO(), userlog_form.getUSERID(), userlog_form.getUSER_COMPANY()));
-					}else if(ac_key.equals("save")){
-					}else if(ac_key.equals("delete")){
-					}
-				}else{
-					userlog_form.setUSER_COMPANY(login_form.getUserData().getUSER_COMPANY());
-					setDropdownList(userlog_form , login_form);
-				}
-				
-				if(StrUtils.isEmpty(target)){
-					target = "search";
-				}
-				
-				System.out.println("forward to >> " + target);
-				return (mapping.findForward(target));
+		public EACH_USERLOG getUSERLOG(String op_type , String uri){
+			EACH_USERLOG userlog_po = null;
+			EACH_FUNC_LIST func_list_po = null;
+			func_list_po = getUsed_Func(op_type , uri);
+			userlog_po = getEACH_USERLOG(op_type);
+//			System.out.println("func_list_po>>"+func_list_po+", userlog_po>>"+userlog_po);
+			if(func_list_po != null ){
+				userlog_po.setFUNC_ID(func_list_po.getFUNC_ID());
+				userlog_po.setUP_FUNC_ID(func_list_po.getUP_FUNC_ID());
+				userlog_po.setFUNC_TYPE(func_list_po.getFUNC_TYPE());
 			}
+			return userlog_po;
+		}
 }

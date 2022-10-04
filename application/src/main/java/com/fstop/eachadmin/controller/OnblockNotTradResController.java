@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 //import io.swagger.v3.oas.annotations.parameters.*;
 
-@Tag(name = "未完成交易查詢")
+@Tag(name = "未完成交易結果查詢")
 @RestController
 @RequestMapping("api/NotTradRes")
 public class OnblockNotTradResController {

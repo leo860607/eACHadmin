@@ -389,7 +389,7 @@ public class UndoneService {
 					rtnMap.put("result", "FALSE");// outtput
 					rtnMap.put("msg", "已有未完成交易處理結果，營業日=" + po.get().getBIZDATE());// outtput
 					// TODO
-					// json = JSONUtils.map2json(rtnMap);
+//					 json = JSONUtils.map2json(rtnMap);
 //					return json;
 				}
 				Header msgHeader = new Header();
@@ -410,7 +410,7 @@ public class UndoneService {
 				msg.setBody(body);// 11
 				String telegram = messageConverter.marshalling(msg);
 				// TODO
-				// rtnMap = socketClient.send(telegram);//socket先註解
+//				 rtnMap = socketClient.send(telegram);//socket先註解
 			}
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
