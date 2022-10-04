@@ -4,14 +4,20 @@ package com.fstop.eachadmin.dto;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fstop.infra.entity.VW_ONBLOCKTAB;
 
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DetailRs {
+	@JsonProperty("detailData")
+	private VW_ONBLOCKTAB detailData;
 
 	@JsonProperty("detailDataMap")
 	private Map DETAILDATAMAP;
