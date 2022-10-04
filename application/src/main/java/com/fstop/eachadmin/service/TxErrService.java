@@ -114,13 +114,13 @@ public class TxErrService {
 			// System.out.println("### SQL >> " + sql);
 
 			PageRequest pageable = PageRequest.of(Integer.parseInt(pageNo), 5);
-//<<<<<<< HEAD
+<<<<<<< HEAD
 //			nextpage = pageR.getPageData(pageable,countAndSumQuery.toString(), sql.toString(), TxErrRsList.class);
 
-//=======
+=======
 			nextpage = pageR.getPageData(pageable,countAndSumQuery.toString(), sql.toString(), TX_ERR.class);
 			result=new TxErrRs(countAndSumList, nextpage.getTotalPages(),Integer.toString(nextpage.getPageable().getPageNumber()), nextpage.getTotalElements(), nextpage.getContent());
-//>>>>>>> 210876fab20432d511e6a0f58882761baca2f4b8
+>>>>>>> 210876fab20432d511e6a0f58882761baca2f4b8
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
