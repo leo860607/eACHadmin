@@ -1,7 +1,9 @@
 package com.fstop.eachadmin.dto;
 
 import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.fstop.infra.entity.VW_ONBLOCKTAB;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,5 +20,6 @@ public class TxErrDetailRs {
 	private String NEWEACHFEE_NW;
 	private String NEWFEE_NW;
 	private Map DetailData;
+	private VW_ONBLOCKTAB DetailMapData;
 
 }

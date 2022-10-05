@@ -2,9 +2,7 @@ package com.fstop.eachadmin.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,70 +12,47 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PageSearchRq {
-	@Schema(description = "交易日期")
-	@JsonProperty("filter_bat")
+
+	@JsonProperty("FILTER_BAT")
 	private String filter_bat;
 
-	@JsonProperty("startDate")
+	@JsonProperty("STARTDATE")
 	private String startDate;
 
-	@JsonProperty("endDate")
+	@JsonProperty("ENDDATE")
 	private String endDate;
 
-	@JsonProperty("clearingphase")
+	@JsonProperty("CLEARINGPHASE")
 	private String clearingphase;
 
-	@JsonProperty("bgbkId")
+	@JsonProperty("BGBKID")
 	private String bgbkId;
 
-	@JsonProperty("businessTypeId")
+	@JsonProperty("BUSINESSTYPEID")
 	private String businessTypeId;
 
-	@JsonProperty("ostan")
+	@JsonProperty("OSTAN")
 	private String ostan;
 
-	@JsonProperty("opbkId")
+	@JsonProperty("RESULTCODE")
+	private String ResultCode;
+	
+	@JsonProperty("OPBKID")
 	private String opbkId;
 
-	@JsonProperty("pageNo")
+	@JsonProperty("PAGENO")
 	private Integer pageNo;
 
-	@JsonProperty("pageSize")
+	@JsonProperty("PAGESIZE")
 	private Integer pageSize;
 
-	@JsonProperty("ResultCode")
-	private String ResultCode;
-
-	@JsonProperty("Row")
-	private String Row;
-
-	@JsonProperty("Page")
-	private String Page;
-
-	@JsonProperty("sord")
+	@JsonProperty("SORD")
 	private String sord;
-
-	@JsonProperty("sidx")
+	
+	@JsonProperty("SIDX")
 	private String sidx;
+	
+	
 
-	@JsonProperty("opt_date")
-	private String opt_date;
-	@JsonProperty("opt_date_2")
-	private String opt_date_2;
-	@JsonProperty("user_company")
-	private String user_company;
-	@JsonProperty("sUser_id")
-	private String sUser_id;
-	@JsonProperty("func_id")
-	private String func_id;
-	@JsonProperty("user_type")
-	private String user_type;
-	@JsonProperty("role_type")
-	private String role_type;
-	@JsonProperty("sql")
-	private String sql;
-	@JsonProperty("countSql")
-	private String countSql;
-	
-	
+
 }

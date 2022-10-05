@@ -5,6 +5,7 @@ package com.fstop.infra.entity;
 
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import javax.persistence.Entity;
@@ -12,12 +13,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 @Entity(name="VW_ONBLOCKTAB")
 @Table(name = "MASTER_VW_ONBLOCKTAB")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class VW_ONBLOCKTAB implements Serializable{
 	
 	private String ACCTBAL;
@@ -113,9 +118,12 @@ public class VW_ONBLOCKTAB implements Serializable{
 	private String BILLFLAG;
 	
 	//2022/01/20新增欄位給頁面顯示
-	private String EXTENDFEE;
+	private BigDecimal EXTENDFEE;
 //	//新增欄位
-//	private String FEE_TYPE;
+	private String TXN_TYPE;
+	private String FEE_TYPE;
+	private String TXN_NAME;
+	private String SENDERBANKID_NAME;
 //	private String NEWEACHFEE_NW;
 //	private String NEWFEE_NW;
 //	private String NEWINFEE_NW;
@@ -143,6 +151,7 @@ public class VW_ONBLOCKTAB implements Serializable{
 	private String BKHEADNAME; 
 	@Transient 
 	private String TIMEOUTCNT;
+
 	
 	
 }

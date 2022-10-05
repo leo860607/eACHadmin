@@ -27,7 +27,7 @@ public class TxErrController {
 
 	@Operation(summary = "查詢 API", description = "查詢按鈕")
 	@PostMapping(value = "/search")
-	public Page getPageSearch(@RequestBody TxErrRq param) {
+	public TxErrRs getPageSearch(@RequestBody TxErrRq param) {
 		return txErrService.pageSearch(param) ;
 	}
 	

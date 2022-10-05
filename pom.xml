@@ -9,6 +9,7 @@
 	<packaging>pom</packaging>
 	<name>eACHadmin</name>
 	<description>eACHadmin</description>
+	
 	<modules>
 		<module>fcore</module>
 		<module>infra</module>

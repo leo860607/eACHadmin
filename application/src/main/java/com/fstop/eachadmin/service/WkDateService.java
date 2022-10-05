@@ -250,7 +250,7 @@ public class WkDateService {
 			}
 			oldmap = BeanUtils.describe(tmp);
 			
-			List<EACHSYSSTATUSTAB> eachSys = eachSysStatusTabRepository.getThisBusinessDate();
+			List<EACHSYSSTATUSTAB> eachSys = eachSysStatusTabRepository.getBusinessDate();
 			if(eachSys == null || eachSys.size() <= 0){
 				rtnMap.put("result", "FALSE");
 				rtnMap.put("msg", "系統資料錯誤");

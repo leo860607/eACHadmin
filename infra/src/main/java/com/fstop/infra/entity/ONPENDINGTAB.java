@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "ONPENDINGTAB")
+@Entity(name = "MASTER_ONPENDINGTAB")
 //@Table(name = "MASTER_ONPENDINGTAB")
 @Table(name = "ONPENDINGTAB")
 @Getter

@@ -12,7 +12,7 @@ import javax.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name= "EACH_FUNC_LIST")
+@Entity(name= "MASTER_EACH_FUNC_LIST")
 @Table(name="Master_EachFuncList")
 @Getter
 @Setter
