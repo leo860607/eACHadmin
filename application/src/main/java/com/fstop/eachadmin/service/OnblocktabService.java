@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.fstop.eachadmin.repository.OnBlockTabRepository;
 import com.fstop.eachadmin.repository.VwOnBlockTabRepository;
 import com.fstop.fcore.util.StrUtils;
+import com.fstop.infra.entity.VW_ONBLOCKTAB;
 
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
@@ -20,9 +21,9 @@ public class OnblocktabService {
 	@Autowired
 	private VwOnBlockTabRepository vwOnBlockTabRepository;
 
-public Map showDetail(String txdate,String stan){
+public VW_ONBLOCKTAB showDetail(String txdate,String stan){
 		
-		Map po = null;
+		VW_ONBLOCKTAB po = null;
 		Map rtnMap = new HashMap();
 		String condition ="";
 		try {
@@ -142,8 +143,8 @@ public Map getNewFeeDetail(String bizdate,String txid,String senderid , String s
 }
 
 	//檢視未完成交易結果明細
-	public Map showNotTradResDetail(String txdate,String stan){
-		Map po = null;
+	public VW_ONBLOCKTAB showNotTradResDetail(String txdate,String stan){
+		VW_ONBLOCKTAB po = null;
 		Map rtnMap = new HashMap();
 		String condition ="";
 		try {

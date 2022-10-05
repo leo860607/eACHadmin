@@ -40,11 +40,11 @@ public class VwOnBlockTabRepository {
 //	}
 
 	// 檢視明細
-	public Map getDetail(String condition, String txdate, String stan) {
-		List<Map> list = null;
-		list = jdbcTemplate.query(condition, new BeanPropertyRowMapper(Map.class));
+	public VW_ONBLOCKTAB getDetail(String condition, String txdate, String stan) {
+		List<VW_ONBLOCKTAB> list = null;
+		list = jdbcTemplate.query(condition, new BeanPropertyRowMapper(VW_ONBLOCKTAB.class));
 		if (list != null && list.size() > 0) {
-			return list.get(0);
+			return  list.get(0);
 		}
 		return null;
 	}

@@ -1,23 +1,22 @@
 package com.fstop.eachadmin.repository;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import org.hibernate.HibernateException;
-import org.hibernate.SQLQuery;
-import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.fstop.infra.entity.BANK_OPBK;
-import com.fstop.infra.entity.EACH_TXN_CODE;
 @Repository
 public class BankOpbkRepository {
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
-	public List<BANK_OPBK> getCurBgbkList(String sqlPath , Map<String,String> param,String bizdate  ){
+	private NamedParameterJdbcTemplate jdbcTemplate;
+	@SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
+	public List<BANK_OPBK> getCurBgbkList(String sqlPath , Map<String, String> param,String bizdate  ){
 		List<BANK_OPBK> list = null;
 		StringBuffer sql = new StringBuffer();
 		//--依據操作行id及營業日期取得所屬的總行清單 
@@ -35,7 +34,9 @@ public class BankOpbkRepository {
 		sql.append(" ON A.BGBK_ID = B.BGBK_ID AND A.START_DATE = B.START_DATE ");
 		sql.append(sqlPath);
 		try{
-			list = jdbcTemplate.query(sqlPath, new BeanPropertyRowMapper(BANK_OPBK.class));
+			list = jdbcTemplate.query(sql.toString(),
+					new MapSqlParameterSource().addValue("bizdate",bizdate).addValue("opbk_id",param.get("opbk_id")),
+					new BeanPropertyRowMapper(BANK_OPBK.class));
 //			SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
 //			query.setParameter("bizdate", bizdate);
 //			for( String key :param.keySet()){

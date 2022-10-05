@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fstop.eachadmin.dto.BankGroupRq;
-import com.fstop.eachadmin.dto.BankGroupRs;
 import com.fstop.eachadmin.dto.HrTxpTimeRq;
-import com.fstop.eachadmin.dto.TxErrRq;
 import com.fstop.eachadmin.service.BankGroupService;
 import com.fstop.eachadmin.service.HrTxpTimeService;
 import com.fstop.eachadmin.service.UndoneService;
@@ -46,9 +44,9 @@ public class HrTxpTimeController {
 		}
 		
 	//總行代號
-		@Operation(summary = "總行代號 API", description = "總行代號下拉選單資料")
+		@Operation(summary = "總行代號 API", description = "總行代號下拉選單資料" )
 		@PostMapping(value = "/BankGroup")
-		public BankGroupRs BgbkIdList(@RequestBody BankGroupRq param) {
+		public List<Map<String, String>> BgbkIdList(@RequestBody BankGroupRq param) {
 			return BankGroupS.getByOpbkId_Single_Date(param);
 		}
 	//查詢

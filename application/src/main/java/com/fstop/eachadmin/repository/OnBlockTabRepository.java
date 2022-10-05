@@ -23,6 +23,9 @@ import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fstop.eachadmin.dto.UndoneSendRs;
+import com.fstop.fcore.util.AutoAddScalar;
+import com.fstop.infra.entity.ONBLOCKTAB;
+import com.fstop.infra.entity.TX_ERR;
 
 import util.NumericUtil;
 
@@ -30,15 +33,19 @@ import util.NumericUtil;
 public class OnBlockTabRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-
-
+	@Autowired
 	private SimpleJdbcCall simpleJdbcCall;
+	@Autowired
+	private PageRepository pageRepository;
+	@Autowired
+	private PageQueryRepository<ONBLOCKTAB> pageQR;
+
 
 	// 待修改
-	public Page getDataIII(int pageNo, int pageSize, String countQuerySql, String sql, String[] cols,
+	public PageRepository getDataIII(int pageNo, int pageSize, String countQuerySql, String sql, String[] cols,
 			Class targetClass) {
 		int totalCount = countDataIII(countQuerySql);
-//		int startIndex = Page.getStartOfPage(pageNo, pageSize) + 1;
+		int startIndex = pageRepository.getStartOfPage(pageNo, pageSize) + 1;
 		int lastIndex = pageNo * pageSize;
 //		sql += " ) AS TEMP_ WHERE ROWNUMBER >= " + startIndex + " AND ROWNUMBER <= " + lastIndex;
 //        org.hibernate.SQLQuery query = getCurrentSession().createSQLQuery(sql);
@@ -53,7 +60,7 @@ public class OnBlockTabRepository {
 		List list = new ArrayList();
 		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(targetClass));
 //		return new Page(startIndex - 1, totalCount, pageSize, list);
-		return new PageImpl(list);
+		return new PageRepository(startIndex - 1, totalCount, pageSize, list);
 	}
 
 //    改寫存取SQL的Stored Procedures
@@ -126,4 +133,22 @@ public class OnBlockTabRepository {
 	}
 	
 	
+//	public PageRepository getDataIIII(int pageNo, int pageSize, String countQuerySql, String sql, String[] cols,
+//			Class targetClass) {
+//		int totalCount = countDataIII(countQuerySql);
+//		int startIndex = pageRepository.getStartOfPage(pageNo, pageSize) + 1;
+//
+//		SQLQuery query = getCurrentSession().createSQLQuery(sql);
+//		AutoAddScalar addscalar = new AutoAddScalar();
+//		addscalar.addScalar(query, targetClass, cols);
+//		query.setResultTransformer(Transformers.aliasToBean(targetClass));
+//		// 實際查詢返回分頁對像
+//		List list = query.list();
+//
+////		return new Page(startIndex - 1, totalCount, pageSize, list);
+//		return new PageRepository(startIndex - 1, totalCount, pageSize, list);
+//	}
+	
+	
+    
 }

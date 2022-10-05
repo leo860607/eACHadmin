@@ -37,4 +37,7 @@ public class LOGIN_FORM {
 		private String EmployeeID;
 		private String LoginType;
 		private String browserType;
+		
+//      EachUserlogService-writeLog
+		
 	}

@@ -17,13 +17,13 @@ public class BankOpbkService {
 	public List<BANK_OPBK> getCurBgbkList(String opbk_id ,String s_bizdate  ){
 		List<BANK_OPBK> list = null;
 		String sqlPath = ""; 
-		Map<String,String> param = new HashMap<String, String>();
+		Map<String,String> param =  new HashMap<String, String>();
 		if(StrUtils.isNotEmpty(opbk_id)){
-			sqlPath = " WHERE OPBK_ID = :opbk_id ";
+			sqlPath = "WHERE OPBK_ID = :opbk_id ";
 			param.put("opbk_id", opbk_id);
 		}
 		try{
-			list = bank_opbk_Dao.getCurBgbkList(sqlPath , param , s_bizdate);
+			list = bank_opbk_Dao.getCurBgbkList(sqlPath ,param, s_bizdate);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

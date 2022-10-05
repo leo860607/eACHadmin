@@ -62,38 +62,6 @@ public class PageSearchRq {
 	@JsonProperty("serchStrs")
     private String serchStrs ;
 	
-//	@JsonProperty("Row")
-//	private String row;
 
-//	@JsonProperty("PAGE")
-//	private String Page;
-
-//
-//	@JsonProperty("OPT_DATE")
-//	private String opt_date;
-//
-//	@JsonProperty("OPT_DATE_2")
-//	private String opt_date_2;
-//
-//	@JsonProperty("USER_COMPANY")
-//	private String user_company;
-//
-//	@JsonProperty("SUSER_ID")
-//	private String sUser_id;
-//
-//	@JsonProperty("FUNC_ID")
-//	private String func_id;
-//
-//	@JsonProperty("USER_TYPE")
-//	private String user_type;
-//
-//	@JsonProperty("ROLE_TYPE")
-//	private String role_type;
-//
-//	@JsonProperty("SQL")
-//	private String sql;
-//
-//	@JsonProperty("COUNTSQL")
-//	private String countSql;
 
 }

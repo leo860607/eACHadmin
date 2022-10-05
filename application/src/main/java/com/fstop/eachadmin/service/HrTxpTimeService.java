@@ -11,15 +11,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.fstop.eachadmin.dto.HrTxpTimeRq;
-import com.fstop.eachadmin.dto.TxErrRs.TxErrRsList;
 import com.fstop.eachadmin.repository.EachTxnCodeRepository;
 import com.fstop.eachadmin.repository.OnBlockTabRepository;
 import com.fstop.fcore.util.*;
 import com.fstop.infra.entity.EACH_TXN_CODE;
 import com.fstop.infra.entity.HR_TXP_TIME;
+
+import lombok.extern.slf4j.Slf4j;
+
 import com.fstop.eachadmin.repository.PageQueryRepository;
 
 import util.DateTimeUtils;
+@Slf4j
 @Service
 public class HrTxpTimeService {
 	@Autowired
@@ -33,15 +36,6 @@ public class HrTxpTimeService {
 	 * @return
 	 */
 	public List<Map<String, String>> getPcodeList(){
-//		List<EACH_TXN_CODE> list = each_txn_code_Dao.getTranCode();
-//		List<LabelValueBean> beanList = new LinkedList<LabelValueBean>();
-//		LabelValueBean bean = null;
-//		for(EACH_TXN_CODE po : list){
-//			bean = new LabelValueBean(po.getEACH_TXN_ID() + " - " + po.getEACH_TXN_NAME(), po.getEACH_TXN_ID());  //TODO
-//			beanList.add(bean);
-//		}
-//		System.out.println("beanList>>"+beanList);
-//		return beanList;
 		List<EACH_TXN_CODE> list = each_txn_code_Dao.getTranCode();
 		
 		List<Map<String, String>> beanList = new LinkedList<Map<String, String>>();
@@ -123,7 +117,6 @@ public class HrTxpTimeService {
 			dataSumSQL.append(") AS B ON A.HOURLAP = B.HOURLAP ");
 			dataSumSQL.append("WHERE A.HOURLAP IS NOT NULL ");
 			System.out.println("dataSumSQL = " + dataSumSQL.toString().toUpperCase());
-			
 			list = onblocktab_Dao.dataSum(dataSumSQL.toString(),dataSumCols,HR_TXP_TIME.class);
 			rtnMap.put("dataSumList", list);
 			StringBuffer countQuery = new StringBuffer();
@@ -183,7 +176,7 @@ public class HrTxpTimeService {
 //			System.out.println("list>>"+list);
 //			list = list!=null&& list.size() ==0 ?null:list;
 			PageRequest pageable = PageRequest.of(Integer.parseInt(pageNo), 5);
-			page1 = (Page) pageR.getPageData(pageable,countQuery.toString(), sql.toString(),cols, HR_TXP_TIME.class);
+			page1 =  pageR.getPageData(pageable,countQuery.toString(), sql.toString(), HR_TXP_TIME.class);
 			list = (List<HR_TXP_TIME>) page1.getResult();
 //			System.out.println("list>>"+list);
 			list = list!=null&& list.size() ==0 ?null:list;

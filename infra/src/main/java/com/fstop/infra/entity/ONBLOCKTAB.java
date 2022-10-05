@@ -11,7 +11,7 @@ import javax.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name= "ONBLOCKTAB")
+@Entity(name= "MASTER_ONBLOCKTAB")
 @Table(name="ONBLOCKTAB")
 @Getter
 @Setter

@@ -74,9 +74,7 @@ public class EachSysStatusTabRepository{
 
         try{
 
-     		list = jdbcTemplate.query(
-     				sql.toString(),new Object[] {bgbkId,apId},new BeanPropertyRowMapper(BANKSTATUS.class));
-      
+     		list = jdbcTemplate.query(sql.toString(),new Object[] {bgbkId,apId},new BeanPropertyRowMapper(BANKSTATUS.class));   
         }catch(org.hibernate.HibernateException e){
             e.printStackTrace();
         }

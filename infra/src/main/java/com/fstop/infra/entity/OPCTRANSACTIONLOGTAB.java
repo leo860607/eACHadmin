@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-@Entity (name = "tw.org.twntch.po.OPCTRANSACTIONLOGTAB")
+@Entity (name = "MASTER_OPCTRANSACTIONLOGTAB")
 @Table(name = "OPCTRANSACTIONLOGTAB")
 public class OPCTRANSACTIONLOGTAB implements Serializable {
 

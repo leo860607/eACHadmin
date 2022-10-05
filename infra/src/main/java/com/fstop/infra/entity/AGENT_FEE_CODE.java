@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Data
 @Table(name="AGENT_FEE_CODE")
-@Entity(name="tw.org.twntch.po.AGENT_FEE_CODE")
+@Entity(name="MASTER_AGENT_FEE_CODE")
 public class AGENT_FEE_CODE {
 	@EmbeddedId
 	private AGENT_FEE_CODE_PK id;
