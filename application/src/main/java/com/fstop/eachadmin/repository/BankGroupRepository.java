@@ -138,4 +138,33 @@ public class BankGroupRepository {
 		}
 		return list;
 	}
+	
+	/**
+	 * 屬票交的總行清單
+	 * @return
+	 */
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	public List<BANK_GROUP> getBgbkIdList_ACH(){
+		String sql = "SELECT * FROM BANK_GROUP BANK_GROUP WHERE BGBK_ATTR = '6' ORDER BY BGBK_ID";
+		List<BANK_GROUP> list = new ArrayList<BANK_GROUP>();
+		list= jdbcTemplate.query(sql, new BeanPropertyRowMapper(BANK_GROUP.class));
+//		Query query = getCurrentSession().createQuery("FROM tw.org.twntch.po.BANK_GROUP BANK_GROUP WHERE BGBK_ATTR = '6' ORDER BY BGBK_ID");
+//		list = jdbc.query.list();
+		return list;
+	}
+	
+	/**
+	 * 非票交的總行清單
+	 * @return
+	 */
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	public List<BANK_GROUP> getBgbkIdListwithoutACH(){
+		String sql = "SELECT * FROM BANK_GROUP BANK_GROUP WHERE BGBK_ATTR != '6' ORDER BY BGBK_ID";
+		List<BANK_GROUP> list = new ArrayList<BANK_GROUP>();
+		list= jdbcTemplate.query(sql, new BeanPropertyRowMapper(BANK_GROUP.class));
+//		List list = new ArrayList();
+//		Query query = getCurrentSession().createQuery("FROM tw.org.twntch.po.BANK_GROUP BANK_GROUP WHERE BGBK_ATTR != '6' ORDER BY BGBK_ID");
+//		list = query.list();
+		return list;
+	}
 }
