@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fstop.eachadmin.service.UndoneDetailService;
 import com.fstop.eachadmin.service.UndoneService;
 import com.fstop.infra.entity.UNDONE_TXDATA;
 import com.fstop.eachadmin.dto.DetailRq;
