@@ -120,6 +120,7 @@ public class VW_ONBLOCKTAB implements Serializable{
 	//2022/01/20新增欄位給頁面顯示
 	private BigDecimal EXTENDFEE;
 //	//新增欄位
+	private String TXN_TYPE;
 	private String FEE_TYPE;
 	private String TXN_NAME;
 	private String SENDERBANKID_NAME;
@@ -150,6 +151,7 @@ public class VW_ONBLOCKTAB implements Serializable{
 	private String BKHEADNAME; 
 	@Transient 
 	private String TIMEOUTCNT;
+
 	
 	
 }
