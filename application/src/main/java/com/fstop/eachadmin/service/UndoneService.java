@@ -289,9 +289,7 @@ public class UndoneService {
 			tmpSQL.append(" ) ");
 
 			sql.append(" SELECT * FROM ( ");
-			sql.append("  	SELECT  ROWNUMBER()"
-					+ " OVER( " + orderSQL + ") "
-					+ "AS ROWNUMBER , TEMP.*  ");
+			sql.append("  	SELECT  ROWNUMBER()" + " OVER( " + orderSQL + ") " + "AS ROWNUMBER , TEMP.*  ");
 			sql.append(" FROM TEMP ");
 			sql.append(" ) AS A    ");
 			sql.append("  WHERE ROWNUMBER >= " + (Page.getStartOfPage(pageNo, pageSize) + 1) + " AND ROWNUMBER <= "
@@ -318,7 +316,7 @@ public class UndoneService {
 			System.out.println("sql==>" + sql.toString().toUpperCase());
 			page = vwOnBlockTabRepository.getDataIII(pageNo, pageSize, cntSQL.toString(), sql.toString(), cols,
 					UNDONE_TXDATA.class);
-		
+
 			list = (List<UNDONE_TXDATA>) page.getResult();
 			System.out.println("UNDONE_TXDATA.list>>" + list);
 			list = list != null && list.size() == 0 ? null : list;
@@ -633,12 +631,12 @@ public class UndoneService {
 			String stan = param.getSTAN();
 
 			VW_ONBLOCKTAB detailData = onblocktabService.showDetail(txDate, stan);
-			Map<String,String> detailMapRs = new HashMap();
+			Map<String, String> detailMapRs = new HashMap();
 			String bizdate = eachSysStatusTabService.getBusinessDateII();
 
 			// 20220321新增FOR EXTENDFEE 位數轉換
 			if (detailData.getEXTENDFEE() != null) {
-				BigDecimal orgNewExtendFee =  detailData.getEXTENDFEE();
+				BigDecimal orgNewExtendFee = detailData.getEXTENDFEE();
 				// 去逗號除100 1,000 > 1000/100 = 10
 				String strOrgNewExtendFee = orgNewExtendFee.toString();
 				double realNewExtendFee = Double.parseDouble(strOrgNewExtendFee.replace(",", "")) / 100;
@@ -650,8 +648,7 @@ public class UndoneService {
 
 			// 如果FEE_TYPE有值 且結果為成功或未完成 新版手續直接取後面欄位
 			if (StrUtils.isNotEmpty((String) detailData.getFEE_TYPE())
-					&& ("成功".equals((String) detailData.getRESP())
-							|| "未完成".equals((String) detailData.getRESP()))) {
+					&& ("成功".equals((String) detailData.getRESP()) || "未完成".equals((String) detailData.getRESP()))) {
 				switch ((String) detailData.getFEE_TYPE()) {
 				case "A":
 					detailMapRs.put("TXN_TYPE", "固定");
@@ -669,8 +666,7 @@ public class UndoneService {
 
 				// 如果FEE_TYPE有值 且結果為失敗或處理中 新版手續跟舊的一樣
 			} else if (StrUtils.isNotEmpty((String) detailData.getFEE_TYPE())
-					&& ("失敗".equals((String) detailData.getRESP())
-							|| "處理中".equals((String) detailData.getRESP()))) {
+					&& ("失敗".equals((String) detailData.getRESP()) || "處理中".equals((String) detailData.getRESP()))) {
 
 				switch ((String) detailData.getFEE_TYPE()) {
 				case "A":
@@ -688,20 +684,15 @@ public class UndoneService {
 				}
 				detailMapRs.put("NEWSENDERFEE_NW",
 						detailData.getNEWSENDERFEE() != null ? detailData.getNEWSENDERFEE() : "0");
-				detailMapRs.put("NEWINFEE_NW",
-						detailData.getNEWINFEE() != null ? detailData.getNEWINFEE() : "0");
-				detailMapRs.put("NEWOUTFEE_NW",
-						detailData.getNEWOUTFEE() != null ? detailData.getNEWOUTFEE()  : "0");
-				detailMapRs.put("NEWWOFEE_NW",
-						detailData.getNEWWOFEE() != null ? detailData.getNEWWOFEE() : "0");
-				detailMapRs.put("NEWEACHFEE_NW",
-						detailData.getNEWEACHFEE() != null ? detailData.getNEWEACHFEE() : "0");
+				detailMapRs.put("NEWINFEE_NW", detailData.getNEWINFEE() != null ? detailData.getNEWINFEE() : "0");
+				detailMapRs.put("NEWOUTFEE_NW", detailData.getNEWOUTFEE() != null ? detailData.getNEWOUTFEE() : "0");
+				detailMapRs.put("NEWWOFEE_NW", detailData.getNEWWOFEE() != null ? detailData.getNEWWOFEE() : "0");
+				detailMapRs.put("NEWEACHFEE_NW", detailData.getNEWEACHFEE() != null ? detailData.getNEWEACHFEE() : "0");
 				detailMapRs.put("NEWFEE_NW", detailData.getNEWFEE() != null ? detailData.getNEWFEE() : "0");
 
 				// 如果FEE_TYPE為空 且結果為成功或未完成 新版手續call sp
 			} else if (StrUtils.isEmpty((String) detailData.getFEE_TYPE())
-					&& ("成功".equals((String) detailData.getRESP())
-							|| "未完成".equals((String) detailData.getRESP()))) {
+					&& ("成功".equals((String) detailData.getRESP()) || "未完成".equals((String) detailData.getRESP()))) {
 				Map newFeeDtailMap = onblocktabService.getNewFeeDetail(bizdate, (String) detailData.getTXN_NAME(),
 						(String) detailData.getSENDERID(), (String) detailData.getSENDERBANKID_NAME(),
 						(String) detailData.getNEWTXAMT());
@@ -715,31 +706,141 @@ public class UndoneService {
 
 				// 如果FEE_TYPE為空 且結果為失敗或處理中 新版手續跟舊的一樣
 			} else if (StrUtils.isEmpty((String) detailData.getFEE_TYPE())
-					&& ("失敗".equals((String) detailData.getRESP())
-							|| "處理中".equals((String) detailData.getRESP()))) {
+					&& ("失敗".equals((String) detailData.getRESP()) || "處理中".equals((String) detailData.getRESP()))) {
 				Map newFeeDtailMap = onblocktabService.getNewFeeDetail(bizdate, (String) detailData.getTXN_NAME(),
 						(String) detailData.getSENDERID(), (String) detailData.getSENDERBANKID_NAME(),
 						(String) detailData.getNEWTXAMT());
 				detailMapRs.put("TXN_TYPE", (String) newFeeDtailMap.get("TXN_TYPE"));
-				detailMapRs.put("NEWSENDERFEE_NW",detailData.getNEWSENDERFEE() != null ? detailData.getNEWSENDERFEE() : "0");
-				detailMapRs.put("NEWINFEE_NW",detailData.getNEWINFEE() != null ? detailData.getNEWINFEE() : "0");
-				detailMapRs.put("NEWOUTFEE_NW",detailData.getNEWOUTFEE() != null ? detailData.getNEWOUTFEE() : "0");
-				detailMapRs.put("NEWWOFEE_NW",detailData.getNEWWOFEE() != null ? detailData.getNEWWOFEE() : "0");
-				detailMapRs.put("NEWEACHFEE_NW",detailData.getNEWEACHFEE() != null ? detailData.getNEWEACHFEE() : "0");
+				detailMapRs.put("NEWSENDERFEE_NW",
+						detailData.getNEWSENDERFEE() != null ? detailData.getNEWSENDERFEE() : "0");
+				detailMapRs.put("NEWINFEE_NW", detailData.getNEWINFEE() != null ? detailData.getNEWINFEE() : "0");
+				detailMapRs.put("NEWOUTFEE_NW", detailData.getNEWOUTFEE() != null ? detailData.getNEWOUTFEE() : "0");
+				detailMapRs.put("NEWWOFEE_NW", detailData.getNEWWOFEE() != null ? detailData.getNEWWOFEE() : "0");
+				detailMapRs.put("NEWEACHFEE_NW", detailData.getNEWEACHFEE() != null ? detailData.getNEWEACHFEE() : "0");
 				detailMapRs.put("NEWFEE_NW", detailData.getNEWFEE() != null ? detailData.getNEWFEE() : "0");
 
 			}
-			detailRs.setDetailData(detailData);
 
-			detailRs.setDETAILDATAMAP(detailMapRs);
 
-			String businessDate = eachSysStatusTabService.getBusinessDate();
+			String a = detailData.getTXDATE();
+			String b = detailData.getSTAN();
+			String c = detailData.getTXDT();
+			String d = detailData.getPCODE_DESC();
+			String e = detailData.getSENDERBANK_NAME();
+			String f = detailData.getRECEIVERBANK_NAME();
+			String g = detailData.getCONRESULTCODE_DESC();
+			String h = detailData.getACCTCODE();
+			String i = detailData.getSENDERCLEARING_NAME();
+			String j = detailData.getINCLEARING_NAME();
+			String k = detailData.getOUTCLEARING_NAME();
+			String l = detailData.getSENDERACQUIRE_NAME();
+			String m = detailData.getINACQUIRE_NAME();
+			String n = detailData.getOUTACQUIRE_NAME();
+			String o = detailData.getWOACQUIRE_NAME();
+			String p = detailData.getSENDERHEAD_NAME();
+			String q = detailData.getINHEAD_NAME();
+			String r = detailData.getOUTHEAD_NAME();
+			String s = detailData.getWOHEAD_NAME();
+			String t = detailData.getNEWSENDERFEE();
+			String u = detailData.getNEWINFEE();
+			String v = detailData.getNEWOUTFEE();
+			String w = detailData.getNEWWOFEE();
+			String x = detailData.getNEWEACHFEE();
+			String y = detailData.getNEWEXTENDFEE();
+			String z = detailData.getSENDERID();
+			String aa = detailData.getTXN_NAME();
+			String bb = detailData.getNEWTXAMT();
+			String cc = detailData.getSENDERSTATUS();
+			String dd = detailData.getNEWFEE();
+			String ee = detailData.getSENDERBANKID_NAME();
+			String ff = detailData.getINBANKID_NAME();
+			String gg = detailData.getOUTBANKID_NAME();
+			String hh = detailData.getWOBANKID_NAME();
+			String ii = detailData.getBIZDATE();
+			String jj = detailData.getEACHDT();
+			String kk = detailData.getCLEARINGPHASE();
+			String ll = detailData.getINACCTNO();
+			String mm = detailData.getOUTACCTNO();
+			String nn = detailData.getINID();
+			String oo = detailData.getRESP();
+			String pp = detailData.getERR_DESC1();
+			String qq = detailData.getERR_DESC2();
+			String rr = detailData.getUPDATEDT();
+			String ss = detailData.getBILLTYPE();
+			String tt = detailData.getBILLDATA();
+			String uu = detailData.getCHARGETYPE();
+			String vv = detailData.getTOLLID();
+			String ww = detailData.getBILLFLAG();
+			String xx = detailData.getCHECKDATA();
+			String yy = detailData.getPFCLASS();
+			String zz = detailData.getSENDERDATA();
+			String aaa = detailData.getRESULTCODE();
+			
+			
+			detailRs.setTXDATE(a);
+			detailRs.setSTAN(b);
+			detailRs.setTXDT(c);
+			detailRs.setPCODE_DESC(d);
+			detailRs.setSENDERBANK_NAME(e);
+			detailRs.setRECEIVERBANK_NAME(f);
+			detailRs.setCONRESULTCODE_DESC(g);
+			detailRs.setACCTCODE(h);
+			detailRs.setSENDERCLEARING_NAME(i);
+			detailRs.setINCLEARING_NAME(j);
+			detailRs.setOUTCLEARING_NAME(k);
+			detailRs.setSENDERACQUIRE_NAME(l);
+			detailRs.setINACQUIRE_NAME(m);
+			detailRs.setOUTACQUIRE_NAME(n);
+			detailRs.setWOACQUIRE_NAME(o);
+			detailRs.setSENDERHEAD_NAME(p);
+			detailRs.setINHEAD_NAME(q);
+			detailRs.setOUTHEAD_NAME(r);
+			detailRs.setWOHEAD_NAME(s);
+			detailRs.setNEWSENDERFEE(t);
+			detailRs.setNEWINFEE(u);
+			detailRs.setNEWOUTFEE(v);
+			detailRs.setNEWWOFEE(w);
+			detailRs.setNEWEACHFEE(x);
+			detailRs.setNEWEXTENDFEE(y);
+			detailRs.setSENDERID(z);
+			detailRs.setTXN_NAME(aa);
+			detailRs.setNEWTXAMT(bb);
+			detailRs.setSENDERSTATUS(cc);
+			detailRs.setNEWFEE(dd);
+			detailRs.setSENDERBANKID_NAME(ee);
+			detailRs.setINBANKID_NAME(ff);
+			detailRs.setOUTBANKID_NAME(gg);
+			detailRs.setWOBANKID_NAME(hh);
+			detailRs.setBIZDATE(ii);
+			detailRs.setEACHDT(jj);
+			detailRs.setCLEARINGPHASE(kk);
+			detailRs.setINACCTNO(ll);
+			detailRs.setOUTACCTNO(mm);
+			detailRs.setINID(nn);
+			detailRs.setRESP(oo);
+			detailRs.setERR_DESC1(pp);
+			detailRs.setERR_DESC2(qq);
+			detailRs.setUPDATEDT(rr);
+			detailRs.setBILLTYPE(ss);
+			detailRs.setBILLDATA(tt);
+			detailRs.setCHARGETYPE(uu);
+			detailRs.setTOLLID(vv);
+			detailRs.setBILLFLAG(ww);
+			detailRs.setCHECKDATA(xx);
+			detailRs.setPFCLASS(yy);
+			detailRs.setSENDERDATA(zz);
+			detailRs.setRESULTCODE(aaa);
 
-			detailRs.setSTART_DATE(businessDate);
-			detailRs.setEND_DATE(businessDate);
+//			
+//			detailRs.setDetailData(detailData);
+//
+//			detailRs.setDETAILDATAMAP(detailMapRs);
+//
+//			String businessDate = eachSysStatusTabService.getBusinessDate();
+//
+//			detailRs.setSTART_DATE(businessDate);
+//			detailRs.setEND_DATE(businessDate);
 
-//			ObjectMapper mapper = new ObjectMapper();
-//			UndoneSendRs result = mapper.convertValue(detailDataMap, UndoneSendRs.class);
 //
 //		try {
 //			BeanUtils.copyProperties(param, param);
