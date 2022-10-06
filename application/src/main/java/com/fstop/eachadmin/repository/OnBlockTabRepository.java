@@ -135,23 +135,18 @@ public class OnBlockTabRepository {
 	}
 //	
 //	@SuppressWarnings({ "rawtypes", "unchecked" })
-//	public Page getData(int pageNo, int pageSize, String countQuerySql, Class targetClass) {
-//		int totalCount = countData(countQuerySql);
-//		int startIndex = Page.getStartOfPage(pageNo, pageSize) + 1;
-//		return new Page(startIndex - 1 , totalCount, pageSize);
-//	}
+	public List<Map> getData( String sql) {
+		List<Map> list = null;
+		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(HR_TXP_TIME.class));
+		System.out.println("list>>"+list);
+		return list = list!=null&& list.size() ==0 ?null:list;
+	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public int countData(String countQuerySql) {
-		int count = 0;
 		List<Map> list = null;
 		list = jdbcTemplate.query(countQuerySql,new BeanPropertyRowMapper(HR_TXP_TIME.class) );
-
-		List countList = list.subList(count, count);
-		if (countList != null && countList.size() > 0) {
-			count = (Integer) countList.get(0);
-		}
-		return count;
+		return list.size();
 //		SQLQuery query = getCurrentSession().createSQLQuery(countQuerySql);
 //		List countList = query.list();
 //		return list.size();
