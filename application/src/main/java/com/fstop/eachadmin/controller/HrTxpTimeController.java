@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fstop.eachadmin.dto.BankGroupRq;
 import com.fstop.eachadmin.dto.HrTxpTimeRq;
+import com.fstop.eachadmin.dto.HrTxpTimeRs;
 import com.fstop.eachadmin.service.BankGroupService;
 import com.fstop.eachadmin.service.HrTxpTimeService;
 import com.fstop.eachadmin.service.UndoneService;
+import com.fstop.infra.entity.HR_TXP_TIME;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,7 +46,7 @@ public class HrTxpTimeController {
 		}
 		
 	//總行代號
-		@Operation(summary = "總行代號 API", description = "總行代號下拉選單資料" )
+		@Operation(summary = "總行代號 API", description = "<br>總行代號下拉選單資料</br>"+ "<br>\"OPBK_ID\":\"0000012\",</br>" + "\"s_bizdate\":\"01090121\"" )
 		@PostMapping(value = "/BankGroup")
 		public List<Map<String, String>> BgbkIdList(@RequestBody BankGroupRq param) {
 			return BankGroupS.getByOpbkId_Single_Date(param);
@@ -52,8 +54,8 @@ public class HrTxpTimeController {
 	//查詢
 		@Operation(summary = "查詢 API", description = "查詢按鈕")
 		@PostMapping(value = "/search")
-		public Page getPageSearch (@RequestBody HrTxpTimeRq param) {
-			return (Page) HrTxpTimeS.pageSearch(param);
+		public HrTxpTimeRs getPageSearch (@RequestBody HrTxpTimeRq param) {
+			return  HrTxpTimeS.pageSearch(param);
 		}
 	//列印匯出
 		@Operation(summary = "列印匯出 API", description = "列印匯出資料按鈕")

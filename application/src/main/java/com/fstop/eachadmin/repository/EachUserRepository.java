@@ -116,7 +116,8 @@ public class EachUserRepository{
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<EACH_USER> getDataByComId(String user_comId){
-		String sql = " FROM tw.org.twntch.po.EACH_USER WHERE USER_COMPANY=? ";
+//		String sql = " FROM tw.org.twntch.po.EACH_USER WHERE USER_COMPANY=? ";
+		String sql = " SELECT * FROM EACH_USER WHERE USER_COMPANY= " + user_comId ;
 		List<EACH_USER> list = new ArrayList<EACH_USER>();
 		list=jdbcTemplate.query(sql,new BeanPropertyRowMapper(EACH_USER.class));
 		return list;
@@ -143,14 +144,14 @@ public class EachUserRepository{
 		return list;
 	}
 	
-	// 原為HibernateEntity裡的，先放這邊 220927
-//	protected Class<T> entityClass;
-//	protected Class<T> getEntityClass() {
-//		return entityClass;
-//	}
-//	public List<T> getAll() {
-//		return getAll(getEntityClass());
-//	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<EACH_USER> getAll(){
+		String sql = "SELECT * FROM EACH_USER";
+		List<EACH_USER> list = new ArrayList<EACH_USER>();
+		list=jdbcTemplate.query(sql,new BeanPropertyRowMapper(EACH_USER.class));
+		return list;
+	}
+	
 	
 	
 	//原hibernateGenericDao的方法
