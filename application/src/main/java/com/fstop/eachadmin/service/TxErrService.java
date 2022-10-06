@@ -394,7 +394,7 @@ public class TxErrService {
 
 			}
 			txerrDetailRs.setDetailMapData(detailDataMap);
-			txerrDetailRs.setDetailData(TxerrDetailRs);
+//			txerrDetailRs.setDetailData(TxerrDetailRs);
 			
 //		}
 		return txerrDetailRs;

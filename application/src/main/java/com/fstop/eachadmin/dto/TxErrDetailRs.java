@@ -19,7 +19,7 @@ public class TxErrDetailRs {
 	private String NEWWOFEE_NW;
 	private String NEWEACHFEE_NW;
 	private String NEWFEE_NW;
-	private Map DetailData;
+//	private Map DetailData;
 	private VW_ONBLOCKTAB DetailMapData;
 
 }
