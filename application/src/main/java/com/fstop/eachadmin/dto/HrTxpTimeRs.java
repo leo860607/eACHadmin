@@ -1,47 +1,43 @@
 package com.fstop.eachadmin.dto;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fstop.eachadmin.dto.TxErrRs.TxErrRsList;
+import com.fstop.infra.entity.HR_TXP_TIME;
+import com.fstop.infra.entity.TX_ERR_ONBLOCKTAB;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class HrTxpTimeRs {
-	@Schema(description = "交易時間(每小時)")
-	@JsonProperty("HOURLAPNAME")
-	private String HOURLAPNAME;
+@AllArgsConstructor
+@NoArgsConstructor
+public class HrTxpTimeRs<HR_TXP_TIME> {
 	
-	@Schema(description = "交易筆數")
-	@JsonProperty("TOTALCOUNT")
-	private String TOTALCOUNT;
+	@JsonProperty("COUNTANDSUMLIST")
+	private List<HR_TXP_TIME> countAndSumList;
 	
-	@Schema(description = "成功筆數")
-	@JsonProperty("OKCOUNT")
-	private String OKCOUNT;
+	@Schema(description = "")
+	@JsonProperty("TOTAL")
+	private String total;
 	
-	@Schema(description = "失敗筆數")
-	@JsonProperty("FAILCOUNT")
-	private String FAILCOUNT;
+	@Schema(description = "")
+	@JsonProperty("PAGE")
+	private String page;
 	
-	@Schema(description = "逾時未回覆筆數")
-	@JsonProperty("PENDCOUNT")
-	private String PENDCOUNT;
+	@Schema(description = "")
+	@JsonProperty("RECORDS")
+	private String records;
 	
-	@Schema(description = "單筆平均處理時間(秒)")
-	@JsonProperty("PRCTIME")
-	private String PRCTIME;
-	
-	@Schema(description = "銀行每筆扣款平均處理時間(秒)")
-	@JsonProperty("DEBITTIME")
-	private String DEBITTIME;
-	
-	@Schema(description = "銀行每筆入帳平均處理時間(秒)")
-	@JsonProperty("SAVETIME")
-	private String SAVETIME;
-	
-	@Schema(description = "交換所平均處理時間(秒)")
-	@JsonProperty("ACHPRCTIME")
-	private String ACHPRCTIME;
+	@Schema(description = "")
+	@JsonProperty("ROWS")
+	private List<HR_TXP_TIME> rows;
 }
+
+

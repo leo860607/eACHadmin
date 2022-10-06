@@ -7,20 +7,21 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fstop.eachadmin.dto.HrTxpTimeRq;
+import com.fstop.eachadmin.dto.HrTxpTimeRs;
 import com.fstop.eachadmin.repository.EachTxnCodeRepository;
 import com.fstop.eachadmin.repository.OnBlockTabRepository;
-import com.fstop.fcore.util.*;
+import com.fstop.infra.entity.BANK_OPBK;
 import com.fstop.infra.entity.EACH_TXN_CODE;
 import com.fstop.infra.entity.HR_TXP_TIME;
-
 import lombok.extern.slf4j.Slf4j;
 
 import com.fstop.eachadmin.repository.PageQueryRepository;
+import com.fstop.fcore.util.Page;
 
+import util.StrUtils;
 import util.DateTimeUtils;
 @Slf4j
 @Service
@@ -59,16 +60,17 @@ public class HrTxpTimeService {
 		return beanList;
 	}
 	
-	public List<HR_TXP_TIME> pageSearch(HrTxpTimeRq param,Page... page){
+	@SuppressWarnings("unchecked")
+	public HrTxpTimeRs pageSearch(HrTxpTimeRq param){
 		List<String> conditions = getConditionList(param);
-		
-		String pageNo = StrUtils.isEmpty(param.getPage()) ?"0":param.getPage();
+		int pageNo = 1;
+		int pageSize = 1;
+//		String pageNo = StrUtils.isEmpty(param.getPage()) ?"0":param.getPage();
 //		String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
-		
 		Map rtnMap = new HashMap();
-		
+
 		List<HR_TXP_TIME> list = null;
-		Page page1 = null;
+		Page page = null;
 		try {
 			list = new ArrayList<HR_TXP_TIME>();
 			String condition = conditions.get(0);
@@ -117,8 +119,11 @@ public class HrTxpTimeService {
 			dataSumSQL.append(") AS B ON A.HOURLAP = B.HOURLAP ");
 			dataSumSQL.append("WHERE A.HOURLAP IS NOT NULL ");
 			System.out.println("dataSumSQL = " + dataSumSQL.toString().toUpperCase());
-			list = onblocktab_Dao.dataSum(dataSumSQL.toString(),dataSumCols,HR_TXP_TIME.class);
-			rtnMap.put("dataSumList", list);
+			List countAndSumList = onblocktab_Dao.dataSum(dataSumSQL.toString(),dataSumCols,HR_TXP_TIME.class);
+			
+			log.debug(countAndSumList.toString());
+			
+			rtnMap.put("countAndSumList", countAndSumList);
 			StringBuffer countQuery = new StringBuffer();
 			StringBuffer sql = new StringBuffer();
 			String[] cols = {"HOURLAP","HOURLAPNAME","TOTALCOUNT","OKCOUNT","FAILCOUNT","PENDCOUNT","PRCTIME","DEBITTIME","SAVETIME","ACHPRCTIME"};
@@ -171,26 +176,37 @@ public class HrTxpTimeService {
 			countQuery.append("SELECT A.* FROM HOURITEM AS A ");
 			countQuery.append("WHERE A.HOURLAP IS NOT NULL ");
 			System.out.println("countQuery = " + countQuery.toString().toUpperCase());		
-//			page1 = onblocktab_Dao.getData(Integer.valueOf(pageNo), Integer.valueOf(pageSize), countQuery.toString(), sql.toString(), cols, HR_TXP_TIME.class);
-//			list = (List<HR_TXP_TIME>) page1.getResult();
-//			System.out.println("list>>"+list);
-//			list = list!=null&& list.size() ==0 ?null:list;
-			PageRequest pageable = PageRequest.of(Integer.parseInt(pageNo), 5);
-			page1 =  pageR.getPageData(pageable,countQuery.toString(), sql.toString(), HR_TXP_TIME.class);
-			list = (List<HR_TXP_TIME>) page1.getResult();
-//			System.out.println("list>>"+list);
+			page =  onblocktab_Dao.getData(pageNo, pageSize,countQuery.toString(), sql.toString(), cols, HR_TXP_TIME.class);
+			
+			log.debug(page.toString());
+			
+			list = (List<HR_TXP_TIME>) page.getResult();
+			System.out.println("list>>"+list);
 			list = list!=null&& list.size() ==0 ?null:list;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}	
-		return  list;
+		if (page == null) {
+			rtnMap.put("TOTAL", "0");
+			rtnMap.put("PAGE", "0");
+			rtnMap.put("RECORDS", "0");
+			rtnMap.put("ROWS", new ArrayList());
+		} else {
+			rtnMap.put("TOTAL", page.getTotalPageCount());
+			rtnMap.put("PAGE", String.valueOf(page.getCurrentPageNo()));
+			rtnMap.put("RECORDS", page.getTotalCount());
+			rtnMap.put("ROWS", list);
+		}
+//-------------------資料轉換swagger輸出----------------------------------------------------
+		ObjectMapper mapper = new ObjectMapper();
+		HrTxpTimeRs result = mapper.convertValue(rtnMap, HrTxpTimeRs.class);
+		return result;
 	}
+	
 	
 	public List<String> getConditionList(HrTxpTimeRq param){
 		List<String> conditionList = new ArrayList<String>();
-		
 		List<String> conditions = new ArrayList<String>();
-		
 		String txDate = "";
 		if(StrUtils.isNotEmpty(param.getTXDATE().trim())){
 			txDate = param.getTXDATE().trim();
