@@ -17,6 +17,7 @@ import com.fstop.eachadmin.dto.PageSearchRs;
 import com.fstop.eachadmin.dto.UndoneSendRq;
 import com.fstop.eachadmin.dto.UndoneSendRs;
 import com.fstop.eachadmin.service.NTRDetailService;
+import com.fstop.eachadmin.service.OnblockNotTradResService;
 import com.fstop.eachadmin.service.UndoneService;
 import com.fstop.infra.entity.UNDONE_TXDATA;
 
@@ -34,7 +35,9 @@ public class OnblockNotTradResController {
 	
 	@Autowired
 	private UndoneService UndoneS;
-
+	
+	@Autowired
+	private OnblockNotTradResService OnblockNotTradResS;
 	// 操作行下拉選單
 	@Operation(summary = "操作行 API", description = "操作行下拉選單資料")
 	@GetMapping(value = "/opbkList")
@@ -52,7 +55,8 @@ public class OnblockNotTradResController {
  	@Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
  	@PostMapping(value = "/pageSearch")
  	public PageSearchRs<UNDONE_TXDATA> pageSearch(@RequestBody PageSearchRq param) {
-		return UndoneS.pageSearch(param);
+//		return UndoneS.pageSearch(param);
+ 		return OnblockNotTradResS.getNotTradResList(param);
 	}
 
 	// 明細

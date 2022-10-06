@@ -14,12 +14,15 @@ import java.util.LinkedList;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.fstop.eachadmin.repository.BankGroupRepository;
 import com.fstop.eachadmin.repository.BusinessTypeRepository;
 import com.fstop.eachadmin.repository.OnBlockTabRepository;
 import com.fstop.eachadmin.repository.OnPendingTabRepository;
+import com.fstop.eachadmin.repository.PageQueryRepository;
+import com.fstop.eachadmin.repository.VwOnBlockTabRepository;
 import com.fstop.fcore.util.Page;
 import com.fstop.infra.entity.BANK_BRANCH;
 import com.fstop.infra.entity.BANK_GROUP;
@@ -30,11 +33,14 @@ import com.fstop.infra.entity.ONBLOCKTAB;
 import com.fstop.infra.entity.ONBLOCKTAB_FORM;
 import com.fstop.infra.entity.ONPENDINGTAB;
 import com.fstop.infra.entity.ONPENDINGTAB_PK;
+import com.fstop.infra.entity.TX_ERR;
+import com.fstop.infra.entity.TX_ERR_ONBLOCKTAB;
 import com.fstop.infra.entity.UNDONE_TXDATA;
 
 import lombok.extern.slf4j.Slf4j;
 
 import com.fstop.infra.entity.ONBLOCKTAB_NOTTRAD_RESF;
+import com.fstop.infra.entity.ONBLOCKTABbean;
 
 import util.messageConverter;
 
@@ -53,8 +59,12 @@ import com.fstop.eachadmin.dto.ObtkNtrRq;
 import com.fstop.eachadmin.dto.ObtkNtrRs;
 import com.fstop.eachadmin.dto.PageSearchRq;
 import com.fstop.eachadmin.dto.PageSearchRs;
+import com.fstop.eachadmin.dto.TxErrRq;
+import com.fstop.eachadmin.dto.TxErrRs;
 import com.fstop.eachadmin.dto.UndoneSendRq;
 import com.fstop.eachadmin.dto.UndoneSendRs;
+import com.fstop.infra.entity.ONBLOCKTABbean;
+
 
 @Slf4j
 @Service
@@ -83,6 +93,15 @@ public class OnblockNotTradResService {
 	
 	@Autowired
 	private EachUserlogService eachUserlogService;
+	
+	@Autowired
+	private TxErrService txErrService;
+	
+	@Autowired
+	private PageQueryRepository<UNDONE_TXDATA> pageR;
+	
+	@Autowired
+	private VwOnBlockTabRepository vwOnblocktabRepository;
 
 	
 	// 暫時測試用
@@ -179,172 +198,172 @@ public class OnblockNotTradResService {
 		}
 	
 	
-	//帳單明細
-	//只需要用到產生檢視明細資料的部分
-	public ObtkNtrRs NTRDetail(ObtkNtrRq param){
-//		ONBLOCKTAB_NOTTRAD_RESF obktNtR_form = (ONBLOCKTAB_NOTTRAD_RESF) form ;		
-//		String target = "";
-//		String ac_key = StrUtils.isEmpty(obktNtR_form.getAc_key())?"":obktNtR_form.getAc_key();
-//		target = StrUtils.isEmpty(obktNtR_form.getTarget())?"search":obktNtR_form.getTarget();
-//		obktNtR_form.setTarget(target);
-//		List<BANK_BRANCH> list = null;
-//		List<ONBLOCKTAB> onblist = null;
-//		//String onblist ="";
-//		System.out.println("ONBLOCKTAB_NotTradRes_Action is start target>> " + target);
-//		System.out.println("ONBLOCKTAB_NotTradRes_Action is start ac_key>> " + ac_key);
-//		//方法裡面沒有用到先註解
-////		loginFormDto login_form = (loginFormDto) WebServletUtils.getRequest().getSession().getAttribute("login_form");
-//		Map<String,String> m = new HashMap<String,String>();
-		
-		String ac_key = StrUtils.isEmpty(param.getAc_key())?"":param.getAc_key();
-		if(StrUtils.isNotEmpty(ac_key) && !ac_key.equals("back")){			
-			if(ac_key.equals("search")){				
-				
-			}else if(ac_key.equals("edit")){
-				try {
-					BeanUtils.populate(param, null );// TODO  JSONUtils.json2map(param.getEdit_params()));
-				} catch (IllegalAccessException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				} catch (InvocationTargetException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-				String txDate = param.getTXDATE();
-				String stan = param.getSTAN();
-				System.out.println("TXDATE>>"+txDate);
-				System.out.println("STAN>>"+stan);
-				ONBLOCKTAB_FORM onblocktab_form = new ONBLOCKTAB_FORM();
-				Map detailDataMap=onblocktabService.showNotTradResDetail(txDate,stan);
-				//要用舊的營業日去查手續費
-				String obizdate = param.getOLDBIZDATE();
-				
-				//20220321新增FOR EXTENDFEE 位數轉換
-				if(detailDataMap.get("EXTENDFEE")!=null) {
-				  BigDecimal orgNewExtendFee = (BigDecimal) detailDataMap.get("EXTENDFEE");
-				   //去逗號除100 1,000 > 1000/100 = 10
-				  String strOrgNewExtendFee = orgNewExtendFee.toString();
-				   double realNewExtendFee = Double.parseDouble(strOrgNewExtendFee.replace(",", ""))/100;
-				   detailDataMap.put("NEWEXTENDFEE", String.valueOf(realNewExtendFee));
-				}else {
-					//如果是null 顯示空字串
-					detailDataMap.put("NEWEXTENDFEE", "");
-				}
-				
-				//如果FEE_TYPE有值 且結果為成功或未完成  此功能都拿新的值
-				if(StrUtils.isNotEmpty((String)detailDataMap.get("FEE_TYPE")) && 
-				   ("成功".equals((String)detailDataMap.get("RESP"))||"未完成".equals((String)detailDataMap.get("RESP")))) {
-					switch ((String)detailDataMap.get("FEE_TYPE")){
-					case "A":
-						detailDataMap.put("TXN_TYPE","固定");
-						break;
-					case "B":
-						detailDataMap.put("TXN_TYPE","外加");
-						break;
-					case "C":
-						detailDataMap.put("TXN_TYPE","百分比");
-						break;
-					case "D":
-						detailDataMap.put("TXN_TYPE","級距");
-						break;
-					}
-					
-				//如果FEE_TYPE有值 且結果為失敗或處理中 此功能都拿新的值
-				}else if (StrUtils.isNotEmpty((String)detailDataMap.get("FEE_TYPE")) && 
-						   ("失敗".equals((String)detailDataMap.get("RESP"))||"處理中".equals((String)detailDataMap.get("RESP")))) {
-					switch ((String)detailDataMap.get("FEE_TYPE")){
-					case "A":
-						detailDataMap.put("TXN_TYPE","固定");
-						break;
-					case "B":
-						detailDataMap.put("TXN_TYPE","外加");
-						break;
-					case "C":
-						detailDataMap.put("TXN_TYPE","百分比");
-						break;
-					case "D":
-						detailDataMap.put("TXN_TYPE","級距");
-						break;
-					}
-					
-//					detailDataMap.put("NEWSENDERFEE_NW", detailDataMap.get("NEWSENDERFEE")!=null?detailDataMap.get("NEWSENDERFEE"):"0");
-//					detailDataMap.put("NEWINFEE_NW", detailDataMap.get("NEWINFEE")!=null?detailDataMap.get("NEWINFEE"):"0");
-//					detailDataMap.put("NEWOUTFEE_NW", detailDataMap.get("NEWOUTFEE")!=null?detailDataMap.get("NEWOUTFEE"):"0");
-//					detailDataMap.put("NEWWOFEE_NW", detailDataMap.get("NEWWOFEE")!=null?detailDataMap.get("NEWWOFEE"):"0");
-//					detailDataMap.put("NEWEACHFEE_NW", detailDataMap.get("NEWEACHFEE")!=null?detailDataMap.get("NEWEACHFEE"):"0");
-//					detailDataMap.put("NEWFEE_NW",detailDataMap.get("NEWFEE")!=null?detailDataMap.get("NEWFEE"):"0");
-					
-				//如果FEE_TYPE為空 且結果為成功或未完成 新版手續call sp  此功能都拿新的值
-				}else if (StrUtils.isEmpty((String)detailDataMap.get("FEE_TYPE")) && 
-						   ("成功".equals((String)detailDataMap.get("RESP"))||"未完成".equals((String)detailDataMap.get("RESP")))) {
-					Map newFeeDtailMap = onblocktabService.getNewFeeDetail(obizdate,(String) detailDataMap.get("TXN_NAME"),(String) detailDataMap.get("SENDERID")
-							,(String) detailDataMap.get("SENDERBANKID_NAME"),(String)detailDataMap.get("NEWTXAMT"));
-					detailDataMap.put("TXN_TYPE", newFeeDtailMap.get("TXN_TYPE"));
-					detailDataMap.put("NEWSENDERFEE_NW", newFeeDtailMap.get("NEWSENDERFEE_NW"));
-					detailDataMap.put("NEWINFEE_NW", newFeeDtailMap.get("NEWINFEE_NW"));
-					detailDataMap.put("NEWOUTFEE_NW", newFeeDtailMap.get("NEWOUTFEE_NW"));
-					detailDataMap.put("NEWWOFEE_NW", newFeeDtailMap.get("NEWWOFEE_NW"));
-					detailDataMap.put("NEWEACHFEE_NW", newFeeDtailMap.get("NEWEACHFEE_NW"));
-					detailDataMap.put("NEWFEE_NW", newFeeDtailMap.get("NEWFEE_NW"));
-					
-				//如果FEE_TYPE為空 且結果為失敗或處理中 call sp 拿FEE_TYPE	  此功能都拿新的值
-				}else if (StrUtils.isEmpty((String)detailDataMap.get("FEE_TYPE")) && 
-						   ("失敗".equals((String)detailDataMap.get("RESP"))||"處理中".equals((String)detailDataMap.get("RESP")))) {
-					Map newFeeDtailMap = onblocktabService.getNewFeeDetail(obizdate,(String) detailDataMap.get("TXN_NAME"),(String) detailDataMap.get("SENDERID")
-							,(String) detailDataMap.get("SENDERBANKID_NAME"),(String)detailDataMap.get("NEWTXAMT"));
-					
-					detailDataMap.put("TXN_TYPE", newFeeDtailMap.get("TXN_TYPE"));
-					detailDataMap.put("NEWSENDERFEE_NW", newFeeDtailMap.get("NEWSENDERFEE")!=null?newFeeDtailMap.get("NEWSENDERFEE"):"0");
-					detailDataMap.put("NEWINFEE_NW", newFeeDtailMap.get("NEWINFEE")!=null?newFeeDtailMap.get("NEWINFEE"):"0");
-					detailDataMap.put("NEWOUTFEE_NW", newFeeDtailMap.get("NEWOUTFEE")!=null?newFeeDtailMap.get("NEWOUTFEE"):"0");
-					detailDataMap.put("NEWWOFEE_NW", newFeeDtailMap.get("NEWWOFEE")!=null?newFeeDtailMap.get("NEWWOFEE"):"0");
-					detailDataMap.put("NEWEACHFEE_NW", newFeeDtailMap.get("NEWEACHFEE")!=null?newFeeDtailMap.get("NEWEACHFEE"):"0");
-					detailDataMap.put("NEWFEE_NW",newFeeDtailMap.get("NEWFEE")!=null?newFeeDtailMap.get("NEWFEE"):"0");
-				
-				}
-//				onblocktab_form.setDetailData(detailDataMap);
-//				onblocktab_form.setIsUndoneRes("Y");
+//	//帳單明細
+//	//只需要用到產生檢視明細資料的部分
+//	public ObtkNtrRs NTRDetail(ObtkNtrRq param){
+////		ONBLOCKTAB_NOTTRAD_RESF obktNtR_form = (ONBLOCKTAB_NOTTRAD_RESF) form ;		
+////		String target = "";
+////		String ac_key = StrUtils.isEmpty(obktNtR_form.getAc_key())?"":obktNtR_form.getAc_key();
+////		target = StrUtils.isEmpty(obktNtR_form.getTarget())?"search":obktNtR_form.getTarget();
+////		obktNtR_form.setTarget(target);
+////		List<BANK_BRANCH> list = null;
+////		List<ONBLOCKTAB> onblist = null;
+////		//String onblist ="";
+////		System.out.println("ONBLOCKTAB_NotTradRes_Action is start target>> " + target);
+////		System.out.println("ONBLOCKTAB_NotTradRes_Action is start ac_key>> " + ac_key);
+////		//方法裡面沒有用到先註解
+//////		loginFormDto login_form = (loginFormDto) WebServletUtils.getRequest().getSession().getAttribute("login_form");
+////		Map<String,String> m = new HashMap<String,String>();
+//		
+//		String ac_key = StrUtils.isEmpty(param.getAc_key())?"":param.getAc_key();
+//		if(StrUtils.isNotEmpty(ac_key) && !ac_key.equals("back")){			
+//			if(ac_key.equals("search")){				
+//				
+//			}else if(ac_key.equals("edit")){
+//				try {
+//					BeanUtils.populate(param, null );// TODO  JSONUtils.json2map(param.getEdit_params()));
+//				} catch (IllegalAccessException e2) {
+//					// TODO Auto-generated catch block
+//					e2.printStackTrace();
+//				} catch (InvocationTargetException e2) {
+//					// TODO Auto-generated catch block
+//					e2.printStackTrace();
+//				}
+//				String txDate = param.getTXDATE();
+//				String stan = param.getSTAN();
+//				System.out.println("TXDATE>>"+txDate);
+//				System.out.println("STAN>>"+stan);
+//				ONBLOCKTAB_FORM onblocktab_form = new ONBLOCKTAB_FORM();
+//				Map detailDataMap=onblocktabService.showNotTradResDetail(txDate,stan);
+//				//要用舊的營業日去查手續費
+//				String obizdate = param.getOLDBIZDATE();
+//				
+//				//20220321新增FOR EXTENDFEE 位數轉換
+//				if(detailDataMap.get("EXTENDFEE")!=null) {
+//				  BigDecimal orgNewExtendFee = (BigDecimal) detailDataMap.get("EXTENDFEE");
+//				   //去逗號除100 1,000 > 1000/100 = 10
+//				  String strOrgNewExtendFee = orgNewExtendFee.toString();
+//				   double realNewExtendFee = Double.parseDouble(strOrgNewExtendFee.replace(",", ""))/100;
+//				   detailDataMap.put("NEWEXTENDFEE", String.valueOf(realNewExtendFee));
+//				}else {
+//					//如果是null 顯示空字串
+//					detailDataMap.put("NEWEXTENDFEE", "");
+//				}
+//				
+//				//如果FEE_TYPE有值 且結果為成功或未完成  此功能都拿新的值
+//				if(StrUtils.isNotEmpty((String)detailDataMap.get("FEE_TYPE")) && 
+//				   ("成功".equals((String)detailDataMap.get("RESP"))||"未完成".equals((String)detailDataMap.get("RESP")))) {
+//					switch ((String)detailDataMap.get("FEE_TYPE")){
+//					case "A":
+//						detailDataMap.put("TXN_TYPE","固定");
+//						break;
+//					case "B":
+//						detailDataMap.put("TXN_TYPE","外加");
+//						break;
+//					case "C":
+//						detailDataMap.put("TXN_TYPE","百分比");
+//						break;
+//					case "D":
+//						detailDataMap.put("TXN_TYPE","級距");
+//						break;
+//					}
+//					
+//				//如果FEE_TYPE有值 且結果為失敗或處理中 此功能都拿新的值
+//				}else if (StrUtils.isNotEmpty((String)detailDataMap.get("FEE_TYPE")) && 
+//						   ("失敗".equals((String)detailDataMap.get("RESP"))||"處理中".equals((String)detailDataMap.get("RESP")))) {
+//					switch ((String)detailDataMap.get("FEE_TYPE")){
+//					case "A":
+//						detailDataMap.put("TXN_TYPE","固定");
+//						break;
+//					case "B":
+//						detailDataMap.put("TXN_TYPE","外加");
+//						break;
+//					case "C":
+//						detailDataMap.put("TXN_TYPE","百分比");
+//						break;
+//					case "D":
+//						detailDataMap.put("TXN_TYPE","級距");
+//						break;
+//					}
+//					
+////					detailDataMap.put("NEWSENDERFEE_NW", detailDataMap.get("NEWSENDERFEE")!=null?detailDataMap.get("NEWSENDERFEE"):"0");
+////					detailDataMap.put("NEWINFEE_NW", detailDataMap.get("NEWINFEE")!=null?detailDataMap.get("NEWINFEE"):"0");
+////					detailDataMap.put("NEWOUTFEE_NW", detailDataMap.get("NEWOUTFEE")!=null?detailDataMap.get("NEWOUTFEE"):"0");
+////					detailDataMap.put("NEWWOFEE_NW", detailDataMap.get("NEWWOFEE")!=null?detailDataMap.get("NEWWOFEE"):"0");
+////					detailDataMap.put("NEWEACHFEE_NW", detailDataMap.get("NEWEACHFEE")!=null?detailDataMap.get("NEWEACHFEE"):"0");
+////					detailDataMap.put("NEWFEE_NW",detailDataMap.get("NEWFEE")!=null?detailDataMap.get("NEWFEE"):"0");
+//					
+//				//如果FEE_TYPE為空 且結果為成功或未完成 新版手續call sp  此功能都拿新的值
+//				}else if (StrUtils.isEmpty((String)detailDataMap.get("FEE_TYPE")) && 
+//						   ("成功".equals((String)detailDataMap.get("RESP"))||"未完成".equals((String)detailDataMap.get("RESP")))) {
+//					Map newFeeDtailMap = onblocktabService.getNewFeeDetail(obizdate,(String) detailDataMap.get("TXN_NAME"),(String) detailDataMap.get("SENDERID")
+//							,(String) detailDataMap.get("SENDERBANKID_NAME"),(String)detailDataMap.get("NEWTXAMT"));
+//					detailDataMap.put("TXN_TYPE", newFeeDtailMap.get("TXN_TYPE"));
+//					detailDataMap.put("NEWSENDERFEE_NW", newFeeDtailMap.get("NEWSENDERFEE_NW"));
+//					detailDataMap.put("NEWINFEE_NW", newFeeDtailMap.get("NEWINFEE_NW"));
+//					detailDataMap.put("NEWOUTFEE_NW", newFeeDtailMap.get("NEWOUTFEE_NW"));
+//					detailDataMap.put("NEWWOFEE_NW", newFeeDtailMap.get("NEWWOFEE_NW"));
+//					detailDataMap.put("NEWEACHFEE_NW", newFeeDtailMap.get("NEWEACHFEE_NW"));
+//					detailDataMap.put("NEWFEE_NW", newFeeDtailMap.get("NEWFEE_NW"));
+//					
+//				//如果FEE_TYPE為空 且結果為失敗或處理中 call sp 拿FEE_TYPE	  此功能都拿新的值
+//				}else if (StrUtils.isEmpty((String)detailDataMap.get("FEE_TYPE")) && 
+//						   ("失敗".equals((String)detailDataMap.get("RESP"))||"處理中".equals((String)detailDataMap.get("RESP")))) {
+//					Map newFeeDtailMap = onblocktabService.getNewFeeDetail(obizdate,(String) detailDataMap.get("TXN_NAME"),(String) detailDataMap.get("SENDERID")
+//							,(String) detailDataMap.get("SENDERBANKID_NAME"),(String)detailDataMap.get("NEWTXAMT"));
+//					
+//					detailDataMap.put("TXN_TYPE", newFeeDtailMap.get("TXN_TYPE"));
+//					detailDataMap.put("NEWSENDERFEE_NW", newFeeDtailMap.get("NEWSENDERFEE")!=null?newFeeDtailMap.get("NEWSENDERFEE"):"0");
+//					detailDataMap.put("NEWINFEE_NW", newFeeDtailMap.get("NEWINFEE")!=null?newFeeDtailMap.get("NEWINFEE"):"0");
+//					detailDataMap.put("NEWOUTFEE_NW", newFeeDtailMap.get("NEWOUTFEE")!=null?newFeeDtailMap.get("NEWOUTFEE"):"0");
+//					detailDataMap.put("NEWWOFEE_NW", newFeeDtailMap.get("NEWWOFEE")!=null?newFeeDtailMap.get("NEWWOFEE"):"0");
+//					detailDataMap.put("NEWEACHFEE_NW", newFeeDtailMap.get("NEWEACHFEE")!=null?newFeeDtailMap.get("NEWEACHFEE"):"0");
+//					detailDataMap.put("NEWFEE_NW",newFeeDtailMap.get("NEWFEE")!=null?newFeeDtailMap.get("NEWFEE"):"0");
+//				
+//				}
+////				onblocktab_form.setDetailData(detailDataMap);
+////				onblocktab_form.setIsUndoneRes("Y");
+//////				BeanUtils.copyProperties(onblocktab_form, obktNtR_form);
+////				BeanUtils.copyProperties(onblocktab_form, param);
+//
+//				
+//				ObtkNtrRs obtkNtRRs = new ObtkNtrRs();
+//				obtkNtRRs.setDetailData(detailDataMap);
+//				try {
+//					BeanUtils.copyProperties(obtkNtRRs, param);
+//				} catch (IllegalAccessException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				} catch (InvocationTargetException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//				obtkNtRRs.setIsUndone("Y");
 ////				BeanUtils.copyProperties(onblocktab_form, obktNtR_form);
-//				BeanUtils.copyProperties(onblocktab_form, param);
-
-				
-				ObtkNtrRs obtkNtRRs = new ObtkNtrRs();
-				obtkNtRRs.setDetailData(detailDataMap);
-				try {
-					BeanUtils.copyProperties(obtkNtRRs, param);
-				} catch (IllegalAccessException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (InvocationTargetException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				obtkNtRRs.setIsUndone("Y");
-//				BeanUtils.copyProperties(onblocktab_form, obktNtR_form);
-				
-				
-				Map userData = null;
-				try {
-					userData = BeanUtils.describe(obtkNtRRs.getUserData());
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchMethodException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-//				ObtkNtrRs.setOPBK_ID("onblocktab_form", onblocktab_form);
-//				ObtkNtrRs.setOPBK_ID(OnblockNotTradResService.search((String) userData.get("USER_COMPANY")).get(0).getOPBK_ID());
-//				obtkNtRRs.setOPBK_ID(search((String) userData.get("USER_COMPANY"));
-				obtkNtRRs.setOpbkIdList(getOpbkList());;
-			}
-		}
-		System.out.println("forward to >> " + param.getFILTER_BAT());
-		return obtkNtRRs;
-	}
+//				
+//				
+//				Map userData = null;
+//				try {
+//					userData = BeanUtils.describe(obtkNtRRs.getUserData());
+//				} catch (IllegalAccessException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				} catch (InvocationTargetException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				} catch (NoSuchMethodException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+////				ObtkNtrRs.setOPBK_ID("onblocktab_form", onblocktab_form);
+////				ObtkNtrRs.setOPBK_ID(OnblockNotTradResService.search((String) userData.get("USER_COMPANY")).get(0).getOPBK_ID());
+////				obtkNtRRs.setOPBK_ID(search((String) userData.get("USER_COMPANY"));
+//				obtkNtRRs.setOpbkIdList(getOpbkList());;
+//			}
+//		}
+//		System.out.println("forward to >> " + param.getFILTER_BAT());
+//		return obtkNtRRs;
+//	}
 
 	
 	//未完成交易結果查詢
@@ -381,6 +400,7 @@ public class OnblockNotTradResService {
 		String filter_bat = params.getFilter_bat() == null ? "N" : "Y";
 		List<ONBLOCKTAB> list = null;
 		Map rtnMap = new HashMap();
+//		Page page = null;
 		Page page = null;
 		String condition_1 = "";
 		String condition_2 = "";
@@ -550,8 +570,12 @@ public class OnblockNotTradResService {
 					"ACHFLAG" };
 			System.out.println("cntSQL===>" + cntSQL.toString());
 			System.out.println("sql===>" + sql.toString());
-			page = onblocktabRepository.getDataIIII(Integer.valueOf(pageNo), Integer.valueOf(pageSize), cntSQL.toString(),
-					sql.toString(), cols, ONBLOCKTABbean.class);
+			
+//			page = onblocktabRepository.getDataIIII(Integer.valueOf(pageNo), Integer.valueOf(pageSize), cntSQL.toString(),
+//					sql.toString(), cols, ONBLOCKTABbean.class);
+			
+			page = vwOnblocktabRepository.getDataIII(pageNo, pageSize, cntSQL.toString(), sql.toString(), cols,
+					ONBLOCKTABbean.class);
 			list = (List<ONBLOCKTAB>) page.getResult();
 			System.out.println("ONBLOCKTAB.list>>" + list);
 			list = list != null && list.size() == 0 ? null : list;
@@ -572,15 +596,17 @@ public class OnblockNotTradResService {
 			System.out.println("serchStrs =" + newParams);
 			if (resultStatus.equals("00")) {
 				newParams = newParams.replace("\"RESULTSTATUS\":\"00\"", "\"RESULTSTATUS\":\"成功\"");
-				params.put("serchStrs", newParams);
+//				params.put("serchStrs", newParams);//先註解
+				
 			} else if (resultStatus.equals("01")) {
 				newParams = newParams.replace("\"RESULTSTATUS\":\"01\"", "\"RESULTSTATUS\":\"失敗\"");
-				params.put("serchStrs", newParams);
+//				params.put("serchStrs", newParams);//先註解
 			}
 //				必須是按下UI的查詢才紀錄
 			if (isSearch.equals("Y")) {
 //				userlog_bo.writeLog("C", null, null, params);
-				eachUserlogService.writeLog("C", null, null, params);
+//				eachUserlogService.writeLog("C", null, null, params);//先註解
+				System.out.println("NONON");
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -591,10 +617,14 @@ public class OnblockNotTradResService {
 			rtnMap.put("rows", new ArrayList<>());
 			rtnMap.put("msg", "查詢失敗");
 //			userlog_bo.writeFailLog("C", rtnMap, null, null, params);
-			eachUserlogService.writeFailLog("C", rtnMap, null, null, params);
+//			eachUserlogService.writeFailLog("C", rtnMap, null, null, params);//先註解
 		}
-		String json = JSONUtils.map2json(rtnMap);
-		System.out.println("json===>" + json + "<===");
-		return json;
+//		String json = JSONUtils.map2json(rtnMap);
+//		System.out.println("json===>" + json + "<===");
+//		return json;
+		ObjectMapper mapper = new ObjectMapper();
+		PageSearchRs result = mapper.convertValue(rtnMap, PageSearchRs.class);
+		return result;
 	}
+	
 }

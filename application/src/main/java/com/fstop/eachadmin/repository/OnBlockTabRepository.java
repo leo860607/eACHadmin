@@ -1,19 +1,11 @@
 package com.fstop.eachadmin.repository;
 
-import java.sql.CallableStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.internal.SessionImpl;
-import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -21,24 +13,16 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fstop.eachadmin.dto.UndoneSendRs;
-import com.fstop.fcore.util.AutoAddScalar;
 import com.fstop.infra.entity.ONBLOCKTAB;
-import com.fstop.infra.entity.TX_ERR;
-
-import util.NumericUtil;
 
 @Repository
 public class OnBlockTabRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
-	private SimpleJdbcCall simpleJdbcCall;
-	@Autowired
 	private PageRepository pageRepository;
 	@Autowired
-	private PageQueryRepository<ONBLOCKTAB> pageQR;
+	private PageQueryRepository pageQR;
 
 
 	// 待修改
@@ -65,7 +49,7 @@ public class OnBlockTabRepository {
 
 //    改寫存取SQL的Stored Procedures
 	public Map getNewFeeDetail(String bizdate, String txid, String senderid, String senderbankid, String txamt) {
-		java.util.Map resultMap = new java.util.HashMap();
+		Map resultMap = new HashMap();
 //		System.out.println("getNewFeeDetail");
 //		System.out.println(txid);
 //		System.out.println(senderid);
@@ -74,11 +58,12 @@ public class OnBlockTabRepository {
 
 //        String sql = "{CALL SP_CAL_NWFEE_SINGLE(?,?,?,?,?,?,?,?,?,?,?,?)}";
 //		要另外建立SimpleJdbcCall,再把要call的名稱用withProcedureName方法存取
-		simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("SP_CAL_NWFEE_SINGLE");
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("SP_CAL_NWFEE_SINGLE");
 //		設定參數,這邊觀察前5項為參數,後面6項為要output的值
 		SqlParameterSource param = new MapSqlParameterSource().addValue("1", "bizdate").addValue("2", "txid")
 				.addValue("3", "senderid").addValue("4", "senderbankid").addValue("5", "txamt");
 
+		resultMap=simpleJdbcCall.execute(param);
 //            java.sql.CallableStatement callableStatement = ((org.hibernate.internal.SessionImpl) getCurrentSession()).connection().prepareCall(sql);
 //            callableStatement.setString(1, bizdate);
 //            callableStatement.setString(2, txid);
