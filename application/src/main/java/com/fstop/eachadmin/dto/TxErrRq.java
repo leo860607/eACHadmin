@@ -21,19 +21,19 @@ public class TxErrRq<VW_ONBLOCKTAB> {
 	@JsonProperty("CLEARINGPHASE")
 	private String CLEARINGPHASE;
 	
-	@Schema(description = "")
+	@Schema(description = "頁數")
 	@JsonProperty("PAGE")
 	private String page;
 	
-	@Schema(description = "")
+	@Schema(description = "列表")
 	@JsonProperty("ROWS")
 	private List<VW_ONBLOCKTAB> rows;
 	
-	@Schema(description = "")
+	@Schema(description = "查詢結果總筆數")
 	@JsonProperty("SIDX")
 	private String sidx;
 	
-	@Schema(description = "")
+	@Schema(description = "交易金額")
 	@JsonProperty("SORD")
 	private String sord;
 	
