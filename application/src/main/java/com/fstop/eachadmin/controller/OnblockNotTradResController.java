@@ -27,9 +27,8 @@ import com.fstop.infra.entity.UNDONE_TXDATA;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-//import io.swagger.v3.oas.annotations.parameters.*;
 
-@Tag(name = "未完成交易查詢")
+@Tag(name = "未完成交易結果查詢")
 @RestController
 @RequestMapping("api/NotTradRes")
 public class OnblockNotTradResController {
@@ -40,6 +39,7 @@ public class OnblockNotTradResController {
 	@Autowired
 	private UndoneService UndoneS;
 	
+	@Autowired
 	private OnblockNotTradResService OnblockNotTradResS;
 
 	// 操作行下拉選單
@@ -59,7 +59,6 @@ public class OnblockNotTradResController {
  	@Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
  	@PostMapping(value = "/pageSearch")
  	public CommonPageSearchRs<ONBLOCKNOTTRADRES_SEARCH, ONBKNOTTRADRES_SEARCH> pageSearch(@RequestBody CommonPageSearchRq param) {
-//		return UndoneS.pageSearch(param);
  		return OnblockNotTradResS.getNotTradResList(param);
 	}
 
