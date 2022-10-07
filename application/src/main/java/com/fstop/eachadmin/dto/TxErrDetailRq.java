@@ -3,6 +3,7 @@ package com.fstop.eachadmin.dto;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,6 +17,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Validated
 public class TxErrDetailRq {
 	
 	@NotEmpty(message = "系統追蹤序號")
@@ -25,7 +27,7 @@ public class TxErrDetailRq {
 	private String STAN;
 	
 	@NotEmpty(message = "交易日期為年分為西元，例如：20191014")
-	@Length(min = 8 , max = 8 )
+	@Length(min = 8, max = 8)
 	@Schema(description = "交易日期")
 	@JsonProperty("TXDATE")
 	private String TXDATE;
@@ -34,6 +36,7 @@ public class TxErrDetailRq {
 	@JsonProperty("ac_key")
 	private	String	ac_key;
 	
+	@Schema(description = "")
 	@JsonProperty("target")
 	private	String	target;
 
