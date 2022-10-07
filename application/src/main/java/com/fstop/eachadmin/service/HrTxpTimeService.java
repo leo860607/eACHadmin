@@ -198,7 +198,6 @@ public class HrTxpTimeService {
 		if(StrUtils.isNotEmpty(param.getTXDATE().trim())){
 			txDate = param.getTXDATE().trim();
 			//20151022 HUANGPU 改用交易日期查詢較合邏輯
-			//conditions.add(" A.BIZDATE = '" + DateTimeUtils.convertDate(txDate, "yyyyMMdd", "yyyyMMdd") + "' ");
 			conditions.add(" A.TXDATE = '" + DateTimeUtils.convertDate(txDate, "yyyyMMdd", "yyyyMMdd") + "' ");
 		}
 		

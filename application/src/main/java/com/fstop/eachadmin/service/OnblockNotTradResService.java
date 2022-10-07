@@ -276,7 +276,7 @@ public class OnblockNotTradResService {
 	
 	//未完成交易結果查詢
 //	public String getNotTradResList(Map<String, String> params) {
-	public CommonPageSearchRs<ONBLOCKNOTTRADRES_SEARCH, ONBLOCKNOTTRADRES_SEARCH> getNotTradResList(CommonPageSearchRq params) {
+	public CommonPageSearchRs<ONBLOCKNOTTRADRES_SEARCH> getNotTradResList(CommonPageSearchRq params) {
 
 //		String startDate = StrUtils.isEmpty(params.get("START_DATE")) ? "" : params.get("START_DATE");// 交易日期
 		String startDate = StrUtils.isEmpty(params.getStartDate()) ? "" : params.getStartDate();// 交易日期
@@ -299,7 +299,7 @@ public class OnblockNotTradResService {
 //		int pageSize = StrUtils.isEmpty(params.get("rows")) ? Integer.valueOf(Arguments.getStringArg("PAGE.SIZE"))
 //				: Integer.valueOf(params.get("rows"));
 		int pageNo = 1;
-		int pageSize = 1;
+		int pageSize = 15;
 		
 //		String isSearch = StrUtils.isEmpty(params.get("isSearch")) ? "Y" : params.get("isSearch");
 //		String isSearch = StrUtils.isEmpty(params.getIsSearch()) ? "Y" : params.getIsSearch(); //UI的查詢 //先註解

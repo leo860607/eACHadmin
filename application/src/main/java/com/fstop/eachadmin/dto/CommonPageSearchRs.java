@@ -13,10 +13,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommonPageSearchRs<T, O> {
+public class CommonPageSearchRs<ONBLOCKNOTTRADRES_SEARCH> {
 
 	@JsonProperty("DATASUMLIST")
-	private List<T> dataSumList;
+	private List<ONBLOCKNOTTRADRES_SEARCH> dataSumList;
 	
 	@JsonProperty("TOTAL")
 	private String total;
@@ -28,7 +28,7 @@ public class CommonPageSearchRs<T, O> {
 	private String records;
 	
 	@JsonProperty("ROWS")
-	private List<O> rows;
+	private List<ONBLOCKNOTTRADRES_SEARCH> rows;
 	
 	@JsonProperty("MSG")
 	private String msg;

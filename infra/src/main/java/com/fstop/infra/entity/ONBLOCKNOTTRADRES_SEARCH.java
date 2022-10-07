@@ -21,10 +21,10 @@ public class ONBLOCKNOTTRADRES_SEARCH {
 	private String TXDATE;
 	private String RESULTCODE;
 	private String NEWTXAMT;
-	private String OUTACCTNO;	
+	private String OUTACCT;	
 	private String STAN;	
 	private String SENDERID;
-	private String INACCTNO;	
+	private String INACCT;	
 	private String TXDT;
 	private String PCODE;
 	private BigDecimal TXAMT;	

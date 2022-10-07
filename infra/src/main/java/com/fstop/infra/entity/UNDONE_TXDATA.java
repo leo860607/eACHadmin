@@ -19,7 +19,9 @@ public  class UNDONE_TXDATA  {
 	private String OUTBANKID;
 	private String INBANKID;	
 	private String OUTACCTNO;	
-	private String INACCTNO;	
+	private String INACCTNO;
+	private String OUTACCT;	
+	private String INACCT;
 	private BigDecimal TXAMT;	
 	private String CONRESULTCODE;	
 	private String RESULTCODE;

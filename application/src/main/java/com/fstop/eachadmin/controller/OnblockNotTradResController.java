@@ -57,7 +57,7 @@ public class OnblockNotTradResController {
     // 查詢
  	@Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
  	@PostMapping(value = "/pageSearch")
- 	public CommonPageSearchRs<ONBLOCKNOTTRADRES_SEARCH, ONBLOCKNOTTRADRES_SEARCH> pageSearch(@RequestBody CommonPageSearchRq param) {
+ 	public CommonPageSearchRs<ONBLOCKNOTTRADRES_SEARCH> pageSearch(@RequestBody CommonPageSearchRq param) {
 //		return UndoneS.pageSearch(param);
  		return OnblockNotTradResS.getNotTradResList(param);
 	}
