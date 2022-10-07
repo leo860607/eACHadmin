@@ -68,12 +68,7 @@ public class HrTxpTimeService {
 	@SuppressWarnings("unchecked")
 	public HrTxpTimeRs pageSearch(HrTxpTimeRq param){
 		List<String> conditions = getConditionList(param);
-//		int pageNo = 2;
-//		int pageSize = 10;
-//		String pageNo = StrUtils.isEmpty(param.getPage()) ?"0":param.getPage();
-//		String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
 		Map rtnMap = new HashMap();
-
 		List<HR_TXP_TIME> list = null;
 		Page page = null;
 		try {
@@ -124,9 +119,10 @@ public class HrTxpTimeService {
 			dataSumSQL.append(") AS B ON A.HOURLAP = B.HOURLAP ");
 			dataSumSQL.append("WHERE A.HOURLAP IS NOT NULL ");
 			System.out.println("dataSumSQL = " + dataSumSQL.toString().toUpperCase());
+			
 			List countAndSumList = onblocktab_Dao.dataSum(dataSumSQL.toString(),dataSumCols,countAndSumListRs.class);
 			log.debug(countAndSumList.toString());
-			rtnMap.put("COUNTANDSUMLIST", (List<HR_TXP_TIME>)countAndSumList);
+			rtnMap.put("COUNTANDSUMLIST", (List<countAndSumListRs>)countAndSumList);
 			
 			StringBuffer countQuery = new StringBuffer();
 			StringBuffer sql = new StringBuffer();
@@ -182,8 +178,8 @@ public class HrTxpTimeService {
 			countQuery.append("SELECT A.* FROM HOURITEM AS A ");
 			countQuery.append("WHERE A.HOURLAP IS NOT NULL ");
 			System.out.println("countQuery = " + countQuery.toString().toUpperCase());	
-			List<Map> list1 =  onblocktab_Dao.getData(sql.toString());
-			rtnMap.put("ROWS",list1);
+			List list1 =  onblocktab_Dao.getData(sql.toString(),HR_TXP_TIME.class);
+			rtnMap.put("ROWS",(List<HR_TXP_TIME>) list1);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

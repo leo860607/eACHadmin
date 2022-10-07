@@ -135,9 +135,9 @@ public class OnBlockTabRepository {
 	}
 //	
 //	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<Map> getData( String sql) {
+	public List<Map> getData( String sql,Class targetClass) {
 		List<Map> list = null;
-		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(HR_TXP_TIME.class));
+		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(targetClass));
 		System.out.println("list>>"+list);
 		return list = list!=null&& list.size() ==0 ?null:list;
 	}
