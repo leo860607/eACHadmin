@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fstop.eachadmin.dto.BankGroupRq;
-import com.fstop.eachadmin.dto.HrTxpTimePrintRs;
 import com.fstop.eachadmin.dto.HrTxpTimeRq;
 import com.fstop.eachadmin.dto.HrTxpTimeRs;
 import com.fstop.eachadmin.service.BankGroupService;
