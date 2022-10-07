@@ -18,13 +18,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class HrTxpTimeRs {
+public class HrTxpTimeRs<HR_TXP_TIME> {
 	
-	@Schema(description = "統計")
 	@JsonProperty("COUNTANDSUMLIST")
-	private List<countAndSumListRs> countAndSumList;
+	private List<HR_TXP_TIME> countAndSumList;
 	
-	@Schema(description = "查詢結果")
+	@Schema(description = "")
 	@JsonProperty("ROWS")
 	private List<HR_TXP_TIME> rows;
 }
