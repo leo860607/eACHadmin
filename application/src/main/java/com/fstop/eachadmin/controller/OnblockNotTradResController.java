@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fstop.eachadmin.dto.CommonPageSearchRq;
+import com.fstop.eachadmin.dto.CommonPageSearchRs;
 import com.fstop.eachadmin.dto.ObtkNtrRq;
 import com.fstop.eachadmin.dto.ObtkNtrRs;
 import com.fstop.eachadmin.dto.PageSearchRq;
@@ -19,6 +21,7 @@ import com.fstop.eachadmin.dto.UndoneSendRs;
 import com.fstop.eachadmin.service.NTRDetailService;
 import com.fstop.eachadmin.service.OnblockNotTradResService;
 import com.fstop.eachadmin.service.UndoneService;
+import com.fstop.infra.entity.ONBLOCKNOTTRADRES_SEARCH;
 import com.fstop.infra.entity.UNDONE_TXDATA;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,7 +57,7 @@ public class OnblockNotTradResController {
     // 查詢
  	@Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
  	@PostMapping(value = "/pageSearch")
- 	public PageSearchRs<UNDONE_TXDATA> pageSearch(@RequestBody PageSearchRq param) {
+ 	public CommonPageSearchRs<ONBLOCKNOTTRADRES_SEARCH, ONBLOCKNOTTRADRES_SEARCH> pageSearch(@RequestBody CommonPageSearchRq param) {
 //		return UndoneS.pageSearch(param);
  		return OnblockNotTradResS.getNotTradResList(param);
 	}
@@ -63,7 +66,7 @@ public class OnblockNotTradResController {
 	@Operation(summary = "明細 API", description = "明細表單產出")
 	@PostMapping(value = "/detail")
 	public ObtkNtrRs detail(@RequestBody ObtkNtrRq param) {
-		return NTRDetailS.showDetail(param);
+		return OnblockNotTradResS.showDetail(param);
 	}
 
 	// 請求傳送未完成交易結果(send_1406)

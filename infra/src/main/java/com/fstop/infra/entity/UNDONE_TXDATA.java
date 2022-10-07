@@ -1,8 +1,6 @@
 package com.fstop.infra.entity;
 
 import java.math.BigDecimal;
-import java.util.Map;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

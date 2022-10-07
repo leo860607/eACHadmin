@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,20 +13,17 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fstop.eachadmin.dto.UndoneSendRs;
 import com.fstop.fcore.util.Page;
 import com.fstop.infra.entity.HR_TXP_TIME;
+import com.fstop.infra.entity.ONBLOCKNOTTRADRES_SEARCH;
+import com.fstop.infra.entity.ONBLOCKTAB;
 import com.fstop.infra.entity.UNDONE_TXDATA;
-
-import util.NumericUtil;
 
 @Repository
 public class OnBlockTabRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	@Autowired
-	private PageRepository pageRepository;
+
 	@Autowired
 	private PageQueryRepository pageQR;
 
@@ -113,7 +109,7 @@ public class OnBlockTabRepository {
 		return count;
 	}
 
-	public List<Map<String, Object>> dataSum(String dataSumSQL, String[] dataSumCols, Class targetClass) {
+	public List<ONBLOCKTAB> dataSum(String dataSumSQL, String[] dataSumCols, Class targetClass) {
 //		SQLQuery query = getCurrentSession().createSQLQuery(dataSumSQL);
 //		AutoAddScalar addscalar = new AutoAddScalar();
 //		addscalar.addScalar(query, targetClass, dataSumCols);
@@ -184,6 +180,23 @@ public class OnBlockTabRepository {
 //		return new PageRepository(startIndex - 1, totalCount, pageSize, list);
 //	}
 	
+	public List<ONBLOCKNOTTRADRES_SEARCH> dataSumI(String dataSumSQL, String[] dataSumCols, Class targetClass) {
+//		SQLQuery query = getCurrentSession().createSQLQuery(dataSumSQL);
+//		AutoAddScalar addscalar = new AutoAddScalar();
+//		addscalar.addScalar(query, targetClass, dataSumCols);
+//		query.setResultTransformer(Transformers.aliasToBean(targetClass));
+//		return query.list();	
+		List list = new ArrayList();
+		list = jdbcTemplate.query(dataSumSQL, new BeanPropertyRowMapper(targetClass));
+		return list;
+//		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+//		if (paramObject != null) {
+//			resultList = jdbcTemplate.queryForList(sql, paramObject);
+//		} else {
+//			resultList = jdbcTemplate.queryForList(sql);
+//		}
+//		return resultList;
+	}
 	
     
 }

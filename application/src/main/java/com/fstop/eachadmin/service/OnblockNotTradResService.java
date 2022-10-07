@@ -2,82 +2,45 @@ package com.fstop.eachadmin.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
-import javax.xml.bind.JAXBException;
-
-import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.fstop.eachadmin.repository.BankGroupRepository;
 import com.fstop.eachadmin.repository.BusinessTypeRepository;
 import com.fstop.eachadmin.repository.OnBlockTabRepository;
-import com.fstop.eachadmin.repository.OnPendingTabRepository;
 import com.fstop.eachadmin.repository.PageQueryRepository;
 import com.fstop.eachadmin.repository.VwOnBlockTabRepository;
 import com.fstop.fcore.util.Page;
-import com.fstop.infra.entity.BANK_BRANCH;
 import com.fstop.infra.entity.BANK_GROUP;
-import com.fstop.infra.entity.BANK_OPBK;
-
-import com.fstop.infra.entity.BUSINESS_TYPE;
+import com.fstop.infra.entity.ONBLOCKNOTTRADRES_SEARCH;
 import com.fstop.infra.entity.ONBLOCKTAB;
-import com.fstop.infra.entity.ONBLOCKTAB_FORM;
-import com.fstop.infra.entity.ONPENDINGTAB;
-import com.fstop.infra.entity.ONPENDINGTAB_PK;
-import com.fstop.infra.entity.TX_ERR;
-import com.fstop.infra.entity.TX_ERR_ONBLOCKTAB;
 import com.fstop.infra.entity.UNDONE_TXDATA;
+import com.fstop.infra.entity.VW_ONBLOCKTAB;
+import com.fstop.infra.entity.BANK_BRANCH;
 
 import lombok.extern.slf4j.Slf4j;
 
-import com.fstop.infra.entity.ONBLOCKTAB_NOTTRAD_RESF;
 import com.fstop.infra.entity.ONBLOCKTABbean;
-
-import util.messageConverter;
 
 import util.DateTimeUtils;
 
 import util.StrUtils;
-import util.socketPackage;
-import util.zDateHandler;
-import util.socketPackage.Body;
-import util.socketPackage.Header;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fstop.eachadmin.dto.DetailRs;
-import com.fstop.eachadmin.dto.LoginFormDto;
-import com.fstop.eachadmin.dto.ObtkNtrRq;
 import com.fstop.eachadmin.dto.ObtkNtrRs;
 import com.fstop.eachadmin.dto.PageSearchRq;
 import com.fstop.eachadmin.dto.PageSearchRs;
-import com.fstop.eachadmin.dto.TxErrRq;
-import com.fstop.eachadmin.dto.TxErrRs;
-import com.fstop.eachadmin.dto.UndoneSendRq;
-import com.fstop.eachadmin.dto.UndoneSendRs;
-import com.fstop.infra.entity.ONBLOCKTABbean;
+import java.math.BigDecimal;
+
+import com.fstop.eachadmin.dto.CommonPageSearchRq;
+import com.fstop.eachadmin.dto.CommonPageSearchRs;
+import com.fstop.eachadmin.dto.ObtkNtrRq;
 
 
 @Slf4j
 @Service
 public class OnblockNotTradResService {
-
-//	@Autowired
-//	private BUSINESS_TYPE_Dao business_type_Dao ;
-
-//	@Autowired
-//	OnPendingTabRepository OnPendingTabR;
-	ObtkNtrRs obtkNtRRs;
-	@Autowired
-	UndoneService undoneService;
 	
 	@Autowired
 	private BankGroupRepository bankGroupRepository;
@@ -104,62 +67,7 @@ public class OnblockNotTradResService {
 	private VwOnBlockTabRepository vwOnblocktabRepository;
 
 	
-	// 暫時測試用
-	public void testFunction() {
-		System.out.println("哭哭");
-	}
 
-	// 操作行下拉選單
-	public List<Map<String, String>> getOpbkList() {
-
-		// String sql = "SELECT COALESCE( OP.OPBK_ID,'' ) AS OPBK_ID , COALESCE(
-		// BG.BGBK_NAME ,'' ) AS OPBK_NAME FROM ( SELECT DISTINCT OPBK_ID FROM
-		// EACHUSER.BANK_OPBK ) AS OP JOIN ( SELECT BGBK_ID, BGBK_NAME FROM BANK_GROUP
-		// WHERE BGBK_ATTR <> '6' ) AS BG ON OP.OPBK_ID = BG.BGBK_ID ORDER BY OP.OPBK_ID
-		// ";
-		// List<BANK_OPBK> list = business_type_Dao.getAllOpbkList(sql);
-		// TODO:
-		// jdbc 還沒有好, 暫時先用
-		List<BANK_OPBK> list = (List<BANK_OPBK>) businessTypeRepository.testFunction();
-		List<Map<String, String>> beanList = new LinkedList<Map<String, String>>();
-
-		Map<String, String> bean = null;
-
-		for (BANK_OPBK po : list) {
-			po.getOPBK_ID();
-			String k = (String) po.getOPBK_ID() + " - " + po.getOPBK_NAME();
-			String v = (String) po.getOPBK_ID();
-			bean = new HashMap<String, String>();
-			bean.put(k, v);
-			beanList.add(bean);
-		}
-		System.out.println("beanList>>" + beanList);
-		return beanList;
-	}
-
-	// businessLabel
-	public List<Map<String, String>> getBsTypeIdList() {
-
-		// String sql = "FROM tw.org.twntch.po.BUSINESS_TYPE ORDER BY BUSINESS_TYPE_ID";
-		// List<BUSINESS_TYPE> list = business_type_Dao.find(sql);
-		// TODO:
-		// jdbc 還沒有好, 暫時先用
-		List<BUSINESS_TYPE> list = (List<BUSINESS_TYPE>) businessTypeRepository.testFunction();
-		List<Map<String, String>> beanList = new LinkedList<Map<String, String>>();
-
-		Map<String, String> bean = null;
-
-		for (BUSINESS_TYPE po : list) {
-			po.getBUSINESS_TYPE_ID();
-			String k = (String) po.getBUSINESS_TYPE_ID() + " - " + po.getBUSINESS_TYPE_NAME();
-			String v = (String) po.getBUSINESS_TYPE_ID();
-			bean = new HashMap<String, String>();
-			bean.put(k, v);
-			beanList.add(bean);
-		}
-		System.out.println("beanList>>" + beanList);
-		return beanList;
-	}
 	
 	
 	//將list內的元素串接成一個字串
@@ -368,7 +276,7 @@ public class OnblockNotTradResService {
 	
 	//未完成交易結果查詢
 //	public String getNotTradResList(Map<String, String> params) {
-	public PageSearchRs<UNDONE_TXDATA> getNotTradResList(PageSearchRq params) {
+	public CommonPageSearchRs<ONBLOCKNOTTRADRES_SEARCH, ONBLOCKNOTTRADRES_SEARCH> getNotTradResList(CommonPageSearchRq params) {
 
 //		String startDate = StrUtils.isEmpty(params.get("START_DATE")) ? "" : params.get("START_DATE");// 交易日期
 		String startDate = StrUtils.isEmpty(params.getStartDate()) ? "" : params.getStartDate();// 交易日期
@@ -394,18 +302,18 @@ public class OnblockNotTradResService {
 		int pageSize = 1;
 		
 //		String isSearch = StrUtils.isEmpty(params.get("isSearch")) ? "Y" : params.get("isSearch");
-		String isSearch = StrUtils.isEmpty(params.getIsSearch()) ? "Y" : params.getIsSearch();
-		// 是否包含整批資料("N"表示不過濾)
+//		String isSearch = StrUtils.isEmpty(params.getIsSearch()) ? "Y" : params.getIsSearch(); //UI的查詢 //先註解
+		// 是否過濾整批資料("N"表示不過濾)
 //		String filter_bat = params.get("FILTER_BAT") == null ? "N" : "Y";
 		String filter_bat = params.getFilter_bat() == null ? "N" : "Y";
-		List<ONBLOCKTAB> list = null;
+		List<ONBLOCKNOTTRADRES_SEARCH> list = null;
 		Map rtnMap = new HashMap();
 //		Page page = null;
 		Page page = null;
 		String condition_1 = "";
 		String condition_2 = "";
 		try {
-			list = new ArrayList<ONBLOCKTAB>();
+			list = new ArrayList<ONBLOCKNOTTRADRES_SEARCH>();
 			List<String> conditions_1 = new ArrayList<String>();
 			List<String> conditions_2 = new ArrayList<String>();
 			/* 20150210 HUANGPU 改以清算階段後的營業日(BIZDATE)查詢資料，非原交易日期(OTXDATE) */
@@ -552,70 +460,73 @@ public class OnblockNotTradResService {
 			// 先算出總計的欄位值，放到rtnMap裡面，到頁面再放到下面的總計Grid裡面
 			sumSQL.append("SELECT SUM(TXAMT) AS TXAMT  FROM TEMP ");
 			sumSQL.insert(0, tmpSQL.toString());
-			System.out.println("sumSQL=" + sumSQL);
+			log.debug("sumSQL=" + sumSQL);
+			log.debug("tmpSQL=" + tmpSQL);
 			String dataSumCols[] = { "TXAMT" };
 //			list = onblocktab_Dao.dataSum(sumSQL.toString(), dataSumCols, ONBLOCKTAB.class);
 //			list = OnBlockTabRepository.dataSum(sumSQL.toString(), dataSumCols, ONBLOCKTAB.class);
-			list = onblocktabRepository.dataSum(sumSQL.toString(), dataSumCols, ONBLOCKTAB.class);
+			list = onblocktabRepository.dataSumI(sumSQL.toString(), dataSumCols, ONBLOCKNOTTRADRES_SEARCH.class);
 
 			/*
 			 * for(ONBLOCKTAB po:list){ System.out.println(String.format("SUM(X.TXAMT)=%s",
 			 * po.getTXAMT())); }
 			 */
-			rtnMap.put("dataSumList", list);
+			rtnMap.put("DATASUMLIST", list);
 			cntSQL.append("SELECT COUNT(*) AS NUM FROM TEMP");
 			cntSQL.insert(0, tmpSQL.toString());
 			String cols[] = { "PCODE", "TXDT", "STAN", "TXDATE", "SENDERBANKID", "OUTBANKID", "INBANKID", "OUTACCT",
 					"INACCT", "TXAMT", "CONRESULTCODE", "OBIZDATE", "OCLEARINGPHASE", "RESULTCODE", "ACCTCODE",
 					"ACHFLAG" };
-			System.out.println("cntSQL===>" + cntSQL.toString());
-			System.out.println("sql===>" + sql.toString());
-			
+//			System.out.println("cntSQL===>" + cntSQL.toString());
+			log.debug("cntSQL===>" + cntSQL);
+//			System.out.println("sql===>" + sql.toString());
+			log.debug("SQL===>" + sql);
 //			page = onblocktabRepository.getDataIIII(Integer.valueOf(pageNo), Integer.valueOf(pageSize), cntSQL.toString(),
 //					sql.toString(), cols, ONBLOCKTABbean.class);
 			
 			page = vwOnblocktabRepository.getDataIII(pageNo, pageSize, cntSQL.toString(), sql.toString(), cols,
 					ONBLOCKTABbean.class);
-			list = (List<ONBLOCKTAB>) page.getResult();
+			list = (List<ONBLOCKNOTTRADRES_SEARCH>) page.getResult();
 			System.out.println("ONBLOCKTAB.list>>" + list);
 			list = list != null && list.size() == 0 ? null : list;
 			if (page == null) {
-				rtnMap.put("total", "0");
-				rtnMap.put("page", "0");
-				rtnMap.put("records", "0");
-				rtnMap.put("rows", new ArrayList());
+				rtnMap.put("TOTAL", "0");
+				rtnMap.put("PAGE", "0");
+				rtnMap.put("RECORDS", "0");
+				rtnMap.put("ROWS", new ArrayList());
 			} else {
-				rtnMap.put("total", page.getTotalPageCount());
-				rtnMap.put("page", String.valueOf(page.getCurrentPageNo()));
-				rtnMap.put("records", page.getTotalCount());
-				rtnMap.put("rows", list);
+				rtnMap.put("TOTAL", page.getTotalPageCount());
+				rtnMap.put("PAGE", String.valueOf(page.getCurrentPageNo()));
+				rtnMap.put("RECORDS", page.getTotalCount());
+				rtnMap.put("ROWS", list);
 			}
 
-//			String newParams = params.get("serchStrs");
-			String newParams = params.getSerchStrs();
-			System.out.println("serchStrs =" + newParams);
-			if (resultStatus.equals("00")) {
-				newParams = newParams.replace("\"RESULTSTATUS\":\"00\"", "\"RESULTSTATUS\":\"成功\"");
-//				params.put("serchStrs", newParams);//先註解
-				
-			} else if (resultStatus.equals("01")) {
-				newParams = newParams.replace("\"RESULTSTATUS\":\"01\"", "\"RESULTSTATUS\":\"失敗\"");
-//				params.put("serchStrs", newParams);//先註解
-			}
-//				必須是按下UI的查詢才紀錄
-			if (isSearch.equals("Y")) {
-//				userlog_bo.writeLog("C", null, null, params);
-//				eachUserlogService.writeLog("C", null, null, params);//先註解
-				System.out.println("NONON");
-			}
+			//TODO 
+			//write log
+////			String newParams = params.get("serchStrs");
+//			String newParams = params.getSerchStrs();
+//			System.out.println("serchStrs =" + newParams);
+//			if (resultStatus.equals("00")) {
+//				newParams = newParams.replace("\"RESULTSTATUS\":\"00\"", "\"RESULTSTATUS\":\"成功\"");
+////				params.put("serchStrs", newParams);//先註解
+//				
+//			} else if (resultStatus.equals("01")) {
+//				newParams = newParams.replace("\"RESULTSTATUS\":\"01\"", "\"RESULTSTATUS\":\"失敗\"");
+////				params.put("serchStrs", newParams);//先註解
+//			}
+////				必須是按下UI的查詢才紀錄
+//			if (isSearch.equals("Y")) {
+////				userlog_bo.writeLog("C", null, null, params);
+////				eachUserlogService.writeLog("C", null, null, params);//先註解
+//			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			rtnMap.put("total", 1);
-			rtnMap.put("page", 1);
-			rtnMap.put("records", 0);
-			rtnMap.put("rows", new ArrayList<>());
-			rtnMap.put("msg", "查詢失敗");
+			rtnMap.put("TOTAL", 1);
+			rtnMap.put("PAGE", 1);
+			rtnMap.put("RECORDS", 0);
+			rtnMap.put("ROWS", new ArrayList<>());
+			rtnMap.put("MSG", "查詢失敗");
 //			userlog_bo.writeFailLog("C", rtnMap, null, null, params);
 //			eachUserlogService.writeFailLog("C", rtnMap, null, null, params);//先註解
 		}
@@ -623,8 +534,124 @@ public class OnblockNotTradResService {
 //		System.out.println("json===>" + json + "<===");
 //		return json;
 		ObjectMapper mapper = new ObjectMapper();
-		PageSearchRs result = mapper.convertValue(rtnMap, PageSearchRs.class);
+		CommonPageSearchRs result = mapper.convertValue(rtnMap, CommonPageSearchRs.class);
 		return result;
 	}
 	
+	//未完成交易結果明細
+	public ObtkNtrRs showDetail(ObtkNtrRq param) {
+
+        ObtkNtrRs obtkNtrRs = new ObtkNtrRs();
+        String ac_key = StrUtils.isEmpty(param.getAc_key())?"":param.getAc_key();
+        List<BANK_BRANCH> list = null;
+        List<ONBLOCKTAB> onblist = null;
+        Map<String, String> m = new HashMap<String, String>();
+
+        if (ac_key.equals("search")) {
+
+        }
+        else if (ac_key.equals("edit")) {
+
+            // BeanUtils.populate(param, JSONUtils.json2map(param.getEdit_params()));
+
+            String txDate = param.getTXDATE();
+            String stan = param.getSTAN();
+
+            VW_ONBLOCKTAB detailData = onblocktabService.showNotTradResDetail(txDate, stan);
+			Map<String,String> detailMapRs = new HashMap();
+            //要用舊的營業日去查手續費
+            String obizdate = param.getOLDBIZDATE();
+
+            //20220321新增FOR EXTENDFEE 位數轉換
+//            if (detailDataMap.get("EXTENDFEE") != null) {
+            if (detailData.getEXTENDFEE() != null) {
+//                BigDecimal orgNewExtendFee = (BigDecimal) detailDataMap.get("EXTENDFEE");
+            	BigDecimal orgNewExtendFee = (BigDecimal) detailData.getEXTENDFEE();
+                //去逗號除100 1,000 > 1000/100 = 10
+                String strOrgNewExtendFee = orgNewExtendFee.toString();
+                double realNewExtendFee = Double.parseDouble(strOrgNewExtendFee.replace(",", "")) / 100;
+//                detailData.put("NEWEXTENDFEE", String.valueOf(realNewExtendFee));
+                detailMapRs.put("NEWEXTENDFEE", String.valueOf(realNewExtendFee));
+            } else {
+                //如果是null 顯示空字串
+//                detailData.put("NEWEXTENDFEE", "");
+            	detailMapRs.put("NEWEXTENDFEE", "");
+            }
+
+            //如果FEE_TYPE有值 且結果為成功或未完成  此功能都拿新的值
+//            if (StrUtils.isNotEmpty((String) detailData.get("FEE_TYPE")) &&
+//                    ("成功".equals((String) detailData.get("RESP")) || "未完成".equals((String) detailDataMap.get("RESP")))) {
+            if (StrUtils.isNotEmpty((String) detailData.getFEE_TYPE()) &&
+                    ("成功".equals((String) detailData.getRESP()) || "未完成".equals((String) detailData.getRESP()))) {
+//                switch ((String) detailData.get("FEE_TYPE")) {
+                switch ((String) detailData.getFEE_TYPE()) {
+                    case "A":
+                        detailMapRs.put("TXN_TYPE", "固定");
+                        break;
+                    case "B":
+                        detailMapRs.put("TXN_TYPE", "外加");
+                        break;
+                    case "C":
+                        detailMapRs.put("TXN_TYPE", "百分比");
+                        break;
+                    case "D":
+                        detailMapRs.put("TXN_TYPE", "級距");
+                        break;
+                }
+
+                //如果FEE_TYPE有值 且結果為失敗或處理中 此功能都拿新的值
+            } else if (StrUtils.isNotEmpty((String) detailData.getFEE_TYPE()) &&
+                    ("失敗".equals((String) detailData.getRESP()) || "處理中".equals((String) detailData.getRESP()))) {
+                switch ((String) detailData.getFEE_TYPE()) {
+                    case "A":
+                        detailMapRs.put("TXN_TYPE", "固定");
+                        break;
+                    case "B":
+                        detailMapRs.put("TXN_TYPE", "外加");
+                        break;
+                    case "C":
+                        detailMapRs.put("TXN_TYPE", "百分比");
+                        break;
+                    case "D":
+                        detailMapRs.put("TXN_TYPE", "級距");
+                        break;
+                }
+
+                //如果FEE_TYPE為空 且結果為成功或未完成 新版手續call sp  此功能都拿新的值
+            } else if (StrUtils.isEmpty((String) detailData.getFEE_TYPE()) &&
+                    ("成功".equals((String) detailData.getRESP()) || "未完成".equals((String) detailData.getRESP()))) {
+                Map newFeeDtailMap = onblocktabService.getNewFeeDetail(obizdate, (String) detailData.getTXN_NAME(), (String) detailData.getSENDERID()
+                        , (String) detailData.getSENDERBANKID_NAME(), (String) detailData.getNEWTXAMT());
+                detailMapRs.put("TXN_TYPE", (String) newFeeDtailMap.get("TXN_TYPE"));
+                detailMapRs.put("NEWSENDERFEE_NW", (String) newFeeDtailMap.get("NEWSENDERFEE_NW"));
+                detailMapRs.put("NEWINFEE_NW", (String) newFeeDtailMap.get("NEWINFEE_NW"));
+                detailMapRs.put("NEWOUTFEE_NW", (String) newFeeDtailMap.get("NEWOUTFEE_NW"));
+                detailMapRs.put("NEWWOFEE_NW", (String) newFeeDtailMap.get("NEWWOFEE_NW"));
+                detailMapRs.put("NEWEACHFEE_NW", (String) newFeeDtailMap.get("NEWEACHFEE_NW"));
+                detailMapRs.put("NEWFEE_NW", (String) newFeeDtailMap.get("NEWFEE_NW"));
+
+                //如果FEE_TYPE為空 且結果為失敗或處理中 call sp 拿FEE_TYPE	  此功能都拿新的值
+            } else if (StrUtils.isEmpty((String) detailData.getFEE_TYPE()) &&
+                    ("失敗".equals((String) detailData.getRESP()) || "處理中".equals((String) detailData.getRESP()))) {
+                Map newFeeDtailMap = onblocktabService.getNewFeeDetail(obizdate, (String) detailData.getTXN_NAME(), (String) detailData.getSENDERID()
+                        , (String) detailData.getSENDERBANKID_NAME(), (String) detailData.getNEWTXAMT());
+
+                detailMapRs.put("TXN_TYPE", (String) newFeeDtailMap.get("TXN_TYPE"));
+                detailMapRs.put("NEWSENDERFEE_NW", (String) newFeeDtailMap.get("NEWSENDERFEE") != null ? (String) newFeeDtailMap.get("NEWSENDERFEE") : "0");
+                detailMapRs.put("NEWINFEE_NW", (String) newFeeDtailMap.get("NEWINFEE") != null ? (String) newFeeDtailMap.get("NEWINFEE") : "0");
+                detailMapRs.put("NEWOUTFEE_NW", (String) newFeeDtailMap.get("NEWOUTFEE") != null ? (String) newFeeDtailMap.get("NEWOUTFEE") : "0");
+                detailMapRs.put("NEWWOFEE_NW", (String) newFeeDtailMap.get("NEWWOFEE") != null ? (String) newFeeDtailMap.get("NEWWOFEE") : "0");
+                detailMapRs.put("NEWEACHFEE_NW", (String) newFeeDtailMap.get("NEWEACHFEE") != null ? (String) newFeeDtailMap.get("NEWEACHFEE") : "0");
+                detailMapRs.put("NEWFEE_NW", (String) newFeeDtailMap.get("NEWFEE") != null ? (String) newFeeDtailMap.get("NEWFEE") : "0");
+
+            }
+
+            obtkNtrRs.setDetailData(detailData);
+            obtkNtrRs.setIsUndone("Y");
+
+            // BeanUtils.copyProperties(obtkNtrRs, param);
+            // request.setAttribute("ObtkNtrRs", obtkNtrRs);
+        }
+        return obtkNtrRs;
+    }
 }

@@ -2,19 +2,26 @@ package com.fstop.infra.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity(name= "MASTER_ONBLOCKTAB")
 @Table(name="ONBLOCKTAB")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ONBLOCKTAB implements Serializable{
 	/**
 	 * 
@@ -96,6 +103,12 @@ public class ONBLOCKTAB implements Serializable{
 	private  String 	ERR_DESC4;
 	private  String 	ERR_DESC5;
 	private  String 	ERR_DESC6;
+	
+	private String RESULTCODE;
+	private String NEWTXDT;
+	private String NEWTXAMT;
+	
+
 	@EmbeddedId
 
 	@Override

@@ -13,11 +13,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageSearchRs<UNDONE_TXDATA> {
-	
-	
+public class CommonPageSearchRs<T, O> {
+
 	@JsonProperty("DATASUMLIST")
-	private List<UNDONE_TXDATA> dataSumList;
+	private List<T> dataSumList;
 	
 	@JsonProperty("TOTAL")
 	private String total;
@@ -29,11 +28,8 @@ public class PageSearchRs<UNDONE_TXDATA> {
 	private String records;
 	
 	@JsonProperty("ROWS")
-	private List<UNDONE_TXDATA> rows;
+	private List<O> rows;
 	
 	@JsonProperty("MSG")
 	private String msg;
-	
-
-
 }
