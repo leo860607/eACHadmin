@@ -25,7 +25,6 @@ public class UNDONE_TXDATA {
 	private String NEWTXDT;
 	private String NEWTXAMT;
 
-
 	@Schema(description = "交易日期")
 	@JsonProperty("txdt")
 	private String TXDT;
