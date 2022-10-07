@@ -126,39 +126,20 @@ public class OnBlockTabRepository {
 //		}
 //		return resultList;
 	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Page getData(int pageNo, int pageSize, String countQuerySql, String sql, String[] cols, Class targetClass) {
-		int totalCount = countData(countQuerySql);
-		int startIndex = Page.getStartOfPage(pageNo, pageSize) + 1;
-		int lastIndex = pageNo * pageSize;
-		sql += " ) AS TEMP_ WHERE ROWNUMBER >= " + startIndex + " AND ROWNUMBER <= " + lastIndex;
+//	
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List<Map> getData( String sql) {
 		List<Map> list = null;
 		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(HR_TXP_TIME.class));
-
-		return new Page(startIndex - 1 , totalCount, pageSize, list);
-		
-//		SQLQuery query = getCurrentSession().createSQLQuery(sql);
-//		AutoAddScalar addscalar = new AutoAddScalar();
-//		addscalar.addScalar(query, targetClass, cols);
-//		query.setResultTransformer(Transformers.aliasToBean(targetClass));
-//		// 實際查詢返回分頁對像
-//		List list = query.list();
-//
-//		return new Page(startIndex - 1, totalCount, pageSize, list);
+		System.out.println("list>>"+list);
+		return list = list!=null&& list.size() ==0 ?null:list;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public int countData(String countQuerySql) {
-		int count = 0;
 		List<Map> list = null;
-		list = jdbcTemplate.query(countQuerySql,new BeanPropertyRowMapper(UNDONE_TXDATA.class) );
-
-		List countList = list.subList(count, count);
-		if (countList != null && countList.size() > 0) {
-			count = (Integer) countList.get(0);
-		}
-		return count;
+		list = jdbcTemplate.query(countQuerySql,new BeanPropertyRowMapper(HR_TXP_TIME.class) );
+		return list.size();
 //		SQLQuery query = getCurrentSession().createSQLQuery(countQuerySql);
 //		List countList = query.list();
 //		return list.size();

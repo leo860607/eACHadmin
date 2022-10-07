@@ -24,18 +24,6 @@ public class HrTxpTimeRs<HR_TXP_TIME> {
 	private List<HR_TXP_TIME> countAndSumList;
 	
 	@Schema(description = "")
-	@JsonProperty("TOTAL")
-	private String total;
-	
-	@Schema(description = "")
-	@JsonProperty("PAGE")
-	private String page;
-	
-	@Schema(description = "")
-	@JsonProperty("RECORDS")
-	private String records;
-	
-	@Schema(description = "")
 	@JsonProperty("ROWS")
 	private List<HR_TXP_TIME> rows;
 }

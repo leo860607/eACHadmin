@@ -46,13 +46,13 @@ public class HrTxpTimeController {
 		}
 		
 	//總行代號
-		@Operation(summary = "總行代號 API", description = "<br>總行代號下拉選單資料</br>"+ "<br>\"OPBK_ID\":\"0000012\",</br>" + "\"s_bizdate\":\"01090121\"" )
+		@Operation(summary = "總行代號 API", description = "<br>總行代號下拉選單資料</br>"+ "<br>\"OPBK_ID\" : \"0000012\",</br>" + "\"s_bizdate\" : \"01090121\"" )
 		@PostMapping(value = "/BankGroup")
 		public List<Map<String, String>> BgbkIdList(@RequestBody BankGroupRq param) {
 			return BankGroupS.getByOpbkId_Single_Date(param);
 		}
 	//查詢
-		@Operation(summary = "查詢 API", description = "查詢按鈕")
+		@Operation(summary = "查詢 API", description = "<br>查詢按鈕</br>"+"<br>\"TXDATE\" : \"01090120\",</br>"+"\"PCODE\" : \"all\","+"<br>\"OPBK_ID\" : \"all\",</br>"+"\"BGBK_ID\" : \"all\","+"<br>\"CLEARINGPHASE\" : \"all\",</br>"+"\"PAGE\" : \"1\","+ "<br>\"SIDX\" : \"\",</br> "+ "\"SORD\" : \"\" ")
 		@PostMapping(value = "/search")
 		public HrTxpTimeRs getPageSearch (@RequestBody HrTxpTimeRq param) {
 			return  HrTxpTimeS.pageSearch(param);
