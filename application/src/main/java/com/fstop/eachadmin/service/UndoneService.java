@@ -316,7 +316,7 @@ public class UndoneService {
 			System.out.println("sql==>" + sql.toString().toUpperCase());
 			page = vwOnBlockTabRepository.getDataIII(pageNo, pageSize, cntSQL.toString(), sql.toString(), cols,
 					UNDONE_TXDATA.class);
-
+			
 			list = (List<UNDONE_TXDATA>) page.getResult();
 			System.out.println("UNDONE_TXDATA.list>>" + list);
 			list = list != null && list.size() == 0 ? null : list;
