@@ -14,7 +14,9 @@ import com.fstop.eachadmin.repository.PageQueryRepository;
 import com.fstop.eachadmin.repository.VwOnBlockTabRepository;
 import com.fstop.fcore.util.Page;
 import com.fstop.infra.entity.BANK_GROUP;
+import com.fstop.infra.entity.ONBKNOTTRADRES_SEARCH;
 import com.fstop.infra.entity.ONBLOCKNOTTRADRES_SEARCH;
+import com.fstop.infra.entity.ONBLOCKNOTTRADRESbean;
 import com.fstop.infra.entity.ONBLOCKTAB;
 import com.fstop.infra.entity.UNDONE_TXDATA;
 import com.fstop.infra.entity.VW_ONBLOCKTAB;
@@ -276,7 +278,7 @@ public class OnblockNotTradResService {
 	
 	//未完成交易結果查詢
 //	public String getNotTradResList(Map<String, String> params) {
-	public CommonPageSearchRs<ONBLOCKNOTTRADRES_SEARCH> getNotTradResList(CommonPageSearchRq params) {
+	public CommonPageSearchRs<ONBLOCKNOTTRADRES_SEARCH, ONBKNOTTRADRES_SEARCH> getNotTradResList(CommonPageSearchRq params) {
 
 //		String startDate = StrUtils.isEmpty(params.get("START_DATE")) ? "" : params.get("START_DATE");// 交易日期
 		String startDate = StrUtils.isEmpty(params.getStartDate()) ? "" : params.getStartDate();// 交易日期
@@ -307,6 +309,7 @@ public class OnblockNotTradResService {
 //		String filter_bat = params.get("FILTER_BAT") == null ? "N" : "Y";
 		String filter_bat = params.getFilter_bat() == null ? "N" : "Y";
 		List<ONBLOCKNOTTRADRES_SEARCH> list = null;
+		List<ONBKNOTTRADRES_SEARCH> list1 = null;
 		Map rtnMap = new HashMap();
 //		Page page = null;
 		Page page = null;
@@ -314,6 +317,7 @@ public class OnblockNotTradResService {
 		String condition_2 = "";
 		try {
 			list = new ArrayList<ONBLOCKNOTTRADRES_SEARCH>();
+			list1 = new ArrayList<ONBKNOTTRADRES_SEARCH>();
 			List<String> conditions_1 = new ArrayList<String>();
 			List<String> conditions_2 = new ArrayList<String>();
 			/* 20150210 HUANGPU 改以清算階段後的營業日(BIZDATE)查詢資料，非原交易日期(OTXDATE) */
@@ -465,13 +469,13 @@ public class OnblockNotTradResService {
 			String dataSumCols[] = { "TXAMT" };
 //			list = onblocktab_Dao.dataSum(sumSQL.toString(), dataSumCols, ONBLOCKTAB.class);
 //			list = OnBlockTabRepository.dataSum(sumSQL.toString(), dataSumCols, ONBLOCKTAB.class);
-			list = onblocktabRepository.dataSumI(sumSQL.toString(), dataSumCols, ONBLOCKNOTTRADRES_SEARCH.class);
+			list1 = onblocktabRepository.dataSumI(sumSQL.toString(), dataSumCols, ONBKNOTTRADRES_SEARCH.class);
 
 			/*
 			 * for(ONBLOCKTAB po:list){ System.out.println(String.format("SUM(X.TXAMT)=%s",
 			 * po.getTXAMT())); }
 			 */
-			rtnMap.put("DATASUMLIST", list);
+			rtnMap.put("DATASUMLIST", list1);
 			cntSQL.append("SELECT COUNT(*) AS NUM FROM TEMP");
 			cntSQL.insert(0, tmpSQL.toString());
 			String cols[] = { "PCODE", "TXDT", "STAN", "TXDATE", "SENDERBANKID", "OUTBANKID", "INBANKID", "OUTACCT",
@@ -484,8 +488,8 @@ public class OnblockNotTradResService {
 //			page = onblocktabRepository.getDataIIII(Integer.valueOf(pageNo), Integer.valueOf(pageSize), cntSQL.toString(),
 //					sql.toString(), cols, ONBLOCKTABbean.class);
 			
-			page = vwOnblocktabRepository.getDataIII(pageNo, pageSize, cntSQL.toString(), sql.toString(), cols,
-					ONBLOCKTABbean.class);
+			page = vwOnblocktabRepository.getDataIIII(pageNo, pageSize, cntSQL.toString(), sql.toString(), cols,
+					ONBLOCKNOTTRADRESbean.class);
 			list = (List<ONBLOCKNOTTRADRES_SEARCH>) page.getResult();
 			System.out.println("ONBLOCKTAB.list>>" + list);
 			list = list != null && list.size() == 0 ? null : list;

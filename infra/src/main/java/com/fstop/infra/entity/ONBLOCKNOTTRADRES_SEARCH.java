@@ -8,71 +8,79 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+//未完成交易結果--查詢--response
 public class ONBLOCKNOTTRADRES_SEARCH {
 	
-	
+	@Schema(description = "回覆代號")
+	@JsonProperty("CONRESULTCODE")
 	private String CONRESULTCODE;	
-	private String NEWTXDT;
-	private String TXID;
-	private String TXDATE;
+	
+	@Schema(description = "交易結果")
+	@JsonProperty("RESULTCODE")
 	private String RESULTCODE;
-	private String NEWTXAMT;
+	
+	@Schema(description = "扣帳帳號")
+	@JsonProperty("OUTACCT")
 	private String OUTACCT;	
+	
+	@Schema(description = "系統追蹤序號")
+	@JsonProperty("STAN")
 	private String STAN;	
-	private String SENDERID;
+	
+	@Schema(description = "入帳帳號")
+	@JsonProperty("INACCT")
 	private String INACCT;	
+	
+	@Schema(description = "交易日期/時間")
+	@JsonProperty("TXDT")
 	private String TXDT;
+	
+	@Schema(description = "交易類別")
+	@JsonProperty("PCODE")
 	private String PCODE;
+	
+	@Schema(description = "交易金額")
+	@JsonProperty("TXAMT")
 	private BigDecimal TXAMT;	
+	
+	@Schema(description = "發動行")
+	@JsonProperty("SENDERBANKID")
 	private String SENDERBANKID;	
+	
+	@Schema(description = "扣款行")
+	@JsonProperty("OUTBANKID")
 	private String OUTBANKID;
+	
+	@Schema(description = "入帳行")
+	@JsonProperty("INBANKID")
 	private String INBANKID;	
 
-    
+	@Schema(description = "交易日")
+	@JsonProperty("TXDATE")
+	private String TXDATE;
+	
 
-
-
-//	private BigDecimal TXAMT;
-//	
-//	private Integer num;
-//	
-//	@EmbeddedId
-//
-//	@Override
-//	public int hashCode() {
-//		final int prime = 31;
-//		int result = 1;
-//		result = prime * result + ((TXAMT == null) ? 0 : TXAMT.hashCode());
-//		result = prime * result
-//				+ ((num == null) ? 0 : num.hashCode());
-//
-//		return result;
-//	}
-//	
-//	@Override
-//	public boolean equals(Object obj) {
-//		if (this == obj)
-//			return true;
-//		if (obj == null)
-//			return false;
-//		if (getClass() != obj.getClass())
-//			return false;
-//		ONBLOCKNOTTRADRES_SEARCH other = (ONBLOCKNOTTRADRES_SEARCH) obj;
-//		if (TXAMT == null) {
-//			if (other.TXAMT != null)
-//				return false;
-//		} else if (!TXAMT.equals(other.TXAMT))
-//			return false;
-//		if (num == null) {
-//			if (other.num != null)
-//				return false;
-//		} else if (!num.equals(other.num))
-//			return false;
-//		
-//		return true;
-//	}
+	///////////////////////////////////////////
+	@Schema(description = "發動者統一編號")
+	@JsonProperty("SENDERID")
+	private String SENDERID;
+	
+	@Schema(description = "交易金額")
+	@JsonProperty("NEWTXAMT")
+	private String NEWTXAMT;
+	
+	@Schema(description = "交易日期時間")
+	@JsonProperty("NEWTXDT")
+	private String NEWTXDT;
+	
+	@Schema(description = "")
+	@JsonProperty("TXID")
+	private String TXID;
 }

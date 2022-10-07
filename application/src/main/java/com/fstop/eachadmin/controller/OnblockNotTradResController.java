@@ -22,6 +22,7 @@ import com.fstop.eachadmin.service.NTRDetailService;
 import com.fstop.eachadmin.service.OnblockNotTradResService;
 import com.fstop.eachadmin.service.UndoneService;
 import com.fstop.infra.entity.ONBLOCKNOTTRADRES_SEARCH;
+import com.fstop.infra.entity.ONBKNOTTRADRES_SEARCH;
 import com.fstop.infra.entity.UNDONE_TXDATA;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,7 +58,7 @@ public class OnblockNotTradResController {
     // 查詢
  	@Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
  	@PostMapping(value = "/pageSearch")
- 	public CommonPageSearchRs<ONBLOCKNOTTRADRES_SEARCH> pageSearch(@RequestBody CommonPageSearchRq param) {
+ 	public CommonPageSearchRs<ONBLOCKNOTTRADRES_SEARCH, ONBKNOTTRADRES_SEARCH> pageSearch(@RequestBody CommonPageSearchRq param) {
 //		return UndoneS.pageSearch(param);
  		return OnblockNotTradResS.getNotTradResList(param);
 	}

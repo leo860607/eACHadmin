@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.fstop.fcore.util.Page;
 import com.fstop.infra.entity.HR_TXP_TIME;
+import com.fstop.infra.entity.ONBKNOTTRADRES_SEARCH;
 import com.fstop.infra.entity.ONBLOCKNOTTRADRES_SEARCH;
 import com.fstop.infra.entity.ONBLOCKTAB;
 import com.fstop.infra.entity.UNDONE_TXDATA;
@@ -161,7 +162,7 @@ public class OnBlockTabRepository {
 //		return new PageRepository(startIndex - 1, totalCount, pageSize, list);
 //	}
 	
-	public List<ONBLOCKNOTTRADRES_SEARCH> dataSumI(String dataSumSQL, String[] dataSumCols, Class targetClass) {
+	public List<ONBKNOTTRADRES_SEARCH> dataSumI(String dataSumSQL, String[] dataSumCols, Class targetClass) {
 //		SQLQuery query = getCurrentSession().createSQLQuery(dataSumSQL);
 //		AutoAddScalar addscalar = new AutoAddScalar();
 //		addscalar.addScalar(query, targetClass, dataSumCols);
