@@ -1,5 +1,9 @@
 package com.fstop.eachadmin.dto;
 
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -14,15 +18,22 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TxErrDetailRq {
 	
-	@Schema(description = "")
+	@NotEmpty(message = "系統追蹤序號")
+	@Length(min = 10 , max = 10 )
+	@Schema(description = "系統追蹤序號")
 	@JsonProperty("STAN")
 	private String STAN;
 	
+	@NotEmpty(message = "交易日期為年分為西元，例如：20191014")
+	@Length(min = 8 , max = 8 )
+	@Schema(description = "交易日期")
 	@JsonProperty("TXDATE")
 	private String TXDATE;
+	
 	@Schema(description = "")
 	@JsonProperty("ac_key")
 	private	String	ac_key;
+	
 	@JsonProperty("target")
 	private	String	target;
 
