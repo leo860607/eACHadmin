@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fstop.eachadmin.dto.CommonPageSearchRq;
+import com.fstop.eachadmin.dto.CommonPageSearchRs;
 import com.fstop.eachadmin.dto.ObtkNtrRq;
 import com.fstop.eachadmin.dto.ObtkNtrRs;
 import com.fstop.eachadmin.dto.PageSearchRq;
@@ -17,6 +19,7 @@ import com.fstop.eachadmin.dto.PageSearchRs;
 import com.fstop.eachadmin.dto.UndoneSendRq;
 import com.fstop.eachadmin.dto.UndoneSendRs;
 import com.fstop.eachadmin.service.NTRDetailService;
+import com.fstop.eachadmin.service.OnblockNotTradResService;
 import com.fstop.eachadmin.service.UndoneService;
 import com.fstop.infra.entity.ONBLOCKNOTTRADRES_SEARCH;
 import com.fstop.infra.entity.ONBKNOTTRADRES_SEARCH;
@@ -36,6 +39,8 @@ public class OnblockNotTradResController {
 	
 	@Autowired
 	private UndoneService UndoneS;
+	
+	private OnblockNotTradResService OnblockNotTradResS;
 
 	// 操作行下拉選單
 	@Operation(summary = "操作行 API", description = "操作行下拉選單資料")
