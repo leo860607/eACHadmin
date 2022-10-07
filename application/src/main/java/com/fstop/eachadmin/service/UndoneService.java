@@ -389,7 +389,7 @@ public class UndoneService {
 					rtnMap.put("result", "FALSE");// outtput
 					rtnMap.put("msg", "已有未完成交易處理結果，營業日=" + po.get().getBIZDATE());// outtput
 					// TODO
-					// json = JSONUtils.map2json(rtnMap);
+//					 json = JSONUtils.map2json(rtnMap);
 //					return json;
 				}
 				Header msgHeader = new Header();
@@ -410,7 +410,7 @@ public class UndoneService {
 				msg.setBody(body);// 11
 				String telegram = messageConverter.marshalling(msg);
 				// TODO
-				// rtnMap = socketClient.send(telegram);//socket先註解
+//				 rtnMap = socketClient.send(telegram);//socket先註解
 			}
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
@@ -785,17 +785,17 @@ public class UndoneService {
 			detailRs.setRECEIVERBANK_NAME(f);
 			detailRs.setCONRESULTCODE_DESC(g);
 			detailRs.setACCTCODE(h);
-			detailRs.setSENDERCLEARING_NAME(i);
-			detailRs.setINCLEARING_NAME(j);
-			detailRs.setOUTCLEARING_NAME(k);
-			detailRs.setSENDERACQUIRE_NAME(l);
-			detailRs.setINACQUIRE_NAME(m);
-			detailRs.setOUTACQUIRE_NAME(n);
-			detailRs.setWOACQUIRE_NAME(o);
-			detailRs.setSENDERHEAD_NAME(p);
-			detailRs.setINHEAD_NAME(q);
-			detailRs.setOUTHEAD_NAME(r);
-			detailRs.setWOHEAD_NAME(s);
+//			detailRs.setSENDERCLEARING_NAME(i);
+//			detailRs.setINCLEARING_NAME(j);
+//			detailRs.setOUTCLEARING_NAME(k);
+//			detailRs.setSENDERACQUIRE_NAME(l);
+//			detailRs.setINACQUIRE_NAME(m);
+//			detailRs.setOUTACQUIRE_NAME(n);
+//			detailRs.setWOACQUIRE_NAME(o);
+//			detailRs.setSENDERHEAD_NAME(p);
+//			detailRs.setINHEAD_NAME(q);
+//			detailRs.setOUTHEAD_NAME(r);
+//			detailRs.setWOHEAD_NAME(s);
 			detailRs.setNEWSENDERFEE(t);
 			detailRs.setNEWINFEE(u);
 			detailRs.setNEWOUTFEE(v);
@@ -805,7 +805,7 @@ public class UndoneService {
 			detailRs.setSENDERID(z);
 			detailRs.setTXN_NAME(aa);
 			detailRs.setNEWTXAMT(bb);
-			detailRs.setSENDERSTATUS(cc);
+//			detailRs.setSENDERSTATUS(cc);
 			detailRs.setNEWFEE(dd);
 			detailRs.setSENDERBANKID_NAME(ee);
 			detailRs.setINBANKID_NAME(ff);

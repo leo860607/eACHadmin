@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,15 +51,15 @@ public class HrTxpTimeController {
 			return BankGroupS.getByOpbkId_Single_Date(param);
 		}
 	//查詢
-		@Operation(summary = "查詢 API", description = "<br>查詢按鈕</br>"+"<br>\"TXDATE\" : \"01090121\",</br>"+"\"PCODE\" : \"all\","+"<br>\"OPBK_ID\" : \"all\",</br>"+"\"BGBK_ID\" : \"all\","+"<br>\"CLEARINGPHASE\" : \"all\",</br>"+"\"PAGE\" : \"1\","+ "<br>\"SIDX\" : \"\",</br> "+ "\"SORD\" : \"\" ")
+		@Operation(summary = "查詢 API", description = "<br>查詢按鈕</br>"+"<br>\"TXDATE\" : \"01090120\",</br>"+"\"PCODE\" : \"all\","+"<br>\"OPBK_ID\" : \"all\",</br>"+"\"BGBK_ID\" : \"all\","+"<br>\"CLEARINGPHASE\" : \"all\",</br>"+"\"PAGE\" : \"1\","+ "<br>\"SIDX\" : \"\",</br> "+ "\"SORD\" : \"\" ")
 		@PostMapping(value = "/search")
-		public HrTxpTimeRs getPageSearch (@RequestBody HrTxpTimeRq param) {
+		public HrTxpTimeRs PageSearch (@RequestBody HrTxpTimeRq param) {
 			return  HrTxpTimeS.pageSearch(param);
 		}
 	//列印匯出
-		@Operation(summary = "列印匯出 API", description = "列印匯出資料按鈕")
+		@Operation(summary = "列印匯出 API", description = "<br>列印匯出資料按鈕</br>"+"<br>\"TXDATE\" : \"01090120\",</br>"+"\"PCODE\" : \"all\","+"<br>\"OPBK_ID\" : \"all\",</br>"+"\"BGBK_ID\" : \"all\","+"<br>\"CLEARINGPHASE\" : \"all\",</br>"+"\"PAGE\" : \"1\","+ "<br>\"SIDX\" : \"\",</br> "+ "\"SORD\" : \"\" ")
 		@PostMapping(value = "/print")
-		public String c () {
-			return "GG";
+		public List<HR_TXP_TIME> Print (@RequestBody HrTxpTimeRq param) {
+			return  HrTxpTimeS.pageSearch(param).getRows();
 		}
 }

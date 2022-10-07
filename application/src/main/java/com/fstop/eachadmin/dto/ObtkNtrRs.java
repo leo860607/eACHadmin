@@ -6,6 +6,9 @@ import lombok.Setter;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fstop.infra.entity.VW_ONBLOCKTAB;
+
 
 @Getter
 @Setter
@@ -18,6 +21,10 @@ public class ObtkNtrRs {
     private String END_DATE;
     private Map userData;
     private String OPBK_ID;
-    private Map DetailData;
+    
+	@JsonProperty("detailData")
+    private VW_ONBLOCKTAB detailData;
+	
     private String IsUndone;
+    
 }

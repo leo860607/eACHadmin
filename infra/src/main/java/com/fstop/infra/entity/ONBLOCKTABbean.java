@@ -55,8 +55,8 @@ public class ONBLOCKTABbean implements Serializable {
     private String BIZDATE;
     private String EACHDT;
     private String CLEARINGPHASE;
-    private String INACCTNO;
-    private String OUTACCTNO;
+//    private String INACCTNO;
+//    private String OUTACCTNO;
     private String INID;
     private String OUTID;
     private String ACCTBAL;

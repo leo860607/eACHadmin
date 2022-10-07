@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fstop.eachadmin.dto.HrTxpTimeRq;
 import com.fstop.eachadmin.dto.HrTxpTimeRs;
+import com.fstop.eachadmin.dto.countAndSumListRs;
 import com.fstop.eachadmin.repository.EachTxnCodeRepository;
 import com.fstop.eachadmin.repository.OnBlockTabRepository;
 import com.fstop.infra.entity.BANK_OPBK;
@@ -67,12 +68,7 @@ public class HrTxpTimeService {
 	@SuppressWarnings("unchecked")
 	public HrTxpTimeRs pageSearch(HrTxpTimeRq param){
 		List<String> conditions = getConditionList(param);
-//		int pageNo = 2;
-//		int pageSize = 10;
-//		String pageNo = StrUtils.isEmpty(param.getPage()) ?"0":param.getPage();
-//		String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
 		Map rtnMap = new HashMap();
-
 		List<HR_TXP_TIME> list = null;
 		Page page = null;
 		try {
@@ -123,9 +119,10 @@ public class HrTxpTimeService {
 			dataSumSQL.append(") AS B ON A.HOURLAP = B.HOURLAP ");
 			dataSumSQL.append("WHERE A.HOURLAP IS NOT NULL ");
 			System.out.println("dataSumSQL = " + dataSumSQL.toString().toUpperCase());
-			List countAndSumList = onblocktab_Dao.dataSum(dataSumSQL.toString(),dataSumCols,HR_TXP_TIME.class);
+			
+			List countAndSumList = onblocktab_Dao.dataSum(dataSumSQL.toString(),dataSumCols,countAndSumListRs.class);
 			log.debug(countAndSumList.toString());
-			rtnMap.put("COUNTANDSUMLIST", (List<HR_TXP_TIME>)countAndSumList);
+			rtnMap.put("COUNTANDSUMLIST", (List<countAndSumListRs>)countAndSumList);
 			
 			StringBuffer countQuery = new StringBuffer();
 			StringBuffer sql = new StringBuffer();
@@ -181,35 +178,14 @@ public class HrTxpTimeService {
 			countQuery.append("SELECT A.* FROM HOURITEM AS A ");
 			countQuery.append("WHERE A.HOURLAP IS NOT NULL ");
 			System.out.println("countQuery = " + countQuery.toString().toUpperCase());	
-//			page =  onblocktab_Dao.getData(pageNo, pageSize,countQuery.toString(), HR_TXP_TIME.class);
-//			list = (List<HR_TXP_TIME>) page.getResult();
-			
-			int total =  onblocktab_Dao.countData(countQuery.toString());
-			rtnMap.put("RECORDS",total);
-			
-			List<Map> list1 = null;
-			list1 = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper(HR_TXP_TIME.class));
-			System.out.println("list>>"+list1);
-			list1 = list1!=null&& list1.size() ==0 ?null:list1;
-			rtnMap.put("ROWS",list1);
+			List list1 =  onblocktab_Dao.getData(sql.toString(),HR_TXP_TIME.class);
+			rtnMap.put("ROWS",(List<HR_TXP_TIME>) list1);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}	
-//		
-//		if (page == null) {
-//			rtnMap.put("TOTAL", "0");
-//			rtnMap.put("PAGE", "0");
-//			rtnMap.put("RECORDS", "0");			
-//		} else {
-//			rtnMap.put("TOTAL", page.getTotalPageCount());
-//			rtnMap.put("PAGE", String.valueOf(page.getCurrentPageNo()));
-//			rtnMap.put("RECORDS", page.getTotalCount());			
-//		}
-		
+		}		
 //-------------------資料轉換swagger輸出----------------------------------------------------
 		ObjectMapper mapper = new ObjectMapper();
-		
 		HrTxpTimeRs result = mapper.convertValue(rtnMap, HrTxpTimeRs.class);
 		return result;
 	}
@@ -222,7 +198,6 @@ public class HrTxpTimeService {
 		if(StrUtils.isNotEmpty(param.getTXDATE().trim())){
 			txDate = param.getTXDATE().trim();
 			//20151022 HUANGPU 改用交易日期查詢較合邏輯
-			//conditions.add(" A.BIZDATE = '" + DateTimeUtils.convertDate(txDate, "yyyyMMdd", "yyyyMMdd") + "' ");
 			conditions.add(" A.TXDATE = '" + DateTimeUtils.convertDate(txDate, "yyyyMMdd", "yyyyMMdd") + "' ");
 		}
 		

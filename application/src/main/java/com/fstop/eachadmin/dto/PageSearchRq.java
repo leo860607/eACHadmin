@@ -52,6 +52,15 @@ public class PageSearchRq {
 	@JsonProperty("SIDX")
 	private String sidx;
 	
+	@JsonProperty("RESULTSTATUS")
+	private String resultStatus;
+	
+	
+	@JsonProperty("ISSEARCH")
+    private String isSearch ;
+	
+	@JsonProperty("serchStrs")
+    private String serchStrs ;
 	
 
 

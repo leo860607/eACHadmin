@@ -33,14 +33,15 @@ public class ObtkNtrRq {
 	private String sortorder = "";
 	@JsonProperty("edit_params")
 	private String edit_params = "{}";
-	@JsonProperty("START_DATE")
-	private String START_DATE;
-	@JsonProperty("END_DATE")
-    private String END_DATE;
 	@JsonProperty("CLEARINGCODE")
     private String CLEARINGCODE;
 	@JsonProperty("SENDERACQUIRE")
     private String SENDERACQUIRE;
+	
+	@JsonProperty("START_DATE")
+	private String START_DATE;
+	@JsonProperty("END_DATE")
+    private String END_DATE;	
 	@JsonProperty("OPBK_ID")
     private String OPBK_ID;//操作行代號
 	@JsonProperty("BGBK_ID")
@@ -53,6 +54,9 @@ public class ObtkNtrRq {
     private String FILTER_BAT ;
 	@JsonProperty("OSTAN")
     private String OSTAN;//交易追踨序號
+	
+	@JsonProperty("ISSEARCH")
+    private String isSearch ;
 	
 	
 	// 未完成交易結果查詢
