@@ -1,60 +1,139 @@
 package com.fstop.eachadmin.service;
 
-public class UserlogTchService {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
-	Each_Userlog_Form userlog_form = (Each_Userlog_Form) form ;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import util.DateTimeUtils;
+import util.StrUtils;
+
+import com.fstop.eachadmin.dto.UserlogTchDetailRq;
+import com.fstop.eachadmin.dto.UserlogTchFunRs;
+import com.fstop.eachadmin.dto.UserlogTchFunRs.FunSubList;
+import com.fstop.eachadmin.dto.UserlogTchSearchRq;
+import com.fstop.eachadmin.dto.UserlogTchSearchRs;
+import com.fstop.eachadmin.dto.UserlogTchUserIdRs;
+import com.fstop.eachadmin.repository.EachUserRepository;
+import com.fstop.infra.entity.EACH_USER;
+
+@Service
+public class UserlogTchService {
 	
-	String ac_key = StrUtils.isEmpty(userlog_form.getAc_key())?"":userlog_form.getAc_key();
-	System.out.println("ADMUSERLOG_Action is start >> " + ac_key);
 	
-	Login_Form login_form = (Login_Form) WebServletUtils.getRequest().getSession().getAttribute("login_form");
-	String fc_type = WebServletUtils.getRequest().getParameter("USER_TYPE");
+	@Autowired
+	private EachUserRepository eachUserRepository;
 	
-	if(!ac_key.equals("back")){
-		userlog_form.setFc_type(fc_type);
-	}
-	
-	System.out.println("fc_type>>>"+fc_type);
-	
-	if(StrUtils.isNotEmpty(ac_key)){
-		if(ac_key.equals("search")){
-		}else if(ac_key.equals("update")){
-		}else if(ac_key.equals("back")){
-			BeanUtils.populate(userlog_form, JSONUtils.json2map(userlog_form.getSerchStrs()));
-			System.out.println("userlog_form.getFc_type>>"+userlog_form.getFc_type());
-			if(userlog_form.getFc_type().equals("A")){
-				userlog_form.setUSER_TYPE((login_form.getUserData().getUSER_TYPE()));
-				userlog_form.setUserIdList(userlog_bo.getUserIdListByComId(""));
-				userlog_form.setUserCompanyList(userlog_bo.getUserCompanyList());
-				userlog_form.setFuncList(userlog_bo.getFuncList());
-			}else if(userlog_form.getFc_type().equals("B")) {
-				System.out.println("Fc_type ="+userlog_form.getFc_type()+" ,ROLE_TYPE ="+userlog_form.getROLE_TYPE()+" ,USER_COMPANY ="+userlog_form.getUSER_COMPANY());
-				userlog_form.setUSER_TYPE("B");
+	// 用戶代號行------------------------------------------------------
+	public List<UserlogTchUserIdRs> getUserIdListByComId(String comId){
+		
+		List<UserlogTchUserIdRs> beanList = new LinkedList<>();
+		List<EACH_USER> userIdList = eachUserRepository.getDataByComId(comId);
+		
+		if(userIdList != null && userIdList.size() > 0){
+			
+			for(int i = 0; i < userIdList.size(); i++){
 				
-				if(userlog_form.getROLE_TYPE().equals("B")){
-					setDropdownList4back(userlog_form , login_form);
-				}else{
-					setDropdownList4back2(userlog_form , login_form);
-				}
-				
+				UserlogTchUserIdRs bean = new UserlogTchUserIdRs();
+				bean.setUserId(userIdList.get(i).getUSER_ID());
+				beanList.add(bean);
 			}
-		}else if(ac_key.equals("add")){
-		}else if(ac_key.equals("edit")){
-			BeanUtils.populate(userlog_form, JSONUtils.json2map(userlog_form.getEdit_params()));
-			System.out.println("pk>>"+userlog_form.getSERNO()+","+ userlog_form.getUSERID()+" , "+ userlog_form.getUSER_COMPANY());
-			BeanUtils.copyProperties(userlog_form, userlog_bo.getDetail(userlog_form.getSERNO(), userlog_form.getUSERID(), userlog_form.getUSER_COMPANY()));
-		}else if(ac_key.equals("save")){
-		}else if(ac_key.equals("delete")){
 		}
-	}else{
-		userlog_form.setUSER_COMPANY(login_form.getUserData().getUSER_COMPANY());
-		setDropdownList(userlog_form , login_form);
+		System.out.println("list>>" + beanList);
+		return beanList == null? null : beanList.size() == 0? null : beanList;
 	}
 	
-	if(StrUtils.isEmpty(target)){
-		target = "search";
+	// 功能名稱行------------------------------------------------------
+	public List<UserlogTchFunRs> getFuncList(){
+		
+		List<UserlogTchFunRs> menuList = eachUserRepository.getFuncItemByType("1");
+		
+		if(menuList != null){
+			for(int i = 0; i < menuList.size(); i++){
+				
+				List<UserlogTchFunRs> subList = eachUserRepository.getNextSubItem(menuList.get(i).getFUNC_ID());
+				if(subList != null){
+					
+					List<FunSubList> funSubList = new ArrayList<FunSubList>();
+
+					for(int j = 0; j < subList.size(); j++){
+						UserlogTchFunRs userlogTchFunRs = new UserlogTchFunRs();
+						FunSubList funSub = userlogTchFunRs.new FunSubList();
+						
+						funSub.setFUNC_ID(subList.get(j).getFUNC_ID());
+						funSub.setFUNC_NAME(subList.get(j).getFUNC_NAME());
+						funSub.setFUNC_URL(subList.get(j).getFUNC_URL());
+						funSub.setFUNC_TYPE(subList.get(j).getFUNC_TYPE());
+						funSubList.add(funSub);
+					}
+					menuList.get(i).setSUB_LIST(funSubList);
+				}
+			}
+		}
+		System.out.println("menu>>" + menuList);
+		return menuList;
 	}
 	
-	System.out.println("forward to >> " + target);
-	return (mapping.findForward(target));
+	// 查詢------------------------------------------------------
+	public List<UserlogTchSearchRs> pageSearch(UserlogTchSearchRq param){
+		
+		String opt_date = StrUtils.isNotEmpty(param.getTXTIME_1())?param.getTXTIME_1():"";
+		String opt_date2 = StrUtils.isNotEmpty(param.getTXTIME_2())?param.getTXTIME_2():"";
+		String user_company = StrUtils.isNotEmpty(param.getUSER_COMPANY()) && param.getUSER_COMPANY().trim().equals("all") ?"":param.getUSER_COMPANY();
+		String sUser_id = StrUtils.isNotEmpty(param.getUSERID()) && param.getUSERID().trim().equals("all") ?"":param.getUSERID();
+		String func_id = StrUtils.isNotEmpty(param.getFUNC_ID()) && param.getFUNC_ID().trim().equals("all") ?"":param.getFUNC_ID();
+		String user_type = StrUtils.isNotEmpty(param.getUSER_TYPE()) ?param.getUSER_TYPE():"";
+		//String pageNo = StrUtils.isEmpty(param.get("page")) ?"0":param.get("page");
+		
+		//改從參數拿取
+		//String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
+		//判斷群組類型
+		String role_type = StrUtils.isNotEmpty(param.getROLE_TYPE())?param.getROLE_TYPE():"";
+		
+		//Map rtnMap = new HashMap();
+		List<UserlogTchSearchRs> list = null;
+		//Page page = null;
+
+		list = new ArrayList<UserlogTchSearchRs>();
+		StringBuffer orderbysql = new StringBuffer();
+		//List<String> strList = new LinkedList<String>();
+		Map<String,String> map = new HashMap<String,String>();
+		
+		map.put("TXTIME_1", DateTimeUtils.convertDate(opt_date.trim(), "yyyyMMdd", "yyyy-MM-dd"));
+		map.put("TXTIME_2", DateTimeUtils.convertDate(opt_date2.trim(), "yyyyMMdd", "yyyy-MM-dd"));
+		map.put("USER_COMPANY", user_company.trim());
+		map.put("USERID", sUser_id.trim());
+		map.put("FUNC_ID", func_id.trim());
+		map.put("USER_TYPE", user_type.trim());
+		map.put("ROLE_TYPE", role_type.trim());
+		
+		orderbysql.append( eachUserRepository.getOrderBySql(param.getSidx(), param.getSord()));
+		Map<String,Object> condition_Map =  eachUserRepository.getConditionData(map);
+		
+		String sql = eachUserRepository.getSql(condition_Map.get("sqlPath").toString(), orderbysql.toString(), user_type);
+		//String countSql = getCountSql(condition_Map.get("sqlPath").toString(), user_type);
+		System.out.println("sql.toString()==>"+sql.toString());
+		
+		// page = userLog_Dao.pagedSQLQuery(sql, countSql, Integer.valueOf(pageNo), Integer.valueOf(pageSize), (List<String>) condition_Map.get("values") , EACH_USERLOG.class );
+		//list = (List<EACH_USERLOG>) page.getResult();
+		
+		list=eachUserRepository.getPage(sql);
+		
+		list = list!=null&& list.size() ==0 ?null:list;
+		return list;
+	}
+	
+	// 檢視明細------------------------------------------------------
+	public List<UserlogTchSearchRs> getDetail(UserlogTchDetailRq param){
+		String ser_no = StrUtils.isEmpty(param.getSERNO())?"":param.getSERNO().trim();
+		String user_id = StrUtils.isEmpty(param.getUSERID())?"":param.getUSERID().trim();
+		String com_id = StrUtils.isEmpty(param.getUSER_COMPANY())?"":param.getUSER_COMPANY().trim();
+		List<UserlogTchSearchRs> list  = eachUserRepository.getDetail(ser_no, user_id, com_id);
+		System.out.println("list>>"+list);
+		return list;
+	}
 }

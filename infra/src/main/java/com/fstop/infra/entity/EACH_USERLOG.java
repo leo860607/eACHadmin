@@ -9,7 +9,6 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-//<<<<<<< HEAD
 @Entity (name = "EACH_USERLOG")
 @Table(name = "MASTER_EACH_USERLOG")
 @Getter
