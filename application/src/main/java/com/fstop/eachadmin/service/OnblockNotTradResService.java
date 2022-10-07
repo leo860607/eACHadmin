@@ -460,8 +460,8 @@ public class OnblockNotTradResService {
 			// 先算出總計的欄位值，放到rtnMap裡面，到頁面再放到下面的總計Grid裡面
 			sumSQL.append("SELECT SUM(TXAMT) AS TXAMT  FROM TEMP ");
 			sumSQL.insert(0, tmpSQL.toString());
-			log.debug("sumSQL=" + sumSQL);
-			log.debug("tmpSQL=" + tmpSQL);
+			log.debug("sumSQL=" + sumSQL); 
+			log.debug("tmpSQL=" + tmpSQL); 
 			String dataSumCols[] = { "TXAMT" };
 //			list = onblocktab_Dao.dataSum(sumSQL.toString(), dataSumCols, ONBLOCKTAB.class);
 //			list = OnBlockTabRepository.dataSum(sumSQL.toString(), dataSumCols, ONBLOCKTAB.class);
