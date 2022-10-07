@@ -5,12 +5,11 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name= "EACH_TXN_CODE")
-@Table(name="MASTER_EACH_TXN_CODE")
+@Entity(name= "MASTER_EACH_TXN_CODE")
+@Table(name="EACH_TXN_CODE")
 @Getter
 @Setter
 public class EACH_TXN_CODE implements Serializable {

@@ -5,11 +5,9 @@ package com.fstop.eachadmin.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Query;
-import org.hibernate.transform.Transformers;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
-import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -49,7 +47,7 @@ public class EachSysStatusTabRepository{
         try{
         	
     		list = jdbcTemplate.query(
-    				sql.toString(),new Object[] {Transformers.aliasToBean(BANKSTATUS.class)},new BeanPropertyRowMapper(BANKSTATUS.class));
+    				sql.toString(),new BeanPropertyRowMapper(BANKSTATUS.class));
        
         }catch(org.hibernate.HibernateException e){
             e.printStackTrace();
@@ -76,9 +74,7 @@ public class EachSysStatusTabRepository{
 
         try{
 
-     		list = jdbcTemplate.query(
-     				sql.toString(),new Object[] {bgbkId,apId},new BeanPropertyRowMapper(BANKSTATUS.class));
-      
+     		list = jdbcTemplate.query(sql.toString(),new Object[] {bgbkId,apId},new BeanPropertyRowMapper(BANKSTATUS.class));   
         }catch(org.hibernate.HibernateException e){
             e.printStackTrace();
         }
@@ -94,7 +90,7 @@ public class EachSysStatusTabRepository{
         try{
 
      		list = jdbcTemplate.query(
-     				sql.toString(),new Object[] {org.hibernate.transform.Transformers.aliasToBean(EACHSYSSTATUSTAB.class)},new BeanPropertyRowMapper(BANKSTATUS.class));
+     				sql.toString(),new BeanPropertyRowMapper(EACHSYSSTATUSTAB.class));
 
         }catch(org.hibernate.HibernateException e){
             e.printStackTrace();
@@ -179,11 +175,11 @@ public class EachSysStatusTabRepository{
      */
     public List<EACHSYSSTATUSTAB> getNextBusinessDate(){
         List<EACHSYSSTATUSTAB> list = null;
-        String sql = " FROM tw.org.twntch.po.EACHSYSSTATUSTAB";
+       
         try{
            	
         	list = jdbcTemplate.query(
-        			" FROM tw.org.twntch.po.EACHSYSSTATUSTAB",
+        			" SELECT * FROM EACHSYSSTATUSTAB",
         			new BeanPropertyRowMapper(EACHSYSSTATUSTAB.class));
           
         }catch(org.hibernate.HibernateException e){
@@ -195,13 +191,13 @@ public class EachSysStatusTabRepository{
      * 取得上一營業日
      * @return
      */
-    public List<EACHSYSSTATUSTAB> getThisBusinessDate(){
+    public List<EACHSYSSTATUSTAB> getBusinessDate(){
         List<EACHSYSSTATUSTAB> list = null;
       
         try{
         
         	list = jdbcTemplate.query(
-        			" FROM tw.org.twntch.po.EACHSYSSTATUSTAB",
+        			"SELECT * FROM EACHSYSSTATUSTAB",
         			new BeanPropertyRowMapper(EACHSYSSTATUSTAB.class));
       
         }catch(org.hibernate.HibernateException e){

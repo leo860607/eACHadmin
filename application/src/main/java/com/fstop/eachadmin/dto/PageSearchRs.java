@@ -4,28 +4,39 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Data
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PageSearchRs<UNDONE_TXDATA> {
-
-	@JsonProperty("dataSumList")
+	
+	@Schema(description = "數據總和列表")
+	@JsonProperty("DATASUMLIST")
 	private List<UNDONE_TXDATA> dataSumList;
+	
+	@Schema(description = "總和")
+	@JsonProperty("TOTAL")
+	private String total;
 
-	@JsonProperty("total")
-	private Integer total;
-
-	@JsonProperty("page")
+	@Schema(description = "頁面")
+	@JsonProperty("PAGE")
 	private String page;
-
-	@JsonProperty("records")
-	private Integer records;
-
-	@JsonProperty("rows")
+	
+	@Schema(description = "查詢結果總筆數")
+	@JsonProperty("RECORDS")
+	private String records;
+	
+	@Schema(description = "列表")
+	@JsonProperty("ROWS")
 	private List<UNDONE_TXDATA> rows;
+
 
 }

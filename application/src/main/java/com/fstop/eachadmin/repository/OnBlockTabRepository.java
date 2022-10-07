@@ -12,7 +12,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.internal.SessionImpl;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,6 +22,12 @@ import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fstop.eachadmin.dto.UndoneSendRs;
+import com.fstop.fcore.util.Page;
+import com.fstop.infra.entity.HR_TXP_TIME;
+import com.fstop.infra.entity.ONBKNOTTRADRES_SEARCH;
+import com.fstop.infra.entity.ONBLOCKNOTTRADRES_SEARCH;
+import com.fstop.infra.entity.ONBLOCKTAB;
+import com.fstop.infra.entity.UNDONE_TXDATA;
 
 import util.NumericUtil;
 
@@ -35,26 +40,26 @@ public class OnBlockTabRepository {
 	private SimpleJdbcCall simpleJdbcCall;
 
 	// 待修改
-	public Page getDataIII(int pageNo, int pageSize, String countQuerySql, String sql, String[] cols,
-			Class targetClass) {
-		int totalCount = countDataIII(countQuerySql);
-//		int startIndex = Page.getStartOfPage(pageNo, pageSize) + 1;
-		int lastIndex = pageNo * pageSize;
-//		sql += " ) AS TEMP_ WHERE ROWNUMBER >= " + startIndex + " AND ROWNUMBER <= " + lastIndex;
-//        org.hibernate.SQLQuery query = getCurrentSession().createSQLQuery(sql);
-//        AutoAddScalar addscalar = new AutoAddScalar();
-//        addscalar.addScalar(query, targetClass, cols);
-//        query.setResultTransformer(org.hibernate.transform.Transformers.aliasToBean(targetClass));
-//        // 實際查詢返回分頁對像
-//        java.util.List list = query.list();
+//	public Page getDataIII(int pageNo, int pageSize, String countQuerySql, String sql, String[] cols,
+//			Class targetClass) {
+//		int totalCount = countDataIII(countQuerySql);
+////		int startIndex = Page.getStartOfPage(pageNo, pageSize) + 1;
+//		int lastIndex = pageNo * pageSize;
+////		sql += " ) AS TEMP_ WHERE ROWNUMBER >= " + startIndex + " AND ROWNUMBER <= " + lastIndex;
+////        org.hibernate.SQLQuery query = getCurrentSession().createSQLQuery(sql);
+////        AutoAddScalar addscalar = new AutoAddScalar();
+////        addscalar.addScalar(query, targetClass, cols);
+////        query.setResultTransformer(org.hibernate.transform.Transformers.aliasToBean(targetClass));
+////        // 實際查詢返回分頁對像
+////        java.util.List list = query.list();
+////
+////        return new Page(startIndex - 1, totalCount, pageSize, list);
 //
-//        return new Page(startIndex - 1, totalCount, pageSize, list);
-
-		List list = new ArrayList();
-		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(targetClass));
-//		return new Page(startIndex - 1, totalCount, pageSize, list);
-		return new PageImpl(list);
-	}
+//		List list = new ArrayList();
+//		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(targetClass));
+////		return new Page(startIndex - 1, totalCount, pageSize, list);
+//		return new PageImpl(list);
+//	}
 
 //    改寫存取SQL的Stored Procedures
 	public Map getNewFeeDetail(String bizdate, String txid, String senderid, String senderbankid, String txamt) {
@@ -114,4 +119,75 @@ public class OnBlockTabRepository {
 		return count;
 	}
 
+	public List<Map<String, Object>> dataSum(String dataSumSQL, String[] dataSumCols, Class targetClass) {
+//		SQLQuery query = getCurrentSession().createSQLQuery(dataSumSQL);
+//		AutoAddScalar addscalar = new AutoAddScalar();
+//		addscalar.addScalar(query, targetClass, dataSumCols);
+//		query.setResultTransformer(Transformers.aliasToBean(targetClass));
+//		return query.list();	
+		List list = new ArrayList();
+		list = jdbcTemplate.query(dataSumSQL, new BeanPropertyRowMapper(targetClass));
+		return list;
+//		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+//		if (paramObject != null) {
+//			resultList = jdbcTemplate.queryForList(sql, paramObject);
+//		} else {
+//			resultList = jdbcTemplate.queryForList(sql);
+//		}
+//		return resultList;
+	}
+//	
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List<Map> getData( String sql) {
+		List<Map> list = null;
+		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(HR_TXP_TIME.class));
+		System.out.println("list>>"+list);
+		return list = list!=null&& list.size() ==0 ?null:list;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public int countData(String countQuerySql) {
+		List<Map> list = null;
+		list = jdbcTemplate.query(countQuerySql,new BeanPropertyRowMapper(HR_TXP_TIME.class) );
+		return list.size();
+//		SQLQuery query = getCurrentSession().createSQLQuery(countQuerySql);
+//		List countList = query.list();
+//		return list.size();
+	}
+	
+//	public PageRepository getDataIIII(int pageNo, int pageSize, String countQuerySql, String sql, String[] cols,
+//			Class targetClass) {
+//		int totalCount = countDataIII(countQuerySql);
+//		int startIndex = pageRepository.getStartOfPage(pageNo, pageSize) + 1;
+//
+//		SQLQuery query = getCurrentSession().createSQLQuery(sql);
+//		AutoAddScalar addscalar = new AutoAddScalar();
+//		addscalar.addScalar(query, targetClass, cols);
+//		query.setResultTransformer(Transformers.aliasToBean(targetClass));
+//		// 實際查詢返回分頁對像
+//		List list = query.list();
+//
+////		return new Page(startIndex - 1, totalCount, pageSize, list);
+//		return new PageRepository(startIndex - 1, totalCount, pageSize, list);
+//	}
+	
+	public List<ONBKNOTTRADRES_SEARCH> dataSumI(String dataSumSQL, String[] dataSumCols, Class targetClass) {
+//		SQLQuery query = getCurrentSession().createSQLQuery(dataSumSQL);
+//		AutoAddScalar addscalar = new AutoAddScalar();
+//		addscalar.addScalar(query, targetClass, dataSumCols);
+//		query.setResultTransformer(Transformers.aliasToBean(targetClass));
+//		return query.list();	
+		List list = new ArrayList();
+		list = jdbcTemplate.query(dataSumSQL, new BeanPropertyRowMapper(targetClass));
+		return list;
+//		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+//		if (paramObject != null) {
+//			resultList = jdbcTemplate.queryForList(sql, paramObject);
+//		} else {
+//			resultList = jdbcTemplate.queryForList(sql);
+//		}
+//		return resultList;
+	}
+	
+    
 }

@@ -3,6 +3,9 @@ package com.fstop.eachadmin.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,11 +17,15 @@ import lombok.Setter;
 @Setter
 public class UndoneSendRq {
 	
-	@Schema(description = "")
+	@NotEmpty
+	@Length(min = 1, max = 10)
+	@Schema(description = "系統追蹤序號")
 	@JsonProperty("stan")
 	private String stan;
 	
-	@Schema(description = "")
+	@NotEmpty
+	@Length(min = 1, max = 10)
+	@Schema(description = "交易日期")
 	@JsonProperty("txdate")
 	private String txdate;
 

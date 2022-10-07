@@ -1,6 +1,9 @@
 package com.fstop.eachadmin.dto;
 
-import java.util.Map;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,37 +17,23 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DetailRq {
-	
-	@Schema(description = "")
-	@JsonProperty("STAN")
-	private String STAN;
-	
-	@JsonProperty("TXDATE")
-	private String TXDATE;
-	
-	@JsonProperty("bizdate")
-	private String bizdate;
-	
-	
-	private String EXTENDFEE;
-	private String NEWEXTENDFEE;
-	private String FEE_TYPE;
-	private String RESP;
-	private String NEWSENDERFEE_NW;
-	
-	private String NEWSENDERFEE;
-	private String NEWINFEE;
-	private String NEWOUTFEE;
-	private String NEWWOFEE;
-	private String NEWEACHFEE;
-	private String SENDERID;
-	private String TXN_NAME;
-	private String SENDERBANKID_NAME;
-	private String NEWTXAMT;
-	private String FILTER_BAT;
-	
 
-	
-	
+public class DetailRq {
+	@NotEmpty
+	@Length(min = 1, max = 4)
+	@JsonProperty("ac_key")
+	private String ac_key;
+
+	@NotNull
+	@Length(min = 8, max = 8)
+	@Schema(description = "交易日期")
+	@JsonProperty("txDate")
+	private String TXDATE;
+
+	@NotNull
+	@Length(min = 1, max = 10)
+	@Schema(description = "系統追蹤序號")
+	@JsonProperty("stan")
+	private String STAN;
+
 }

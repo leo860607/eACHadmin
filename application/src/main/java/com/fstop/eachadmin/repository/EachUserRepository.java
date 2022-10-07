@@ -124,8 +124,8 @@ public class EachUserRepository{
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<EACH_USER> getDataByComId(String user_comId){
-		
-		String sql = "SELECT * FROM EACH_USER WHERE USER_COMPANY = " + user_comId; // 沒有預防植入
+//		String sql = " FROM tw.org.twntch.po.EACH_USER WHERE USER_COMPANY=? ";
+		String sql = " SELECT * FROM EACH_USER WHERE USER_COMPANY= " + user_comId ;
 		List<EACH_USER> list = new ArrayList<EACH_USER>();
 		list=jdbcTemplate.query(sql, new BeanPropertyRowMapper(EACH_USER.class));
 		return list;
@@ -151,6 +151,16 @@ public class EachUserRepository{
 		}
 		return list;
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<EACH_USER> getAll(){
+		String sql = "SELECT * FROM EACH_USER";
+		List<EACH_USER> list = new ArrayList<EACH_USER>();
+		list=jdbcTemplate.query(sql,new BeanPropertyRowMapper(EACH_USER.class));
+		return list;
+	}
+	
+	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<UserlogTchFunRs> getFuncItemByType(String func_type){

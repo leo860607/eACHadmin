@@ -19,17 +19,18 @@ public class EACHSYSSTATUSTAB implements Serializable {
 	//eACH系統狀態檔
 	private static final long serialVersionUID = -1529163750111026803L;
 
-	@Id
+	
 	private	String 	SYSSTATUS;
 	private	String 	PREVDATE;
 	private String  THISDATE;
 	private String  NEXTDATE;
 	private String  DATEMODE;
 	private String  CLEARINGPHASE;
+	
+	@Transient
 	private String BUSINESS_DATE;
-	
-	
 		
+
 	
 	
 }

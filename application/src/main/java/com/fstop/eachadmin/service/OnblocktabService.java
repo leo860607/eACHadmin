@@ -1,6 +1,7 @@
 package com.fstop.eachadmin.service;
 
 import java.util.HashMap;
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,10 @@ import org.springframework.stereotype.Service;
 import com.fstop.eachadmin.repository.OnBlockTabRepository;
 import com.fstop.eachadmin.repository.VwOnBlockTabRepository;
 import com.fstop.fcore.util.StrUtils;
+import com.fstop.infra.entity.VW_ONBLOCKTAB;
+
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Service
 public class OnblocktabService {
 	@Autowired
@@ -16,9 +21,9 @@ public class OnblocktabService {
 	@Autowired
 	private VwOnBlockTabRepository vwOnBlockTabRepository;
 
-public Map showDetail(String txdate,String stan){
+public VW_ONBLOCKTAB showDetail(String txdate,String stan){
 		
-		Map po = null;
+		VW_ONBLOCKTAB po = null;
 		Map rtnMap = new HashMap();
 		String condition ="";
 		try {
@@ -116,7 +121,7 @@ public Map showDetail(String txdate,String stan){
 				condition += " A.STAN='"+stan+"'";
 			}
 			sql.append(condition);
-			System.out.println("sql===>"+sql.toString());
+			log.debug("sql===>"+sql.toString());
 			po = vwOnBlockTabRepository.getDetail(sql.toString(),txdate,stan);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -138,8 +143,8 @@ public Map getNewFeeDetail(String bizdate,String txid,String senderid , String s
 }
 
 	//檢視未完成交易結果明細
-	public Map showNotTradResDetail(String txdate,String stan){
-		Map po = null;
+	public VW_ONBLOCKTAB showNotTradResDetail(String txdate,String stan){
+		VW_ONBLOCKTAB po = null;
 		Map rtnMap = new HashMap();
 		String condition ="";
 		try {

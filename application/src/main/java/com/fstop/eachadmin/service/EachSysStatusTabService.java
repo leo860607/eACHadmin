@@ -23,12 +23,12 @@ import util.zDateHandler;
 @Service
 public class EachSysStatusTabService {
 	@Autowired
-	private EachSysStatusTabRepository eachsysstatustab_Dao;
+	private EachSysStatusTabRepository eachSysStatusTabRepository;
 	@Autowired
 	private WkDateService WkDateService;
 	
 	public EachSysStatusTabRs<EACHSYSSTATUSTAB> checkBizDate(EachSysStatusTabRq params){
-		String activeDate = StrUtils.isNotEmpty(params.get("activeDate")) ?params.get("activeDate") : "";
+		String activeDate = StrUtils.isNotEmpty(params.getActiveDate()) ?params.getActiveDate() : "";
 		String bizDate = "";
 		Map<String,String> retmap = new HashMap<String,String>();
 		if(StrUtils.isEmpty(activeDate)){
@@ -61,8 +61,8 @@ public class EachSysStatusTabService {
 	 * @return true or false
 	 */
 	public EachSysStatusTabRs<EACHSYSSTATUSTAB> checkBizDate2(EachSysStatusTabRq params){
-		String activeDate = StrUtils.isNotEmpty(params.get("activeDate")) ?params.get("activeDate") : "";
-		String compareWay = StrUtils.isNotEmpty(params.get("compareWay")) ?params.get("compareWay") : "";
+		String activeDate = StrUtils.isNotEmpty(params.getActiveDate()) ?params.getActiveDate() : "";
+		String compareWay = StrUtils.isNotEmpty(params.getCompareWay()) ?params.getCompareWay() : "";
 		System.out.println("activeDate : "+activeDate);
 		System.out.println("compareWay : "+compareWay);
 		String bizDate = "";
@@ -141,8 +141,8 @@ public class EachSysStatusTabService {
 	 * @return true or false
 	 */
 	public EachSysStatusTabRs<EACHSYSSTATUSTAB> checkBizDate3(EachSysStatusTabRq params){
-		String activeDate = StrUtils.isNotEmpty(params.get("activeDate")) ?params.get("activeDate") : "";
-		String compareWay = StrUtils.isNotEmpty(params.get("compareWay")) ?params.get("compareWay") : "";
+		String activeDate = StrUtils.isNotEmpty(params.getActiveDate()) ?params.getActiveDate() : "";
+		String compareWay = StrUtils.isNotEmpty(params.getCompareWay()) ?params.getCompareWay() : "";
 		System.out.println("activeDate : "+activeDate);
 		System.out.println("compareWay : "+compareWay);
 		String bizDate = "";
@@ -225,7 +225,7 @@ public class EachSysStatusTabService {
 		int tmp  = -1;
 		System.out.println("activeDate>>"+activeDate);
 		try{
-			list = WkDateService.getEachsysstatustab_Dao().getThisBusinessDate();
+			list = WkDateService.getEachsysstatustab_Dao().getBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 				tmp = zDateHandler.compareDiffDate( activeDate, businessDate , "yyyyMMdd");
@@ -252,7 +252,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String businessDate = "";
 		try{
-			list = eachsysstatustab_Dao.getThisBusinessDate();
+			list = eachSysStatusTabRepository.getBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 				businessDate = DateTimeUtils.convertDate(businessDate, "yyyyMMdd", "yyyyMMdd");
@@ -271,7 +271,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String businessDate = "";
 		try{
-			list = eachsysstatustab_Dao.getThisBusinessDate();
+			list = eachSysStatusTabRepository.getBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 			}
@@ -290,7 +290,7 @@ public class EachSysStatusTabService {
 		boolean isTxnDate = false;
 		try{
 			isTxnDate = WkDateService.isTxnDate();
-			list = eachsysstatustab_Dao.getRptBusinessDate(isTxnDate, isTxnDate);
+			list = eachSysStatusTabRepository.getRptBusinessDate(isTxnDate, isTxnDate);
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getBUSINESS_DATE();
 				businessDate = DateTimeUtils.convertDate(businessDate, "yyyyMMdd", "yyyyMMdd");
@@ -310,7 +310,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String businessDate = "";
 		try{
-			list = eachsysstatustab_Dao.getNextBusinessDate();
+			list = eachSysStatusTabRepository.getNextBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getNEXTDATE();
 				businessDate = DateTimeUtils.convertDate(businessDate, "yyyyMMdd", "yyyyMMdd");
@@ -330,7 +330,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String businessDate = "";
 		try{
-			list = eachsysstatustab_Dao.getThisBusinessDate();
+			list = eachSysStatusTabRepository.getBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getTHISDATE();
 				businessDate = DateTimeUtils.convertDate(businessDate, "yyyyMMdd", "yyyyMMdd");
@@ -350,7 +350,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String businessDate = "";
 		try{
-			list = eachsysstatustab_Dao.getNextBusinessDate();
+			list = eachSysStatusTabRepository.getNextBusinessDate();
 			if(list != null && list.size() > 0){
 				businessDate = list.get(0).getTHISDATE();
 				businessDate = DateTimeUtils.convertDate(mode, businessDate, "yyyyMMdd", "yyyyMMdd");
@@ -370,7 +370,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		String clrPhase = "";
 		try{
-			list = eachsysstatustab_Dao.getNextBusinessDate();
+			list = eachSysStatusTabRepository.getNextBusinessDate();
 			if(list != null && list.size() > 0){
 				clrPhase = list.get(0).getCLEARINGPHASE();
 			}
@@ -384,7 +384,7 @@ public class EachSysStatusTabService {
 		List<EACHSYSSTATUSTAB> list = null;
 		Map data = new HashMap();
 		try{
-			list = eachsysstatustab_Dao.getNextBusinessDate();
+			list = eachSysStatusTabRepository.getNextBusinessDate();
 			if(list != null && list.size() > 0){
 				data = BeanUtils.describe(list.get(0));
 			}
@@ -395,11 +395,11 @@ public class EachSysStatusTabService {
 	}
 	
 	public EachSysStatusTabRepository getEachsysstatustab_Dao() {
-		return eachsysstatustab_Dao;
+		return eachSysStatusTabRepository;
 	}
 
 	public void setEachsysstatustab_Dao(EachSysStatusTabRepository eachsysstatustab_Dao) {
-		this.eachsysstatustab_Dao = eachsysstatustab_Dao;
+		this.eachSysStatusTabRepository = eachsysstatustab_Dao;
 	}
 	public WkDateService getWkDateService() {
 		return WkDateService;

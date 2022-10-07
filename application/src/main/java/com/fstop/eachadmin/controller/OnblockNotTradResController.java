@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fstop.eachadmin.dto.CommonPageSearchRq;
+import com.fstop.eachadmin.dto.CommonPageSearchRs;
 import com.fstop.eachadmin.dto.ObtkNtrRq;
 import com.fstop.eachadmin.dto.ObtkNtrRs;
 import com.fstop.eachadmin.dto.PageSearchRq;
@@ -17,13 +19,16 @@ import com.fstop.eachadmin.dto.PageSearchRs;
 import com.fstop.eachadmin.dto.UndoneSendRq;
 import com.fstop.eachadmin.dto.UndoneSendRs;
 import com.fstop.eachadmin.service.NTRDetailService;
+import com.fstop.eachadmin.service.OnblockNotTradResService;
 import com.fstop.eachadmin.service.UndoneService;
+import com.fstop.infra.entity.ONBLOCKNOTTRADRES_SEARCH;
+import com.fstop.infra.entity.ONBKNOTTRADRES_SEARCH;
 import com.fstop.infra.entity.UNDONE_TXDATA;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "未完成交易查詢")
+@Tag(name = "未完成交易結果查詢")
 @RestController
 @RequestMapping("api/NotTradRes")
 public class OnblockNotTradResController {
@@ -33,6 +38,9 @@ public class OnblockNotTradResController {
 	
 	@Autowired
 	private UndoneService UndoneS;
+	
+	@Autowired
+	private OnblockNotTradResService OnblockNotTradResS;
 
 	// 操作行下拉選單
 	@Operation(summary = "操作行 API", description = "操作行下拉選單資料")
@@ -50,8 +58,8 @@ public class OnblockNotTradResController {
     // 查詢
  	@Operation(summary = "查詢表單產出", description = "查詢按鈕(label),點選後依據篩選條件將需要的表單產出")
  	@PostMapping(value = "/pageSearch")
- 	public PageSearchRs<UNDONE_TXDATA> pageSearch(@RequestBody PageSearchRq param) {
-		return UndoneS.pageSearch(param);
+ 	public CommonPageSearchRs<ONBLOCKNOTTRADRES_SEARCH, ONBKNOTTRADRES_SEARCH> pageSearch(@RequestBody CommonPageSearchRq param) {
+ 		return OnblockNotTradResS.getNotTradResList(param);
 	}
 
 	// 明細
@@ -61,20 +69,24 @@ public class OnblockNotTradResController {
 		return NTRDetailS.showDetail(param);
 	}
 
-	// return json
-	// controller
+	// 請求傳送未完成交易結果(send_1406)
 	@Operation(summary = "請求傳送未完成交易結果(1406)", description = "API功能說明")
 	@PostMapping(value = "/send_1406data")
 	public UndoneSendRs send_1406(@RequestBody UndoneSendRq param) {
 		return UndoneS.send_1406(param);
 	}
 
-	// return json
-	// controller
+	// 請求傳送確認訊息(send_1400)
 	@Operation(summary = "請求傳送確認訊息(1400)", description = "API功能說明")
 	@PostMapping(value = "/send_1400data")
 	public UndoneSendRs send_1400(@RequestBody UndoneSendRq param) {
 		return UndoneS.send_1400(param);
+	}
+	// 票交所代為處理未完成交易(send)
+	@Operation(summary = "票交所代為處理未完成交易(send)", description = "API功能說明")
+	@PostMapping(value = "/send_data")
+	public UndoneSendRs send(@RequestBody UndoneSendRq param) {
+		return UndoneS.send(param);
 	}
 
 }

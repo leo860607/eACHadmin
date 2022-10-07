@@ -5,6 +5,7 @@ package com.fstop.infra.entity;
 
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import javax.persistence.Entity;
@@ -12,12 +13,19 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 @Entity(name="VW_ONBLOCKTAB")
 @Table(name = "MASTER_VW_ONBLOCKTAB")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class VW_ONBLOCKTAB implements Serializable{
 	
 	private String ACCTBAL;
@@ -96,6 +104,8 @@ public class VW_ONBLOCKTAB implements Serializable{
 	private String TRMLMCC;
 	private String TXAMT;
 	private String TXDATE;
+	@Schema(description = "交易日期時間")
+	@JsonProperty("txdt")
 	private String TXDT;
 	private String TXID;
 	private String UPDATEDT;
@@ -113,9 +123,12 @@ public class VW_ONBLOCKTAB implements Serializable{
 	private String BILLFLAG;
 	
 	//2022/01/20新增欄位給頁面顯示
-	private String EXTENDFEE;
+	private BigDecimal EXTENDFEE;
 //	//新增欄位
-//	private String FEE_TYPE;
+	private String TXN_TYPE;
+	private String FEE_TYPE;
+	private String TXN_NAME;
+	private String SENDERBANKID_NAME;
 //	private String NEWEACHFEE_NW;
 //	private String NEWFEE_NW;
 //	private String NEWINFEE_NW;
@@ -143,6 +156,61 @@ public class VW_ONBLOCKTAB implements Serializable{
 	private String BKHEADNAME; 
 	@Transient 
 	private String TIMEOUTCNT;
+//-----------------------------------------------------------------------------------	
+//	private String TXDT;
+//	private String STAN;
+//	private String TXDATE;
+	private String PCODE_DESC;
+	private String SENDERBANK_NAME;
+	private String RECEIVERBANK_NAME;
+	private String CONRESULTCODE_DESC;
+//	private String ACCTCODE;
+	private String SENDERCLEARING_NAME;
+	private String INCLEARING_NAME;
+	private String OUTCLEARING_NAME;
+	private String SENDERACQUIRE_NAME;
+	private String INACQUIRE_NAME;
+	private String OUTACQUIRE_NAME;
+	private String WOACQUIRE_NAME;
+	private String SENDERHEAD_NAME;
+	private String INHEAD_NAME;
+	private String OUTHEAD_NAME;
+	private String WOHEAD_NAME;
+//	private String NEWSENDERFEE;
+//	private String NEWINFEE;
+//	private String NEWOUTFEE;
+//	private String NEWWOFEE;
+//	private String NEWEACHFEE;
+	private String NEWEXTENDFEE;
+//	private String SENDERID;
+//	private String TXN_NAME;
+//	private String NEWTXAMT;
+//	private String SENDERSTATUS;
+//	private String NEWFEE;
+//	private String SENDERBANKID_NAME;
+	private String INBANKID_NAME;
+	private String OUTBANKID_NAME;
+	private String WOBANKID_NAME;
+//	private String BIZDATE;
+//	private String EACHDT;
+//	private String CLEARINGPHASE;
+//	private String INACCTNO;
+//	private String OUTACCTNO;
+//	private String INID;
+//	private String RESP;
+	private String ERR_DESC1;
+	private String ERR_DESC2;
+//	private String UPDATEDT;
+	private String BILLTYPE;
+	private String BILLDATA;
+//	private String CHARGETYPE;
+//	private String TOLLID;
+//	private String BILLFLAG;
+	private String CHECKDATA;
+//	private String PFCLASS;
+	private String SENDERDATA;
+	private String RESULTCODE;
+	
 	
 	
 }
