@@ -114,13 +114,10 @@ public class TxErrService {
 			// System.out.println("### SQL >> " + sql);
 
 			PageRequest pageable = PageRequest.of(Integer.parseInt(pageNo), 5);
-//<<<<<<< HEAD
-//			nextpage = pageR.getPageData(pageable,countAndSumQuery.toString(), sql.toString(), TxErrRsList.class);
 
-//=======
 			nextpage = pageR.getPageData(pageable,countAndSumQuery.toString(), sql.toString(), TX_ERR.class);
 			result=new TxErrRs(countAndSumList, nextpage.getTotalPages(),Integer.toString(nextpage.getPageable().getPageNumber()), nextpage.getTotalElements(), nextpage.getContent());
-//>>>>>>> 210876fab20432d511e6a0f58882761baca2f4b8
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -393,10 +390,121 @@ public class TxErrService {
 			TxerrDetailRs.put("NEWFEE_NW", detailDataMap.getNEWFEE() != null ? detailDataMap.getNEWFEE() : "0");
 
 			}
-			txerrDetailRs.setDetailMapData(detailDataMap);
+//			txerrDetailRs.setDetailMapData(detailDataMap);
 //			txerrDetailRs.setDetailData(TxerrDetailRs);
 			
 //		}
+			
+			String a = detailDataMap.getTXDATE();
+			String b = detailDataMap.getSTAN();
+			String c = detailDataMap.getTXDT();
+			String d = detailDataMap.getPCODE_DESC();
+			String e = detailDataMap.getSENDERBANK_NAME();
+			String f = detailDataMap.getRECEIVERBANK_NAME();
+//			String g = detailDataMap.getCONRESULTCODE_DESC();
+			String h = detailDataMap.getACCTCODE();
+//			String i = detailDataMap.getSENDERCLEARING_NAME();
+//			String j = detailDataMap.getINCLEARING_NAME();
+//			String k = detailDataMap.getOUTCLEARING_NAME();
+//			String l = detailDataMap.getSENDERACQUIRE_NAME();
+//			String m = detailDataMap.getINACQUIRE_NAME();
+//			String n = detailDataMap.getOUTACQUIRE_NAME();
+//			String o = detailDataMap.getWOACQUIRE_NAME();
+//			String p = detailDataMap.getSENDERHEAD_NAME();
+//			String q = detailDataMap.getINHEAD_NAME();
+//			String r = detailDataMap.getOUTHEAD_NAME();
+//			String s = detailDataMap.getWOHEAD_NAME();
+			String t = detailDataMap.getNEWSENDERFEE();
+			String u = detailDataMap.getNEWINFEE();
+			String v = detailDataMap.getNEWOUTFEE();
+//			String w = detailDataMap.getNEWWOFEE();
+			String x = detailDataMap.getNEWEACHFEE();
+			String y = detailDataMap.getNEWEXTENDFEE();
+			String z = detailDataMap.getSENDERID();
+			String aa = detailDataMap.getTXN_NAME();
+			String bb = detailDataMap.getNEWTXAMT();
+//			String cc = detailDataMap.getSENDERSTATUS();
+			String dd = detailDataMap.getNEWFEE();
+			String ee = detailDataMap.getSENDERBANKID_NAME();
+			String ff = detailDataMap.getINBANKID_NAME();
+			String gg = detailDataMap.getOUTBANKID_NAME();
+//			String hh = detailDataMap.getWOBANKID_NAME();
+			String ii = detailDataMap.getBIZDATE();
+			String jj = detailDataMap.getEACHDT();
+			String kk = detailDataMap.getCLEARINGPHASE();
+			String ll = detailDataMap.getINACCTNO();
+			String mm = detailDataMap.getOUTACCTNO();
+			String nn = detailDataMap.getINID();
+			String oo = detailDataMap.getRESP();
+			String pp = detailDataMap.getERR_DESC1();
+			String qq = detailDataMap.getERR_DESC2();
+			String rr = detailDataMap.getUPDATEDT();
+//			String ss = detailDataMap.getBILLTYPE();
+//			String tt = detailDataMap.getBILLDATA();
+//			String uu = detailDataMap.getCHARGETYPE();
+//			String vv = detailDataMap.getTOLLID();
+//			String ww = detailDataMap.getBILLFLAG();
+//			String xx = detailDataMap.getCHECKDATA();
+//			String yy = detailDataMap.getPFCLASS();
+			String zz = detailDataMap.getSENDERDATA();
+			String aaa = detailDataMap.getRESULTCODE();
+//			String bbb = detailDataMap.getTXN_TYPE();
+			
+			
+			txerrDetailRs.setTXDATE(a);
+			txerrDetailRs.setSTAN(b);
+			txerrDetailRs.setTXDT(c);
+			txerrDetailRs.setPCODE_DESC(d);
+			txerrDetailRs.setSENDERBANK_NAME(e);
+			txerrDetailRs.setRECEIVERBANK_NAME(f);
+//			txerrDetailRs.setCONRESULTCODE_DESC(g);
+			txerrDetailRs.setACCTCODE(h);
+//			txerrDetailRs.setSENDERCLEARING_NAME(i);
+//			txerrDetailRs.setINCLEARING_NAME(j);
+//			txerrDetailRs.setOUTCLEARING_NAME(k);
+//			txerrDetailRs.setSENDERACQUIRE_NAME(l);
+//			txerrDetailRs.setINACQUIRE_NAME(m);
+//			txerrDetailRs.setOUTACQUIRE_NAME(n);
+//			txerrDetailRs.setWOACQUIRE_NAME(o);
+//			txerrDetailRs.setSENDERHEAD_NAME(p);
+//			txerrDetailRs.setINHEAD_NAME(q);
+//			txerrDetailRs.setOUTHEAD_NAME(r);
+//			txerrDetailRs.setWOHEAD_NAME(s);
+			txerrDetailRs.setNEWSENDERFEE(t);
+			txerrDetailRs.setNEWINFEE(u);
+			txerrDetailRs.setNEWOUTFEE(v);
+//			txerrDetailRs.setNEWWOFEE(w);
+			txerrDetailRs.setNEWEACHFEE(x);
+			txerrDetailRs.setNEWEXTENDFEE(y);
+			txerrDetailRs.setSENDERID(z);
+			txerrDetailRs.setTXN_NAME(aa);
+			txerrDetailRs.setNEWTXAMT(bb);
+//			txerrDetailRs.setSENDERSTATUS(cc);
+			txerrDetailRs.setNEWFEE(dd);
+			txerrDetailRs.setSENDERBANKID_NAME(ee);
+			txerrDetailRs.setINBANKID_NAME(ff);
+			txerrDetailRs.setOUTBANKID_NAME(gg);
+//			txerrDetailRs.setWOBANKID_NAME(hh);
+			txerrDetailRs.setBIZDATE(ii);
+			txerrDetailRs.setEACHDT(jj);
+			txerrDetailRs.setCLEARINGPHASE(kk);
+			txerrDetailRs.setINACCTNO(ll);
+			txerrDetailRs.setOUTACCTNO(mm);
+			txerrDetailRs.setINID(nn);
+			txerrDetailRs.setRESP(oo);
+			txerrDetailRs.setERR_DESC1(pp);
+			txerrDetailRs.setERR_DESC2(qq);
+			txerrDetailRs.setUPDATEDT(rr);
+//			txerrDetailRs.setBILLTYPE(ss);
+//			txerrDetailRs.setBILLDATA(tt);
+//			txerrDetailRs.setCHARGETYPE(uu);
+//			txerrDetailRs.setTOLLID(vv);
+//			txerrDetailRs.setBILLFLAG(ww);
+//			txerrDetailRs.setCHECKDATA(xx);
+//			txerrDetailRs.setPFCLASS(yy);
+			txerrDetailRs.setSENDERDATA(zz);
+			txerrDetailRs.setRESULTCODE(aaa);
+//			txerrDetailRs.setRESULTCODE(bbb);
 		return txerrDetailRs;
 	}
 }

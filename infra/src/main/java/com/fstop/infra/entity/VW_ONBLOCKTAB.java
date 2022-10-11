@@ -13,6 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -101,6 +104,8 @@ public class VW_ONBLOCKTAB implements Serializable{
 	private String TRMLMCC;
 	private String TXAMT;
 	private String TXDATE;
+	@Schema(description = "交易日期時間")
+	@JsonProperty("txdt")
 	private String TXDT;
 	private String TXID;
 	private String UPDATEDT;

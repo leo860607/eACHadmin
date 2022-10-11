@@ -6,6 +6,8 @@ import lombok.Setter;
 import java.util.List;
 import java.util.Map;
 
+import com.fstop.infra.entity.VW_ONBLOCKTAB;
+
 
 @Getter
 @Setter
@@ -18,6 +20,6 @@ public class ObtkNtrRs {
     private String END_DATE;
     private Map userData;
     private String OPBK_ID;
-    private Map DetailData;
+    private VW_ONBLOCKTAB DetailData;
     private String IsUndone;
 }

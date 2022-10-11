@@ -14,6 +14,7 @@ import com.fstop.fcore.util.Page;
 import com.fstop.infra.entity.UNDONE_TXDATA;
 import com.fstop.infra.entity.VW_ONBLOCKTAB;
 import com.fstop.infra.entity.WK_DATE_CALENDAR;
+import com.fstop.infra.entity.ONBLOCKNOTTRADRES_SEARCH;
 
 @Repository
 public class VwOnBlockTabRepository {
@@ -90,5 +91,16 @@ public class VwOnBlockTabRepository {
 		 * SQLQuery query = getCurrentSession().createSQLQuery(countQuerySql); List
 		 * countList = query.list(); return countList.size();
 		 */
+	}
+	
+	public Page getDataIIII(int pageNo, int pageSize, String countQuerySql, String sql, String[] cols,
+			Class targetClass) {
+		int totalCount = countDataIII(countQuerySql);
+		int startIndex = 0;
+//		= Page.getStartOfPage(pageNo, pageSize) + 1;
+		List<Map> list = null;
+		list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(ONBLOCKNOTTRADRES_SEARCH.class));
+
+		return new Page(startIndex , totalCount, pageSize, list);
 	}
 }

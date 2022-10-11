@@ -7,10 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fstop.eachadmin.dto.HrTxpTimeRq;
 import com.fstop.eachadmin.dto.HrTxpTimeRs;
+import com.fstop.eachadmin.dto.countAndSumListRs;
 import com.fstop.eachadmin.repository.EachTxnCodeRepository;
 import com.fstop.eachadmin.repository.OnBlockTabRepository;
 import com.fstop.infra.entity.BANK_OPBK;
@@ -26,6 +29,8 @@ import util.DateTimeUtils;
 @Slf4j
 @Service
 public class HrTxpTimeService {
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 	@Autowired
 	private EachTxnCodeRepository each_txn_code_Dao;
 	@Autowired
@@ -63,8 +68,8 @@ public class HrTxpTimeService {
 	@SuppressWarnings("unchecked")
 	public HrTxpTimeRs pageSearch(HrTxpTimeRq param){
 		List<String> conditions = getConditionList(param);
-		int pageNo = 1;
-		int pageSize = 1;
+//		int pageNo = 2;
+//		int pageSize = 10;
 //		String pageNo = StrUtils.isEmpty(param.getPage()) ?"0":param.getPage();
 //		String pageSize = StrUtils.isEmpty(param.get("rows")) ?Arguments.getStringArg("PAGE.SIZE"):param.get("rows");
 		Map rtnMap = new HashMap();
@@ -119,11 +124,10 @@ public class HrTxpTimeService {
 			dataSumSQL.append(") AS B ON A.HOURLAP = B.HOURLAP ");
 			dataSumSQL.append("WHERE A.HOURLAP IS NOT NULL ");
 			System.out.println("dataSumSQL = " + dataSumSQL.toString().toUpperCase());
-			List countAndSumList = onblocktab_Dao.dataSum(dataSumSQL.toString(),dataSumCols,HR_TXP_TIME.class);
-			
+			List countAndSumList = onblocktab_Dao.dataSum(dataSumSQL.toString(),dataSumCols,countAndSumListRs.class);
 			log.debug(countAndSumList.toString());
+			rtnMap.put("COUNTANDSUMLIST", (List<HR_TXP_TIME>)countAndSumList);
 			
-			rtnMap.put("countAndSumList", countAndSumList);
 			StringBuffer countQuery = new StringBuffer();
 			StringBuffer sql = new StringBuffer();
 			String[] cols = {"HOURLAP","HOURLAPNAME","TOTALCOUNT","OKCOUNT","FAILCOUNT","PENDCOUNT","PRCTIME","DEBITTIME","SAVETIME","ACHPRCTIME"};
@@ -171,32 +175,19 @@ public class HrTxpTimeService {
 			sql.append("        GROUP BY HOURLAP ");
 			sql.append("    ) AS B ON A.HOURLAP = B.HOURLAP ");
 			sql.append("    WHERE A.HOURLAP IS NOT NULL ");
+			sql.append("    ) AS TEMP_ ");
 			System.out.println("sql = " + sql.toString().toUpperCase());	
+			log.debug(sql.toString());
 			countQuery.append(withTemp);
 			countQuery.append("SELECT A.* FROM HOURITEM AS A ");
 			countQuery.append("WHERE A.HOURLAP IS NOT NULL ");
-			System.out.println("countQuery = " + countQuery.toString().toUpperCase());		
-			page =  onblocktab_Dao.getData(pageNo, pageSize,countQuery.toString(), sql.toString(), cols, HR_TXP_TIME.class);
+			System.out.println("countQuery = " + countQuery.toString().toUpperCase());	
+			List<Map> list1 =  onblocktab_Dao.getData(sql.toString());
+			rtnMap.put("ROWS",list1);
 			
-			log.debug(page.toString());
-			
-			list = (List<HR_TXP_TIME>) page.getResult();
-			System.out.println("list>>"+list);
-			list = list!=null&& list.size() ==0 ?null:list;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}	
-		if (page == null) {
-			rtnMap.put("TOTAL", "0");
-			rtnMap.put("PAGE", "0");
-			rtnMap.put("RECORDS", "0");
-			rtnMap.put("ROWS", new ArrayList());
-		} else {
-			rtnMap.put("TOTAL", page.getTotalPageCount());
-			rtnMap.put("PAGE", String.valueOf(page.getCurrentPageNo()));
-			rtnMap.put("RECORDS", page.getTotalCount());
-			rtnMap.put("ROWS", list);
-		}
+		}		
 //-------------------資料轉換swagger輸出----------------------------------------------------
 		ObjectMapper mapper = new ObjectMapper();
 		HrTxpTimeRs result = mapper.convertValue(rtnMap, HrTxpTimeRs.class);
