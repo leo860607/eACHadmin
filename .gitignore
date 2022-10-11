@@ -1,5 +1,15 @@
 /.metadata/
-infra/target/*
-fcore/target/*
+.project
+.classpath
 target/*
+
+fcore/target/*
+fcore/.project
+fcore/.factorypath
+
+infra/target/*
+infra/.project
+infra/.factorypath
+
 .DS_Store
+.idea/*
